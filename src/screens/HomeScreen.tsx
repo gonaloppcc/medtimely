@@ -3,6 +3,7 @@ import * as React from "react";
 import { Avatar, BottomNavigation, Button, Card, Icon, Text } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import MedCard from "../components/MedCard";
+import { medication } from "../model/medication";
 
 export function HomeScreen() {
   return (
