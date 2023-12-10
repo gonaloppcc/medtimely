@@ -1,12 +1,15 @@
 import * as React from "react";
 
-import { BottomNavigation, Button, Text } from 'react-native-paper';
+import { Avatar, BottomNavigation, Button, Card, Icon, Text } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
+import MedCard from "../components/MedCard";
 
 export function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text variant="headlineMedium">Home</Text>
+
+      <MedCard name="Ibuprofen" dosage="400mg" form="Tablet" amount={3} missed={true} />
     </View>
   )
 }

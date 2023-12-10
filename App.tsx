@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import HomeScreen from './src/screens/HomeScreen';
 import { MD3DarkTheme, MD3LightTheme, PaperProvider, adaptNavigationTheme } from 'react-native-paper';
 import * as SplashScreen from 'expo-splash-screen';
+import { useColorScheme } from 'react-native';
 
 import { useFonts } from 'expo-font';
 
@@ -45,6 +46,8 @@ export default function App() {
     'Roboto Serif': require('./assets/fonts/RobotoSerif.ttf'),
   })
 
+  const colorScheme = useColorScheme();
+
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
       await SplashScreen.hideAsync();
@@ -54,11 +57,12 @@ export default function App() {
   if (!fontsLoaded && !fontError)
     return null;
 
-  const theme = deepmerge(CombinedDefaultTheme, themeFonts);
+  const inUseTheme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
+  const theme = deepmerge(inUseTheme, themeFonts);
 
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer onReady={onLayoutRootView}>
+      <NavigationContainer onReady={onLayoutRootView} theme={theme}>
         <StatusBar style={!theme.isV3 || theme.dark ? 'light' : 'dark'} />
         <Stack.Navigator initialRouteName='Home'>
           <Stack.Screen name='Home' component={HomeScreen} />
