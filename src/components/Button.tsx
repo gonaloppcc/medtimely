@@ -1,12 +1,4 @@
-import React from 'react';
-import {Button as ButtonNative, GestureResponderEvent} from 'react-native';
+import * as React from 'react';
+import { Button } from 'react-native-paper';
 
-interface ButtonProps {
-    onClick: (event: GestureResponderEvent) => void;
-}
-
-export default function Button(props: ButtonProps) {
-    return (
-        <ButtonNative onPress={props.onClick} title={"Click me"}></ButtonNative>
-    );
-}
+export default Button

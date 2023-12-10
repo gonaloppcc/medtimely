@@ -1,24 +1,69 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View} from 'react-native';
-import Button from "./src/components/Button";
+import HomeScreen from './src/screens/HomeScreen';
+import { MD3DarkTheme, MD3LightTheme, PaperProvider, adaptNavigationTheme } from 'react-native-paper';
+import * as SplashScreen from 'expo-splash-screen';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="red" style="dark"  />
-      <Text>Open up App.js to start working on your app 27!</Text>
-      <Button onClick={() => alert('Button clicked')}></Button>
-    </View>
-  );
+import { useFonts } from 'expo-font';
+
+import {
+  NavigationContainer,
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import deepmerge from 'ts-deepmerge';
+import { useCallback } from 'react';
+
+const { LightTheme, DarkTheme } = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  reactNavigationDark: NavigationDarkTheme,
+});
+
+const themeFonts = {
+  fonts: {
+    headlineLarge: {
+      fontFamily: 'Roboto Serif',
+    },
+    headlineMedium: {
+      fontFamily: 'Roboto Serif',
+    },
+    headlineSmall: {
+      fontFamily: 'Roboto Serif',
+    }
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const CombinedDefaultTheme = deepmerge(MD3LightTheme, LightTheme);
+const CombinedDarkTheme = deepmerge(MD3DarkTheme, DarkTheme);
+
+const Stack = createStackNavigator();
+
+SplashScreen.preventAutoHideAsync();
+
+export default function App() {
+  const [fontsLoaded, fontError] = useFonts({
+    'Roboto Serif': require('./assets/fonts/RobotoSerif.ttf'),
+  })
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded || fontError) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError)
+    return null;
+
+  const theme = deepmerge(CombinedDefaultTheme, themeFonts);
+
+  return (
+    <PaperProvider theme={theme}>
+      <NavigationContainer onReady={onLayoutRootView}>
+        <StatusBar style={!theme.isV3 || theme.dark ? 'light' : 'dark'} />
+        <Stack.Navigator initialRouteName='Home'>
+          <Stack.Screen name='Home' component={HomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+  );
+}
