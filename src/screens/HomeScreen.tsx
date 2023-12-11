@@ -1,10 +1,8 @@
 import * as React from "react";
 
-import { Avatar, BottomNavigation, Button, Card, Icon, Text } from 'react-native-paper';
+import { BottomNavigation, Text } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import MedCard from "../components/MedCard";
-import { medication } from "../model/medication";
-import { Login } from "../components/auth";
 
 export function HomeScreen() {
   return (
@@ -12,8 +10,6 @@ export function HomeScreen() {
       <Text variant="headlineMedium">Home</Text>
 
       <MedCard name="Ibuprofen" dosage="400mg" form="Tablet" amount={3} missed={true} />
-
-      <Login />
     </View>
   )
 }
