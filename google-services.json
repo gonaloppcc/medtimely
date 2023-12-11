@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "65268902338",
+    "project_id": "test-13c20",
+    "storage_bucket": "test-13c20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65268902338:android:a8537c0651eb935e400e5b",
+        "android_client_info": {
+          "package_name": "pt.medtimely.medtimely"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65268902338-b6cqvlq0dcjfvce37rtg2d4g2pts5f67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pt.medtimely.medtimely",
+            "certificate_hash": "ab5359f14775d989c5ab4297bc07d14b0ee55928"
+          }
+        },
+        {
+          "client_id": "65268902338-6f52ulp0ls0p5r7rq0q6ka9up49k4e3p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfDbVxK4XZYd9ez_u-2irV1c9Af1Hp22U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65268902338-6f52ulp0ls0p5r7rq0q6ka9up49k4e3p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
