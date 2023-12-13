@@ -12,47 +12,62 @@ import {NavigationContainer,} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AuthenticationProvider} from './src/providers/AuthProvider';
 import {useAuthentication} from './src/hooks/useAuthentication';
-import {LogInScreen, WelcomeScreen} from './src/screens/StartScreen';
+import {SignUpScreen} from './src/screens/StartScreen';
 import {signOut} from './src/services/auth';
 import {CombinedDarkTheme, CombinedDefaultTheme, themeFonts} from './src/theme';
 import deepmerge from 'ts-deepmerge';
+import {LoginScreen} from './src/screens/LoginScreen';
 
 SplashScreen.preventAutoHideAsync();
 
-type RootStackParamList = {
+export type RootStackParamList = {
     Home: undefined;
-    Welcome: undefined;
+    SignUp: undefined;
     Login: undefined;
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+// Screens that don't require authentication
+const NotLoggedInScreens = () => {
+    return <>
+        <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}}/>
+        <Stack.Screen name="Login" component={LoginScreen} options={{title: 'Log in'}}/>
+    </>;
+};
+
+// Screens that require authentication
+const LoggedInScreens = () => {
+    return <>
+        <Stack.Screen name="Home" component={HomeScreen}/>
+    </>;
+};
+
+const ProfileHeader = () => {
+    const user = useAuthentication();
+    if (user) {
+        const onProfilePress = async () => {
+            alert(user.email);
+            await signOut();
+        };
+
+        return <Appbar.Action icon="account-circle" onPress={onProfilePress}/>;
+    } else {
+        return null;
+    }
+};
+
 const MainApp = () => {
     const theme = useTheme();
     const user = useAuthentication();
+    const isLoggedIn = !!user;
+
+    const style = !theme.isV3 || theme.dark ? 'light' : 'dark';
+
     return <>
-        <StatusBar style={!theme.isV3 || theme.dark ? 'light' : 'dark'}/>
-        <Stack.Navigator initialRouteName="Home" screenOptions={{
-            headerRight: () => {
-                const user = useAuthentication();
-                if (user) {
-                    return <Appbar.Action icon="account-circle" onPress={async () => {
-                        alert(user.email);
-                        await signOut();
-                    }}/>;
-                } else {
-                    return null;
-                }
-            },
-        }}>
-            {user ?
-                <>
-                    <Stack.Screen name="Home" component={HomeScreen}/>
-                </> :
-                <>
-                    <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}}/>
-                    <Stack.Screen name="Login" component={LogInScreen} options={{title: 'Log in'}}/>
-                </>}
+        <StatusBar style={style}/>
+        <Stack.Navigator initialRouteName="SignUp" screenOptions={{headerRight: ProfileHeader}}>
+            {isLoggedIn ? LoggedInScreens() : NotLoggedInScreens()}
         </Stack.Navigator>
     </>;
 };

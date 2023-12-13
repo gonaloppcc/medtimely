@@ -2,15 +2,12 @@ import React from 'react';
 import {View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useNavigation} from '@react-navigation/native';
 import {SignUp} from './SignUpScreen';
-import {LoginScreen} from './LoginScreen';
+import {NativeStackScreenProps} from 'react-native-screens/native-stack';
+import {RootStackParamList} from '../../App';
 
-//const Stack = createStackNavigator();
-
-function WelcomeScreen() {
+function SignUpScreen({navigation}: NativeStackScreenProps<RootStackParamList, 'SignUp'>) {
     const insets = useSafeAreaInsets();
-    const navigation = useNavigation();
     return <View style={{
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
@@ -35,16 +32,4 @@ function WelcomeScreen() {
     </View>;
 }
 
-function LogInScreen() {
-    return <View style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        rowGap: 16,
-        marginHorizontal: 16,
-    }}>
-        <LoginScreen/>
-    </View>;
-}
-
-export {WelcomeScreen, LogInScreen};
+export {SignUpScreen};

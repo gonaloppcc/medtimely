@@ -5,6 +5,8 @@ import {Formik} from 'formik';
 import {createUserWithEmailAndPassword} from '../services/auth';
 import {View} from 'react-native';
 import {formStyle} from './LoginScreen';
+import {NativeStackScreenProps} from 'react-native-screens/native-stack';
+import {RootStackParamList} from '../../App';
 
 const signupValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
