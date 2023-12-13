@@ -1,9 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
-import {Login, SignUp} from '../components/auth';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
+import {SignUp} from './SignUpScreen';
+import {LoginScreen} from './LoginScreen';
 
 //const Stack = createStackNavigator();
 
@@ -27,7 +28,7 @@ function WelcomeScreen() {
 
         {/* don't have an account? */}
         <Button mode="text" onPress={() => {
-            navigation.navigate('login');
+            navigation.navigate('Login');
         }}>
             Already have an account?
         </Button>
@@ -42,7 +43,7 @@ function LogInScreen() {
         rowGap: 16,
         marginHorizontal: 16,
     }}>
-        <Login/>
+        <LoginScreen/>
     </View>;
 }
 

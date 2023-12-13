@@ -1,0 +1,47 @@
+import {adaptNavigationTheme, MD3DarkTheme, MD3LightTheme} from 'react-native-paper';
+import {DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme,} from '@react-navigation/native';
+import deepmerge from 'ts-deepmerge';
+
+export const {LightTheme, DarkTheme} = adaptNavigationTheme({
+    reactNavigationLight: NavigationDefaultTheme,
+    reactNavigationDark: NavigationDarkTheme,
+});
+
+export const themeFonts = {
+    fonts: {
+        headlineLarge: {
+            fontFamily: 'Roboto Serif',
+        },
+        headlineMedium: {
+            fontFamily: 'Roboto Serif',
+        },
+        headlineSmall: {
+            fontFamily: 'Roboto Serif',
+        }
+    }
+};
+
+export const customThemeColors = {
+    light: {
+        'colors': {
+            'brand': 'rgb(187, 21, 34)',
+            'onBrand': 'rgb(255, 255, 255)',
+            'brandContainer': 'rgb(255, 218, 215)',
+            'onBrandContainer': 'rgb(65, 0, 4)',
+            'inverseBrand': 'rgb(255, 179, 174)',
+        }
+    },
+    dark: {
+        'colors': {
+            'brand': 'rgb(255, 179, 174)',
+            'onBrand': 'rgb(104, 0, 11)',
+            'brandContainer': 'rgb(147, 0, 20)',
+            'onBrandContainer': 'rgb(255, 218, 215)',
+            'inverseBrand': 'rgb(187, 21, 34)',
+        }
+    }
+};
+
+export const CombinedDefaultTheme = deepmerge(MD3LightTheme, LightTheme, customThemeColors.light);
+export const CombinedDarkTheme = deepmerge(MD3DarkTheme, DarkTheme, customThemeColors.dark);
+
