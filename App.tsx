@@ -18,6 +18,7 @@ import {useCallback} from 'react';
 import {AuthenticationProvider} from './src/providers/AuthProvider';
 import {useAuthentication} from './src/hooks/useAuthentication';
 import {WelcomeScreen, LogInScreen} from './src/screens/StartScreen';
+import {signOut} from "./src/services/auth";
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
@@ -98,9 +99,9 @@ const MainApp = () => {
             headerRight: (props) => {
                 const user = useAuthentication();
                 if (user) {
-                    return <Appbar.Action icon="account-circle" onPress={() => {
+                    return <Appbar.Action icon="account-circle" onPress={async () => {
                         alert(user.email);
-                        auth().signOut();
+                        await signOut();
                     }}/>
                 } else {
                     return null
