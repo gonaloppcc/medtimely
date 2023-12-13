@@ -1,5 +1,5 @@
-import { MetaTypeCreator, getFirelord } from 'firelordjs'
-import { db } from '../../firebaseConfig'
+import { MetaTypeCreator, getFirelord } from 'firelordjs';
+import { db } from '../../firebaseConfig';
 
 export type Medication = MetaTypeCreator<{
   name: string;
@@ -8,4 +8,4 @@ export type Medication = MetaTypeCreator<{
   string
 >
 
-export const medication = getFirelord<Medication>(db, 'medications')
+export const medication = getFirelord<Medication>(db, 'medications');

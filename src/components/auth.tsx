@@ -1,17 +1,16 @@
-import {Button, Text, TextInput, useTheme} from "react-native-paper"
-import {View, StyleSheet} from 'react-native'
-import {Formik} from "formik"
-import auth, {User} from "@firebase/auth"
-import * as React from "react"
-import * as Yup from "yup"
-import {createUserWithEmailAndPassword, loginWithEmailAndPassword} from "../services/auth";
+import {Button, Text, TextInput, useTheme} from 'react-native-paper';
+import {View, StyleSheet} from 'react-native';
+import {Formik} from 'formik';
+import * as React from 'react';
+import * as Yup from 'yup';
+import {createUserWithEmailAndPassword, loginWithEmailAndPassword} from '../services/auth';
 
 
 const signupValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
     confirmPassword: Yup.string().equals([Yup.ref('password')], 'Passwords must match').required('Required'),
-})
+});
 
 const loginValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
@@ -19,24 +18,20 @@ const loginValidationSchema = Yup.object().shape({
 });
 
 const SignUp = () => {
-    const passwordTextInput = React.useRef(null)
-    const confirmPasswordTextInput = React.useRef(null)
-    const [error, setError] = React.useState(null)
+    const passwordTextInput = React.useRef(null);
+    const confirmPasswordTextInput = React.useRef(null);
+    const [error, setError] = React.useState(null);
 
     const theme = useTheme();
-
-    function createUser(email: string, password: string) {
-        throw new Error("Function not implemented.")
-    }
 
     return <Formik
         initialValues={{email: '', password: '', confirmPassword: ''}}
         onSubmit={async (values) => {
             try {
-                await createUserWithEmailAndPassword(values.email, values.password)
+                await createUserWithEmailAndPassword(values.email, values.password);
             } catch (error) {
-                const errorMessage = error.message
-                setError(errorMessage)
+                const errorMessage = error.message;
+                setError(errorMessage);
             }
         }}
         validationSchema={signupValidationSchema}>
@@ -53,7 +48,7 @@ const SignUp = () => {
                     onBlur={handleBlur('email')}
                     returnKeyType="next"
                     onSubmitEditing={() => {
-                        passwordTextInput.current.focus()
+                        passwordTextInput.current.focus();
                     }}
                     blurOnSubmit={false}
                 />
@@ -72,7 +67,7 @@ const SignUp = () => {
                     returnKeyType="next"
                     ref={passwordTextInput}
                     onSubmitEditing={() => {
-                        confirmPasswordTextInput.current.focus()
+                        confirmPasswordTextInput.current.focus();
                     }}
                     blurOnSubmit={false}
                 />
@@ -98,18 +93,18 @@ const SignUp = () => {
                 {error && <Text variant="bodySmall" style={{color: theme.colors.error}}>{error}</Text>}
 
                 <Button mode="contained" onPress={() => handleSubmit()}
-                        loading={isSubmitting}
-                        disabled={!isValid}>
+                    loading={isSubmitting}
+                    disabled={!isValid}>
                     Sign up
                 </Button>
             </View>
         )}
-    </Formik>
-}
+    </Formik>;
+};
 
 
 const Login = () => {
-    const passwordTextInput = React.useRef(null)
+    const passwordTextInput = React.useRef(null);
     const theme = useTheme();
 
     return (
@@ -117,10 +112,10 @@ const Login = () => {
             initialValues={{email: '', password: ''}}
             onSubmit={(values) => {
                 loginWithEmailAndPassword(values.email, values.password)
-                    .then((result) => {
+                    .then(() => {
                         // const user = result.user;
                     })
-                    .catch((error) => {
+                    .catch(() => {
                         // const errorCode = error.code;
                         // const errorMessage = error.message;
                         // TODO: Handle error
@@ -140,7 +135,7 @@ const Login = () => {
                         onChangeText={handleChange('email')}
                         onBlur={handleBlur('email')}
                         onSubmitEditing={() => {
-                            passwordTextInput.current.focus()
+                            passwordTextInput.current.focus();
                         }}
                         blurOnSubmit={false}
                         returnKeyType="next"
@@ -172,7 +167,7 @@ const Login = () => {
         </Formik>
     );
 
-}
+};
 
 const formStyle = StyleSheet.create({
     formStyle: {
@@ -182,6 +177,6 @@ const formStyle = StyleSheet.create({
         justifyContent: 'center',
         rowGap: 16,
     }
-})
+});
 
-export {SignUp, Login}
+export {SignUp, Login};
