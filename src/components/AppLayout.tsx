@@ -11,6 +11,8 @@ export const AppLayout = () => {
     const user = useAuthentication();
     const isLoggedIn = !!user;
 
+    console.log('isLoggedIn: ', isLoggedIn);
+
     const style = !theme.isV3 || theme.dark ? 'light' : 'dark';
 
     return <>

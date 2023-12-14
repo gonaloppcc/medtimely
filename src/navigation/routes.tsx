@@ -1,10 +1,9 @@
 import React from 'react';
 import {SignUpScreen} from '../screens/SignUpScreen';
 import {LoginScreen} from '../screens/LoginScreen';
-import {HomeScreen} from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen';
 import {useAuthentication} from '../hooks/useAuthentication';
 import {signOut} from '../services/auth';
-// TODO: Configure tsconfig.json to allow absolute imports
 import {Appbar} from 'react-native-paper';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -21,7 +20,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const NotLoggedInScreens = () => {
     return <>
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Login" component={LoginScreen} options={{title: 'Log in'}}/>
+        <Stack.Screen name="Login" component={LoginScreen} options={{headerTransparent: true}}/>
     </>;
 };
 
