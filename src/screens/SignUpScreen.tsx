@@ -1,12 +1,14 @@
-import * as Yup from 'yup';
 import * as React from 'react';
+
+import * as Yup from 'yup';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
-import {Formik} from 'formik';
+import {useFormik} from 'formik';
 import {createUserWithEmailAndPassword} from '../services/auth';
 import {View} from 'react-native';
 import {formStyle} from './LoginScreen';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../../App';
+import {RootStackParamList} from '../navigation/routes';
 
 const signupValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
@@ -20,38 +22,57 @@ interface Values {
     confirmPassword: string;
 }
 
-export const SignUp = () => {
+const initialValues: Values = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+};
+
+export const SignUpScreen = ({navigation}: NativeStackScreenProps<RootStackParamList, 'SignUp'>) => {
+    const insets = useSafeAreaInsets();
     const passwordTextInput = React.useRef(null);
     const confirmPasswordTextInput = React.useRef(null);
     const [submitError, setSubmitError] = React.useState(null);
 
     const theme = useTheme();
 
-    const onSubmit = async (values: Values) => {
-        try {
-            await createUserWithEmailAndPassword(values.email, values.password);
-        } catch (error) {
-            const errorMessage = error.message;
-            setSubmitError(errorMessage);
+    const {values, isValid, isSubmitting, handleSubmit, handleChange, errors, touched} = useFormik<Values>({
+        initialValues,
+        validationSchema: signupValidationSchema,
+        async onSubmit(values: Values) {
+            try {
+                await createUserWithEmailAndPassword(values.email, values.password);
+            } catch (error) {
+                const errorMessage = error.message;
+                setSubmitError(errorMessage);
+            }
         }
-    };
+    });
 
-    return <Formik<Values>
-        initialValues={{email: '', password: '', confirmPassword: ''}}
-        onSubmit={onSubmit}
-        validationSchema={signupValidationSchema}>
-        {({handleChange, handleBlur, handleSubmit, values, touched, errors, isValid, isSubmitting}) => (
+    return <View style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        rowGap: 16,
+        marginHorizontal: 16,
+    }}>
+        <Text variant="headlineMedium">Welcome to MedTimely</Text>
+        <View style={formStyle.formStyle}>
             <View style={formStyle.formStyle}>
                 <Text variant="titleLarge">Sign up</Text>
                 <TextInput
+                    id="email"
                     placeholder="Email"
                     autoCapitalize="none"
                     textContentType="emailAddress"
                     keyboardType="email-address"
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
                     returnKeyType="next"
+                    onChangeText={handleChange('email')}
+                    value={values.email}
                     onSubmitEditing={() => {
                         passwordTextInput.current.focus();
                     }}
@@ -61,16 +82,15 @@ export const SignUp = () => {
                     <Text variant="bodySmall" style={{color: theme.colors.error}}>{errors.email}</Text>}
 
                 <TextInput
+                    id="password"
                     placeholder="Password"
                     autoCapitalize="none"
                     autoCorrect={false}
                     secureTextEntry={true}
                     textContentType="password"
-                    value={values.password}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
                     returnKeyType="next"
-                    ref={passwordTextInput}
+                    onChangeText={handleChange('password')}
+                    value={values.password}
                     onSubmitEditing={() => {
                         confirmPasswordTextInput.current.focus();
                     }}
@@ -80,30 +100,33 @@ export const SignUp = () => {
                     <Text variant="bodySmall" style={{color: theme.colors.error}}>{errors.password}</Text>}
 
                 <TextInput
+                    id="confirmPassword"
                     placeholder="Confirm password"
                     autoCapitalize="none"
                     autoCorrect={false}
                     secureTextEntry={true}
                     textContentType="password"
-                    value={values.confirmPassword}
-                    onChangeText={handleChange('confirmPassword')}
-                    onBlur={handleBlur('confirmPassword')}
                     returnKeyType="default"
+                    onChangeText={handleChange('confirmPassword')}
+                    value={values.confirmPassword}
                     onSubmitEditing={() => handleSubmit()}
-                    ref={confirmPasswordTextInput}
                 />
                 {touched.confirmPassword && errors.confirmPassword &&
                     <Text variant="bodySmall" style={{color: theme.colors.error}}>{errors.confirmPassword}</Text>}
 
                 {submitError && <Text variant="bodySmall" style={{color: theme.colors.error}}>{submitError}</Text>}
 
-                <Button mode="contained" onPress={() => handleSubmit()}
-                    loading={isSubmitting}
-                    disabled={!isValid}>
+                <Button mode="contained" onPress={() => handleSubmit()} loading={isSubmitting} disabled={!isValid}>
                     Sign up
                 </Button>
             </View>
-        )}
-    </Formik>;
+        </View>
+        {/* don't have an account? */}
+        <Button mode="text" onPress={() => {
+            navigation.navigate('Login');
+        }}>
+            Already have an account?
+        </Button>
+    </View>;
 };
 
