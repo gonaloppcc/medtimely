@@ -5,7 +5,7 @@ import {loginWithEmailAndPassword} from '../services/auth';
 import {StyleSheet, View} from 'react-native';
 import * as Yup from 'yup';
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../../App';
+import {RootStackParamList} from '../navigation/routes';
 
 
 // FIXME: Should be in a separate file

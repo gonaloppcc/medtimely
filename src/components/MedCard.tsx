@@ -1,32 +1,63 @@
 import React from 'react';
-import {Card, Icon, Text, useTheme} from 'react-native-paper';
+import {Icon, Text, useTheme} from 'react-native-paper';
+import {StyleSheet, View} from 'react-native';
+import {MedicationRecord} from '../model/MedicationRecord';
 
-interface MedCardProps {
-    name: string;
-    dosage: string;
-    form: string;
-    amount?: number;
-    missed?: boolean;
-}
-
-const MedCard = (props: MedCardProps) => {
+type MedCardProps = MedicationRecord & {
+    // Added any extra props here
+};
+const MedCard = ({amount, dosage, form, missed, name}: MedCardProps) => {
     const theme = useTheme();
 
-    const title = (props.amount == null || props.amount == 1) ? props.name : `${props.name} (x${props.amount})`;
-    const missed = props.missed || false;
+    const title = (amount == null || amount == 1) ? name : `${name} (x${amount})`;
+
+    const backgroundColor = missed ? theme.colors.errorContainer : theme.colors.surface;
+
+    const style = {
+        ...styles.container,
+        backgroundColor
+    };
+
+    const subtitle = `${form}, ${dosage}`;
+
+    const takenText = missed ? 'Not taken' : 'Taken';
+
+    const takenColor = missed ? theme.colors.error : 'black';
 
     return (
-        <Card mode='outlined'
-            style={missed ? {backgroundColor: theme.colors.errorContainer} : {}}>
-            <Card.Title title={title} titleVariant="titleMedium" subtitle={`${props.form}, ${props.dosage}`} left={
-                (props) => <Icon source="pill" {...props} color={theme.colors.onSurface}/>
-            }/>
+        <View
+            style={style}>
+            <Icon size={40} source="pill" color={theme.colors.onSurface}/>
+            <View style={styles.innerStyle}>
+                <Text variant="labelLarge" style={{color: theme.colors.onSurface}}>{title}</Text>
+                <Text variant="labelMedium" style={{color: theme.colors.onSurface}}>{subtitle}</Text>
+                <Text variant="labelLarge" style={{color: takenColor}}>{takenText}</Text>
 
-            {missed && <Card.Content>
-                <Text variant="labelLarge" style={{color: theme.colors.error}}>Not taken</Text>
-            </Card.Content>}
-        </Card>
+            </View>
+
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        gap: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+        padding: 12,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.15)',
+
+    },
+    innerStyle: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+    },
+});
 
 export default MedCard;
