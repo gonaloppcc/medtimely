@@ -4,11 +4,21 @@ import {LoginScreen} from '../screens/LoginScreen';
 import HomeScreen from '../screens/authenticated/HomeScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {RecordScreen} from '../screens/authenticated/RecordScreen';
+import {MedicationsScreen} from '../screens/authenticated/MedicationsScreen';
+import {RecordsScreen} from '../screens/authenticated/RecordsScreen';
+import {SettingsScreen} from '../screens/authenticated/SettingsScreen';
 
 export type RootStackParamList = {
-    Home: undefined;
+    // Unauthenticated screens
     SignUp: undefined;
     Login: undefined;
+
+    // Authenticated screens
+    Home: undefined;
+    Medications: undefined;
+    Records: undefined;
+    Settings: undefined;
+
     Record: { id: string };
 }
 
@@ -27,7 +37,11 @@ const NotLoggedInScreens = () => {
 const LoggedInScreens = () => {
     return <>
         <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="Record" component={RecordScreen}/>
+        <Stack.Screen name="Medications" component={MedicationsScreen}/>
+        <Stack.Screen name="Records" component={RecordsScreen}/>
+        <Stack.Screen name="Settings" component={SettingsScreen}/>
+
+        <Stack.Screen name="Record" component={RecordScreen} options={{presentation: 'modal'}}/>
     </>;
 };
 

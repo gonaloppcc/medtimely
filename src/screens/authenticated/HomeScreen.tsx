@@ -5,6 +5,9 @@ import {StyleSheet, View} from 'react-native';
 import {useAuthentication} from '../../hooks/useAuthentication';
 import {WeekDayPicker} from '../../components/WeekDayPicker';
 import {MedCards} from '../../components/MedCards';
+import {MedicationsScreen} from './MedicationsScreen';
+import {SettingsScreen} from './SettingsScreen';
+import {RecordsScreen} from './RecordsScreen';
 
 // TODO: This is just for now, it should be replaced with data from the database
 const MEDICATION_RECORDS = [
@@ -105,6 +108,7 @@ export function HomeScreen() {
     );
 }
 
+// TODO: Add this as Tab.Navigator
 export default function HomeNav() {
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -116,9 +120,9 @@ export default function HomeNav() {
     ]);
     const renderScene = BottomNavigation.SceneMap({
         home: HomeScreen,
-        medications: HomeScreen,
-        records: HomeScreen,
-        settings: HomeScreen,
+        medications: MedicationsScreen,
+        records: RecordsScreen,
+        settings: SettingsScreen,
     });
     return (
         <BottomNavigation
