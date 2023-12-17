@@ -1,8 +1,9 @@
 import {useTheme} from 'react-native-paper';
 import {useAuthentication} from '../hooks/useAuthentication';
 import {StatusBar} from 'expo-status-bar';
-import {LoggedInScreens, NotLoggedInScreens, ProfileHeader, Stack} from '../navigation/routes';
+import {LoggedInScreens, NotLoggedInScreens, Stack} from '../navigation/routes';
 import React from 'react';
+import {ProfileHeader} from './ProfileHeader';
 
 // Only shows if the user is logged in
 

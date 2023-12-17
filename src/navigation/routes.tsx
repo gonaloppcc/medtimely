@@ -2,15 +2,14 @@ import React from 'react';
 import {SignUpScreen} from '../screens/SignUpScreen';
 import {LoginScreen} from '../screens/LoginScreen';
 import HomeScreen from '../screens/authenticated/HomeScreen';
-import {useAuthentication} from '../hooks/useAuthentication';
-import {signOut} from '../services/auth';
-import {Appbar} from 'react-native-paper';
 import {createStackNavigator} from '@react-navigation/stack';
+import {RecordScreen} from '../screens/authenticated/RecordScreen';
 
 export type RootStackParamList = {
     Home: undefined;
     SignUp: undefined;
     Login: undefined;
+    Record: { id: string };
 }
 
 
@@ -28,21 +27,8 @@ const NotLoggedInScreens = () => {
 const LoggedInScreens = () => {
     return <>
         <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Record" component={RecordScreen}/>
     </>;
 };
 
-const ProfileHeader = () => {
-    const user = useAuthentication();
-    if (user) {
-        const onProfilePress = async () => {
-            alert(user.email);
-            await signOut();
-        };
-
-        return <Appbar.Action icon="account-circle" onPress={onProfilePress}/>;
-    } else {
-        return null;
-    }
-};
-
-export {Stack, LoggedInScreens, NotLoggedInScreens, ProfileHeader};
+export {Stack, LoggedInScreens, NotLoggedInScreens};
