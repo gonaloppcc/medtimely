@@ -1,4 +1,4 @@
-import {AxiosError} from 'axios';
+import { AxiosError } from 'axios';
 
 export interface FetcherProps {
     limit?: number;
