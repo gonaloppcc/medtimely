@@ -2,13 +2,12 @@ import {
     signInWithEmailAndPassword as signInWithEmailAndPasswordFirebase,
     createUserWithEmailAndPassword as createUserWithEmailAndPasswordFirebase,
     signOut as signOutFirebase,
-    onAuthStateChanged as onAuthStateChangedFirebase
+    onAuthStateChanged as onAuthStateChangedFirebase,
+    User as UserFirebase
 } from 'firebase/auth';
-import {auth} from '../../../firebaseConfig';
-import {User as UserFirebase} from '@firebase/auth';
+import { auth } from '../../../firebaseConfig';
 
 type User = UserFirebase
-
 
 const createUserWithEmailAndPassword = async (email: string, password: string): Promise<User> => {
     const userCredentials = await createUserWithEmailAndPasswordFirebase(auth, email, password);
@@ -22,7 +21,7 @@ const loginWithEmailAndPassword = async (email: string, password: string): Promi
     return userCredentials.user;
 };
 
-const onAuthStateChanged = (callback: (user: User) => void): (() => void)  => {
+const onAuthStateChanged = (callback: (user: User) => void): (() => void) => {
     // TODO: Transform this type of callback to the one used by the firebase auth
     return onAuthStateChangedFirebase(auth, callback);
 };
@@ -31,4 +30,4 @@ const signOut = (): Promise<void> => {
     return signOutFirebase(auth);
 };
 
-export {createUserWithEmailAndPassword, loginWithEmailAndPassword, signOut, onAuthStateChanged};
+export { createUserWithEmailAndPassword, loginWithEmailAndPassword, signOut, onAuthStateChanged };

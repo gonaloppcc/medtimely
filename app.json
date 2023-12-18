@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "owner": "medtimely",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/adaptive-icon-fg.png",
       "resizeMode": "contain",
@@ -37,7 +37,6 @@
         "projectId": "551dd5ec-27dd-424e-bb55-625fd92ae8d4"
       }
     },
-    "plugins": [
-    ]
+    "plugins": []
   }
 }

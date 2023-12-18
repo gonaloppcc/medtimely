@@ -1,6 +1,7 @@
 import React from 'react';
-import {Text} from 'react-native-paper';
-import {StyleProp, View, ViewStyle} from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
+import { StyleProp, View, ViewStyle } from 'react-native';
+import { useAppTheme } from '../theme';
 
 interface WeekDayProps {
     dayNumber: number; // From 1 to 31
@@ -10,28 +11,26 @@ interface WeekDayProps {
 }
 
 
-const dayNumberColor = '#B1A7A6';
-const dayNameColor = '#000';
-const selectedDayColor = '#F5F3F4';
+export const WeekDay = ({ dayNumber, dayName, isSelected }: WeekDayProps) => {
+    const theme = useAppTheme();
 
-export const WeekDay = ({dayNumber, dayName, isSelected}: WeekDayProps) => {
     const style: StyleProp<ViewStyle> = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         padding: 10,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: theme.colors.surface,
         gap: 8,
     };
-    
+
     if (isSelected) {
-        style.backgroundColor = selectedDayColor;
+        style.backgroundColor = theme.colors.brandContainer;
     }
 
     return (
         <View style={style}>
-            <Text style={{color: dayNameColor}}>{dayName}</Text>
-            <Text style={{color: dayNumberColor}}>{dayNumber}</Text>
+            <Text style={{ color: theme.colors.onSurface }}>{dayName}</Text>
+            <Text style={{ color: theme.colors.outline }}>{dayNumber}</Text>
         </View>
     );
 };

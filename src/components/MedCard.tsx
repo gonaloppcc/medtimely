@@ -1,13 +1,13 @@
 import React from 'react';
-import {Icon, Text, useTheme} from 'react-native-paper';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {MedicationRecord} from '../model/MedicationRecord';
-import {useNav} from '../hooks/useNav';
+import { Icon, Text, useTheme } from 'react-native-paper';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { MedicationRecord } from '../model/MedicationRecord';
+import { useNav } from '../hooks/useNav';
 
 type MedCardProps = MedicationRecord & {
     // Added any extra props here
 };
-const MedCard = ({amount, dosage, form, missed, name}: MedCardProps) => {
+const MedCard = ({ amount, dosage, form, missed, name }: MedCardProps) => {
     const theme = useTheme();
     const nav = useNav();
 
@@ -17,7 +17,8 @@ const MedCard = ({amount, dosage, form, missed, name}: MedCardProps) => {
 
     const style = {
         ...styles.container,
-        backgroundColor
+        backgroundColor,
+        borderColor: theme.colors.outline,
     };
 
     const subtitle = `${form}, ${dosage}`;
@@ -25,18 +26,18 @@ const MedCard = ({amount, dosage, form, missed, name}: MedCardProps) => {
     const takenText = missed ? 'Not taken' : 'Taken';
 
     const onPress = () => {
-        nav.navigate('Record', {id: '1'});
+        nav.navigate('Record', { id: '1' });
     };
 
     return (
         <TouchableOpacity
             onPress={onPress}
             style={style}>
-            <Icon size={40} source="pill" color={theme.colors.onSurface}/>
+            <Icon size={40} source="pill" color={theme.colors.onSurface} />
             <View style={styles.innerStyle}>
-                <Text variant="labelLarge" style={{color: theme.colors.onSurface}}>{title}</Text>
-                <Text variant="labelMedium" style={{color: theme.colors.onSurface}}>{subtitle}</Text>
-                <Text variant="labelLarge" style={{color: theme.colors.error}}>{takenText}</Text>
+                <Text variant="labelLarge" style={{ color: theme.colors.onSurface }}>{title}</Text>
+                <Text variant="labelMedium" style={{ color: theme.colors.onSurface }}>{subtitle}</Text>
+                <Text variant="labelLarge" style={{ color: theme.colors.error }}>{takenText}</Text>
 
             </View>
 
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
         padding: 12,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.15)',
+        // borderColor: 'rgba(0,0,0,0.15)',
 
     },
     innerStyle: {
