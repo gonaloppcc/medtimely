@@ -38,9 +38,7 @@ const MedCard = ({ amount, dosage, form, missed, name }: MedCardProps) => {
                 <Text variant="labelLarge" style={{ color: theme.colors.onSurface }}>{title}</Text>
                 <Text variant="labelMedium" style={{ color: theme.colors.onSurface }}>{subtitle}</Text>
                 <Text variant="labelLarge" style={{ color: theme.colors.error }}>{takenText}</Text>
-
             </View>
-
         </TouchableOpacity>
     );
 };
