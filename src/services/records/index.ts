@@ -3,6 +3,7 @@ import { MedicationRecord } from '../../model/MedicationRecord';
 export const getRecords = async (
     token: string
 ): Promise<MedicationRecord[]> => {
+    console.log('Token: ' + token);
     // TODO: This is just for now, it should be replaced with data from the database
     const MEDICATION_RECORDS = [
         {
