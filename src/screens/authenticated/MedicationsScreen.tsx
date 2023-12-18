@@ -14,7 +14,7 @@ export function MedicationsScreen() {
     );
 }
 
-export default function MedicationsNav() {
+export function MedicationsNav() {
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
         { key: 'home', title: 'Home', focusedIcon: 'home' },

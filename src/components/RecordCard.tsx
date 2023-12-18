@@ -7,7 +7,13 @@ import { useNav } from '../hooks/useNav';
 type MedCardProps = MedicationRecord & {
     // Added any extra props here
 };
-const RecordCard = ({ amount, dosage, form, missed, name }: MedCardProps) => {
+export const RecordCard = ({
+    amount,
+    dosage,
+    form,
+    missed,
+    name,
+}: MedCardProps) => {
     const theme = useTheme();
     const nav = useNav();
 
@@ -77,5 +83,3 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
 });
-
-export default RecordCard;

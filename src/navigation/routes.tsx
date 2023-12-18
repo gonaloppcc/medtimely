@@ -1,7 +1,7 @@
 import React from 'react';
 import { SignUpScreen } from '../screens/SignUpScreen';
 import { LoginScreen } from '../screens/LoginScreen';
-import HomeScreen, { HomeNav } from '../screens/authenticated/HomeScreen';
+import { HomeNav } from '../screens/authenticated/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RecordScreen } from '../screens/authenticated/RecordScreen';
 import { MedicationsScreen } from '../screens/authenticated/MedicationsScreen';

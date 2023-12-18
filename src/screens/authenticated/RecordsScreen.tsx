@@ -12,7 +12,7 @@ export function RecordsScreen() {
     );
 }
 
-export default function RecordsNav() {
+export function RecordsNav() {
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
         { key: 'home', title: 'Home', focusedIcon: 'home' },

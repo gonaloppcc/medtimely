@@ -1,7 +1,7 @@
 import React from 'react';
 import { MedicationRecord } from '../model/MedicationRecord';
 import { ScrollView, StyleSheet } from 'react-native';
-import RecordCard from './RecordCard';
+import { RecordCard } from './RecordCard';
 
 interface MedCardsProps {
     records: MedicationRecord[];

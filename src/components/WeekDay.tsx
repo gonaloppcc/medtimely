@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, useTheme } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { useAppTheme } from '../theme';
 
