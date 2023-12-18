@@ -1,15 +1,15 @@
-import React, {useCallback} from 'react';
-import {PaperProvider} from 'react-native-paper';
+import React, { useCallback } from 'react';
+import { PaperProvider } from 'react-native-paper';
 import * as SplashScreen from 'expo-splash-screen';
-import {useColorScheme} from 'react-native';
+import { useColorScheme } from 'react-native';
 
-import {useFonts} from 'expo-font';
+import { useFonts } from 'expo-font';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {AuthenticationProvider} from './src/providers/AuthProvider';
-import {CombinedDarkTheme, CombinedDefaultTheme, themeFonts} from './src/theme';
+import { NavigationContainer } from '@react-navigation/native';
+import { AuthenticationProvider } from './src/providers/AuthProvider';
+import { CombinedDarkTheme, CombinedDefaultTheme, themeFonts } from './src/theme';
 import deepmerge from 'ts-deepmerge';
-import {AppLayout} from './src/components/AppLayout';
+import { AppLayout } from './src/components/AppLayout';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,7 +22,11 @@ export default function App() {
 
     const onLayoutRootView = useCallback(async () => {
         if (fontsLoaded || fontError) {
-            await SplashScreen.hideAsync();
+            try {
+                await SplashScreen.hideAsync();
+            } catch (_e) {
+                // silent
+            }
         }
     }, [fontsLoaded, fontError]);
 

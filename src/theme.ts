@@ -2,6 +2,7 @@ import {
     adaptNavigationTheme,
     MD3DarkTheme,
     MD3LightTheme,
+    useTheme,
 } from 'react-native-paper';
 import {
     DarkTheme as NavigationDarkTheme,
@@ -59,3 +60,5 @@ export const CombinedDarkTheme = deepmerge(
     DarkTheme,
     customThemeColors.dark
 );
+export type AppTheme = typeof CombinedDefaultTheme;
+export const useAppTheme = () => useTheme<AppTheme>();

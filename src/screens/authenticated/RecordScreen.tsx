@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import {Text} from 'react-native-paper';
-import {StyleSheet, View} from 'react-native';
-import {useNav} from '../../hooks/useNav';
+import { Appbar, Button, Text } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { useNav } from '../../hooks/useNav';
 
 // TODO: This is just for now, it should be replaced with data from the database
 const MEDICATION_DETAILED_RECORD = {
@@ -15,20 +15,18 @@ const MEDICATION_DETAILED_RECORD = {
     date: new Date(2023, 11, 17),
 };
 
-export function RecordScreen() {
-    const {name, amount, dosage, form, missed, time, date} =
+export function RecordScreen({ navigation }) {
+    const { name, amount, dosage, form, missed, time, date } =
         MEDICATION_DETAILED_RECORD;
 
-    const nav = useNav();
+    const headerRight = () => <Appbar.Action icon="pencil" onPress={() => navigation.navigate('Home')} />;
 
-    const headerRight = () => (
-        <Text onPress={() => nav.navigate('Home')}>Edit</Text>
-    );
-
-    nav.setOptions({
-        headerTitle: name,
-        headerRight,
-    });
+    React.useEffect(() => {
+        navigation.setOptions({
+            headerTitle: name,
+            headerRight,
+        });
+    }, [navigation, name]);
 
     return (
         <View style={styles.container}>
