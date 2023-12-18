@@ -1,9 +1,13 @@
-import {useTheme} from 'react-native-paper';
-import {useAuthentication} from '../hooks/useAuthentication';
-import {StatusBar} from 'expo-status-bar';
-import {LoggedInScreens, NotLoggedInScreens, Stack} from '../navigation/routes';
+import { useTheme } from 'react-native-paper';
+import { useAuthentication } from '../hooks/useAuthentication';
+import { StatusBar } from 'expo-status-bar';
+import {
+    LoggedInScreens,
+    NotLoggedInScreens,
+    Stack,
+} from '../navigation/routes';
 import React from 'react';
-import {ProfileHeader} from './ProfileHeader';
+import { ProfileHeader } from './ProfileHeader';
 
 // Only shows if the user is logged in
 
@@ -21,7 +25,7 @@ export const AppLayout = () => {
             <StatusBar style={style} />
             <Stack.Navigator
                 initialRouteName="SignUp"
-                screenOptions={{headerRight: ProfileHeader}}
+                screenOptions={{ headerRight: ProfileHeader }}
             >
                 {isLoggedIn ? LoggedInScreens() : NotLoggedInScreens()}
             </Stack.Navigator>

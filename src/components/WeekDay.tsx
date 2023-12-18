@@ -10,7 +10,6 @@ interface WeekDayProps {
     selectDay: (day: Date) => void;
 }
 
-
 export const WeekDay = ({ dayNumber, dayName, isSelected }: WeekDayProps) => {
     const theme = useAppTheme();
     const style: StyleProp<ViewStyle> = {

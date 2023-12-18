@@ -19,7 +19,12 @@ export function RecordScreen({ navigation }) {
     const { name, amount, dosage, form, missed, time, date } =
         MEDICATION_DETAILED_RECORD;
 
-    const headerRight = () => <Appbar.Action icon="pencil" onPress={() => navigation.navigate('Home')} />;
+    const headerRight = () => (
+        <Appbar.Action
+            icon="pencil"
+            onPress={() => navigation.navigate('Home')}
+        />
+    );
 
     React.useEffect(() => {
         navigation.setOptions({

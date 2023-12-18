@@ -1,12 +1,12 @@
 import React from 'react';
-import {MedicationRecord} from '../model/MedicationRecord';
-import {ScrollView, StyleSheet} from 'react-native';
+import { MedicationRecord } from '../model/MedicationRecord';
+import { ScrollView, StyleSheet } from 'react-native';
 import RecordCard from './RecordCard';
 
 interface MedCardsProps {
     records: MedicationRecord[];
 }
-export const RecordCards = ({records}: MedCardsProps) => {
+export const RecordCards = ({ records }: MedCardsProps) => {
     return (
         <ScrollView
             contentContainerStyle={styles.scrollView}

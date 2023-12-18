@@ -1,12 +1,12 @@
 import React from 'react';
-import {SignUpScreen} from '../screens/SignUpScreen';
-import {LoginScreen} from '../screens/LoginScreen';
-import HomeScreen from '../screens/authenticated/HomeScreen';
-import {createStackNavigator} from '@react-navigation/stack';
-import {RecordScreen} from '../screens/authenticated/RecordScreen';
-import {MedicationsScreen} from '../screens/authenticated/MedicationsScreen';
-import {RecordsScreen} from '../screens/authenticated/RecordsScreen';
-import {SettingsScreen} from '../screens/authenticated/SettingsScreen';
+import { SignUpScreen } from '../screens/SignUpScreen';
+import { LoginScreen } from '../screens/LoginScreen';
+import HomeScreen, { HomeNav } from '../screens/authenticated/HomeScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { RecordScreen } from '../screens/authenticated/RecordScreen';
+import { MedicationsScreen } from '../screens/authenticated/MedicationsScreen';
+import { RecordsScreen } from '../screens/authenticated/RecordsScreen';
+import { SettingsScreen } from '../screens/authenticated/SettingsScreen';
 
 export type RootStackParamList = {
     // Unauthenticated screens
@@ -19,7 +19,7 @@ export type RootStackParamList = {
     Records: undefined;
     Settings: undefined;
 
-    Record: {id: string};
+    Record: { id: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -31,12 +31,12 @@ const NotLoggedInScreens = () => {
             <Stack.Screen
                 name="SignUp"
                 component={SignUpScreen}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="Login"
                 component={LoginScreen}
-                options={{headerTransparent: true}}
+                options={{ headerTransparent: true }}
             />
         </>
     );
@@ -46,7 +46,7 @@ const NotLoggedInScreens = () => {
 const LoggedInScreens = () => {
     return (
         <>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Home" component={HomeNav} />
             <Stack.Screen name="Medications" component={MedicationsScreen} />
             <Stack.Screen name="Records" component={RecordsScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
@@ -54,10 +54,10 @@ const LoggedInScreens = () => {
             <Stack.Screen
                 name="Record"
                 component={RecordScreen}
-                options={{presentation: 'modal'}}
+                options={{ presentation: 'modal' }}
             />
         </>
     );
 };
 
-export {Stack, LoggedInScreens, NotLoggedInScreens};
+export { Stack, LoggedInScreens, NotLoggedInScreens };

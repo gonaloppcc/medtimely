@@ -5,7 +5,7 @@
     "tabWidth": 4,
     "useTabs": false,
     "trailingComma": "es5",
-    "bracketSpacing": false,
+    "bracketSpacing": true,
     "bracketSameLine": false,
     "semi": true,
     "endOfLine": "lf"

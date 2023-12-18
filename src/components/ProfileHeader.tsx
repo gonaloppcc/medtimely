@@ -1,7 +1,7 @@
 import React from 'react';
-import {Appbar} from 'react-native-paper';
-import {signOut} from '../services/auth';
-import {useAuthentication} from '../hooks/useAuthentication';
+import { Appbar } from 'react-native-paper';
+import { signOut } from '../services/auth';
+import { useAuthentication } from '../hooks/useAuthentication';
 
 export const ProfileHeader = () => {
     const user = useAuthentication();

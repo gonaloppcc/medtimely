@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import * as Yup from 'yup';
-import {Button, Text, TextInput, useTheme} from 'react-native-paper';
-import {useFormik} from 'formik';
-import {createUserWithEmailAndPassword} from '../services/auth';
-import {View} from 'react-native';
-import {formStyle} from './LoginScreen';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../navigation/routes';
+import { Button, Text, TextInput, useTheme } from 'react-native-paper';
+import { useFormik } from 'formik';
+import { createUserWithEmailAndPassword } from '../services/auth';
+import { View } from 'react-native';
+import { formStyle } from './LoginScreen';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { NativeStackScreenProps } from 'react-native-screens/native-stack';
+import { RootStackParamList } from '../navigation/routes';
 
 const signupValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
@@ -101,7 +101,7 @@ export const SignUpScreen = ({
                     {touched.email && errors.email && (
                         <Text
                             variant="bodySmall"
-                            style={{color: theme.colors.error}}
+                            style={{ color: theme.colors.error }}
                         >
                             {errors.email}
                         </Text>
@@ -125,7 +125,7 @@ export const SignUpScreen = ({
                     {touched.password && errors.password && (
                         <Text
                             variant="bodySmall"
-                            style={{color: theme.colors.error}}
+                            style={{ color: theme.colors.error }}
                         >
                             {errors.password}
                         </Text>
@@ -146,7 +146,7 @@ export const SignUpScreen = ({
                     {touched.confirmPassword && errors.confirmPassword && (
                         <Text
                             variant="bodySmall"
-                            style={{color: theme.colors.error}}
+                            style={{ color: theme.colors.error }}
                         >
                             {errors.confirmPassword}
                         </Text>
@@ -155,7 +155,7 @@ export const SignUpScreen = ({
                     {submitError && (
                         <Text
                             variant="bodySmall"
-                            style={{color: theme.colors.error}}
+                            style={{ color: theme.colors.error }}
                         >
                             {submitError}
                         </Text>

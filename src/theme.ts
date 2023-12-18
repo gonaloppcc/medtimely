@@ -10,7 +10,7 @@ import {
 } from '@react-navigation/native';
 import deepmerge from 'ts-deepmerge';
 
-export const {LightTheme, DarkTheme} = adaptNavigationTheme({
+export const { LightTheme, DarkTheme } = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
     reactNavigationDark: NavigationDarkTheme,
 });

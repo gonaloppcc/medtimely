@@ -7,7 +7,11 @@ import { useFonts } from 'expo-font';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthenticationProvider } from './src/providers/AuthProvider';
-import { CombinedDarkTheme, CombinedDefaultTheme, themeFonts } from './src/theme';
+import {
+    CombinedDarkTheme,
+    CombinedDefaultTheme,
+    themeFonts,
+} from './src/theme';
 import deepmerge from 'ts-deepmerge';
 import { AppLayout } from './src/components/AppLayout';
 

@@ -13,6 +13,7 @@
         "ios": "expo run:ios",
         "web": "expo start --web",
         "ts:check": "tsc",
+        "prettier:check": "npx prettier -c .",
         "prettier:fix": "npx prettier --write .",
         "lint": "eslint --ext .tsx --ext .ts src/",
         "lint:fix": "eslint --fix --ext .tsx --ext .ts src/**/*"

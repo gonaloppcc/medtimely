@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Button, Text, TextInput, useTheme} from 'react-native-paper';
-import {Formik} from 'formik';
-import {loginWithEmailAndPassword} from '../services/auth';
-import {StyleSheet, View} from 'react-native';
+import { Button, Text, TextInput, useTheme } from 'react-native-paper';
+import { Formik } from 'formik';
+import { loginWithEmailAndPassword } from '../services/auth';
+import { StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
-import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../navigation/routes';
+import { NativeStackScreenProps } from 'react-native-screens/native-stack';
+import { RootStackParamList } from '../navigation/routes';
 
 // FIXME: Should be in a separate file
 export const formStyle = StyleSheet.create({
@@ -97,7 +97,7 @@ export const LoginScreen = ({
                         {touched.email && errors.email && (
                             <Text
                                 variant="bodySmall"
-                                style={{color: theme.colors.error}}
+                                style={{ color: theme.colors.error }}
                             >
                                 {errors.email}
                             </Text>
@@ -118,7 +118,7 @@ export const LoginScreen = ({
                         {touched.password && errors.password && (
                             <Text
                                 variant="bodySmall"
-                                style={{color: theme.colors.error}}
+                                style={{ color: theme.colors.error }}
                             >
                                 {errors.password}
                             </Text>
@@ -134,7 +134,7 @@ export const LoginScreen = ({
                         {submitError && (
                             <Text
                                 variant="bodySmall"
-                                style={{color: theme.colors.error}}
+                                style={{ color: theme.colors.error }}
                             >
                                 {submitError}
                             </Text>

@@ -47,7 +47,10 @@ const RecordCard = ({ amount, dosage, form, missed, name }: MedCardProps) => {
                 >
                     {subtitle}
                 </Text>
-                <Text variant="labelLarge" style={{ color: theme.colors.error }}>
+                <Text
+                    variant="labelLarge"
+                    style={{ color: theme.colors.error }}
+                >
                     {takenText}
                 </Text>
             </View>

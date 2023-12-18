@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {WeekDay} from './WeekDay';
+import { StyleSheet, View } from 'react-native';
+import { WeekDay } from './WeekDay';
 
 interface WeekDayPickerProps {
     weekDate: Date;
@@ -29,7 +29,9 @@ export const WeekDayPicker = ({
                 const date = new Date(weekDate);
                 date.setDate(date.getDate() + i);
 
-                const day = date.toLocaleString('default', {weekday: 'short'});
+                const day = date.toLocaleString('default', {
+                    weekday: 'short',
+                });
 
                 const dayNumber = date.getDate();
 
