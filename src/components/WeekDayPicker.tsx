@@ -15,32 +15,39 @@ const style = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'space-between',
-    }
+    },
 });
 
-export const WeekDayPicker = ({weekDate, selectedDay, selectDay}: WeekDayPickerProps) => {
+export const WeekDayPicker = ({
+    weekDate,
+    selectedDay,
+    selectDay,
+}: WeekDayPickerProps) => {
     return (
         <View style={style.picker}>
-            {
-                [...Array(7)].map((_, i) => {
-                    const date = new Date(weekDate);
-                    date.setDate(date.getDate() + i);
+            {[...Array(7)].map((_, i) => {
+                const date = new Date(weekDate);
+                date.setDate(date.getDate() + i);
 
-                    const day = date.toLocaleString('default', {weekday: 'short'});
+                const day = date.toLocaleString('default', {weekday: 'short'});
 
-                    const dayNumber = date.getDate();
+                const dayNumber = date.getDate();
 
-                    // Only the day name is needed
-                    const dayName = day.substring(0, 3);
+                // Only the day name is needed
+                const dayName = day.substring(0, 3);
 
-                    const isSelected = selectedDay.getDate() === date.getDate();
+                const isSelected = selectedDay.getDate() === date.getDate();
 
-                    return (
-                        <WeekDay key={i} dayNumber={dayNumber} dayName={dayName} isSelected={isSelected}
-                            selectDay={selectDay}/>
-                    );
-                })
-            }
+                return (
+                    <WeekDay
+                        key={i}
+                        dayNumber={dayNumber}
+                        dayName={dayName}
+                        isSelected={isSelected}
+                        selectDay={selectDay}
+                    />
+                );
+            })}
         </View>
     );
 };

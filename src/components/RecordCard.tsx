@@ -7,17 +7,19 @@ import {useNav} from '../hooks/useNav';
 type MedCardProps = MedicationRecord & {
     // Added any extra props here
 };
-const MedCard = ({amount, dosage, form, missed, name}: MedCardProps) => {
+const RecordCard = ({amount, dosage, form, missed, name}: MedCardProps) => {
     const theme = useTheme();
     const nav = useNav();
 
-    const title = (amount == null || amount == 1) ? name : `${name} (x${amount})`;
+    const title = amount == null || amount == 1 ? name : `${name} (x${amount})`;
 
-    const backgroundColor = missed ? theme.colors.errorContainer : theme.colors.surface;
+    const backgroundColor = missed
+        ? theme.colors.errorContainer
+        : theme.colors.surface;
 
     const style = {
         ...styles.container,
-        backgroundColor
+        backgroundColor,
     };
 
     const subtitle = `${form}, ${dosage}`;
@@ -29,17 +31,25 @@ const MedCard = ({amount, dosage, form, missed, name}: MedCardProps) => {
     };
 
     return (
-        <TouchableOpacity
-            onPress={onPress}
-            style={style}>
-            <Icon size={40} source="pill" color={theme.colors.onSurface}/>
+        <TouchableOpacity onPress={onPress} style={style}>
+            <Icon size={40} source="pill" color={theme.colors.onSurface} />
             <View style={styles.innerStyle}>
-                <Text variant="labelLarge" style={{color: theme.colors.onSurface}}>{title}</Text>
-                <Text variant="labelMedium" style={{color: theme.colors.onSurface}}>{subtitle}</Text>
-                <Text variant="labelLarge" style={{color: theme.colors.error}}>{takenText}</Text>
-
+                <Text
+                    variant="labelLarge"
+                    style={{color: theme.colors.onSurface}}
+                >
+                    {title}
+                </Text>
+                <Text
+                    variant="labelMedium"
+                    style={{color: theme.colors.onSurface}}
+                >
+                    {subtitle}
+                </Text>
+                <Text variant="labelLarge" style={{color: theme.colors.error}}>
+                    {takenText}
+                </Text>
             </View>
-
         </TouchableOpacity>
     );
 };
@@ -56,7 +66,6 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.15)',
-
     },
     innerStyle: {
         display: 'flex',
@@ -65,4 +74,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MedCard;
+export default RecordCard;

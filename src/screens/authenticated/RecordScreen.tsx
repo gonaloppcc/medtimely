@@ -16,11 +16,14 @@ const MEDICATION_DETAILED_RECORD = {
 };
 
 export function RecordScreen() {
-    const {name, amount, dosage, form, missed, time, date} = MEDICATION_DETAILED_RECORD;
+    const {name, amount, dosage, form, missed, time, date} =
+        MEDICATION_DETAILED_RECORD;
 
     const nav = useNav();
 
-    const headerRight = () => <Text onPress={() => nav.navigate('Home')}>Edit</Text>;
+    const headerRight = () => (
+        <Text onPress={() => nav.navigate('Home')}>Edit</Text>
+    );
 
     nav.setOptions({
         headerTitle: name,

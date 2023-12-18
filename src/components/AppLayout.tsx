@@ -16,10 +16,15 @@ export const AppLayout = () => {
 
     const style = !theme.isV3 || theme.dark ? 'light' : 'dark';
 
-    return <>
-        <StatusBar style={style}/>
-        <Stack.Navigator initialRouteName="SignUp" screenOptions={{headerRight: ProfileHeader}}>
-            {isLoggedIn ? LoggedInScreens() : NotLoggedInScreens()}
-        </Stack.Navigator>
-    </>;
+    return (
+        <>
+            <StatusBar style={style} />
+            <Stack.Navigator
+                initialRouteName="SignUp"
+                screenOptions={{headerRight: ProfileHeader}}
+            >
+                {isLoggedIn ? LoggedInScreens() : NotLoggedInScreens()}
+            </Stack.Navigator>
+        </>
+    );
 };

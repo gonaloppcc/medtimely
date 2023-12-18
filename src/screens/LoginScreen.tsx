@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
 import {RootStackParamList} from '../navigation/routes';
 
-
 // FIXME: Should be in a separate file
 export const formStyle = StyleSheet.create({
     formStyle: {
@@ -16,14 +15,13 @@ export const formStyle = StyleSheet.create({
         // alignItems: 'center',
         justifyContent: 'center',
         rowGap: 16,
-    }
+    },
 });
 
 const loginValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
     password: Yup.string().required('Required'),
 });
-
 
 interface Values {
     email: string;
@@ -35,7 +33,9 @@ const initialValues: Values = {
     password: '',
 };
 
-export const LoginScreen = ({navigation}: NativeStackScreenProps<RootStackParamList, 'Login'>) => {
+export const LoginScreen = ({
+    navigation,
+}: NativeStackScreenProps<RootStackParamList, 'Login'>) => {
     const passwordTextInput = React.useRef(null);
     const theme = useTheme();
 
@@ -54,19 +54,30 @@ export const LoginScreen = ({navigation}: NativeStackScreenProps<RootStackParamL
     };
 
     return (
-        <View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            rowGap: 16,
-            marginHorizontal: 16,
-        }}>
+        <View
+            style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                rowGap: 16,
+                marginHorizontal: 16,
+            }}
+        >
             <Formik
                 initialValues={initialValues}
                 onSubmit={onSubmit}
                 validationSchema={loginValidationSchema}
             >
-                {({handleChange, handleBlur, handleSubmit, values, touched, errors, isValid, isSubmitting}) => (
+                {({
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    touched,
+                    errors,
+                    isValid,
+                    isSubmitting,
+                }) => (
                     <View style={formStyle.formStyle}>
                         <Text variant="titleLarge">Log in</Text>
                         <TextInput
@@ -83,8 +94,14 @@ export const LoginScreen = ({navigation}: NativeStackScreenProps<RootStackParamL
                             blurOnSubmit={false}
                             returnKeyType="next"
                         />
-                        {touched.email && errors.email &&
-                            <Text variant="bodySmall" style={{color: theme.colors.error}}>{errors.email}</Text>}
+                        {touched.email && errors.email && (
+                            <Text
+                                variant="bodySmall"
+                                style={{color: theme.colors.error}}
+                            >
+                                {errors.email}
+                            </Text>
+                        )}
                         <TextInput
                             placeholder="Password"
                             autoCapitalize="none"
@@ -98,14 +115,30 @@ export const LoginScreen = ({navigation}: NativeStackScreenProps<RootStackParamL
                             returnKeyType="default"
                             onSubmitEditing={() => handleSubmit()}
                         />
-                        {touched.password && errors.password &&
-                            <Text variant="bodySmall" style={{color: theme.colors.error}}>{errors.password}</Text>}
-                        <Button mode="contained" onPress={() => handleSubmit()} loading={isSubmitting}
-                            disabled={!isValid}>
+                        {touched.password && errors.password && (
+                            <Text
+                                variant="bodySmall"
+                                style={{color: theme.colors.error}}
+                            >
+                                {errors.password}
+                            </Text>
+                        )}
+                        <Button
+                            mode="contained"
+                            onPress={() => handleSubmit()}
+                            loading={isSubmitting}
+                            disabled={!isValid}
+                        >
                             Log in
                         </Button>
-                        {submitError &&
-                            <Text variant="bodySmall" style={{color: theme.colors.error}}>{submitError}</Text>}
+                        {submitError && (
+                            <Text
+                                variant="bodySmall"
+                                style={{color: theme.colors.error}}
+                            >
+                                {submitError}
+                            </Text>
+                        )}
                     </View>
                 )}
             </Formik>

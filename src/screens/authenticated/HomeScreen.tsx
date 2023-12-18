@@ -4,7 +4,7 @@ import {BottomNavigation, Text} from 'react-native-paper';
 import {StyleSheet, View} from 'react-native';
 import {useAuthentication} from '../../hooks/useAuthentication';
 import {WeekDayPicker} from '../../components/WeekDayPicker';
-import {MedCards} from '../../components/MedCards';
+import {RecordCards} from '../../components/RecordCards';
 import {MedicationsScreen} from './MedicationsScreen';
 import {SettingsScreen} from './SettingsScreen';
 import {RecordsScreen} from './RecordsScreen';
@@ -92,18 +92,23 @@ export function HomeScreen() {
 
     console.log(userName);
 
-    const [selectedDay, setSelectedDay] = React.useState(new Date(2023, 11, 17));
+    const [selectedDay, setSelectedDay] = React.useState(
+        new Date(2023, 11, 17)
+    );
 
     const selectDay = (day: Date) => {
         setSelectedDay(day);
     };
 
-
     return (
         <View style={styles.container}>
             <Text variant="headlineMedium">Welcome back, {userName}</Text>
-            <WeekDayPicker selectedDay={selectedDay} selectDay={selectDay} weekDate={new Date(2023, 11, 17)}/>
-            <MedCards records={MEDICATION_RECORDS}/>
+            <WeekDayPicker
+                selectedDay={selectedDay}
+                selectDay={selectDay}
+                weekDate={new Date(2023, 11, 17)}
+            />
+            <RecordCards records={MEDICATION_RECORDS} />
         </View>
     );
 }

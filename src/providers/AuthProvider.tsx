@@ -4,7 +4,7 @@ import {onAuthStateChanged} from '../services/auth';
 
 const AuthenticatedUserContext = React.createContext<User | null>(null);
 
-const AuthenticationProvider = ({children}: { children: React.ReactNode }) => {
+const AuthenticationProvider = ({children}: {children: React.ReactNode}) => {
     const [user, setUser] = React.useState<User | null>(null);
 
     React.useEffect(() => {

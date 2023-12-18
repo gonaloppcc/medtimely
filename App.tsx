@@ -5,7 +5,7 @@ import {useColorScheme} from 'react-native';
 
 import {useFonts} from 'expo-font';
 
-import {NavigationContainer,} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {AuthenticationProvider} from './src/providers/AuthProvider';
 import {CombinedDarkTheme, CombinedDefaultTheme, themeFonts} from './src/theme';
 import deepmerge from 'ts-deepmerge';
@@ -26,17 +26,17 @@ export default function App() {
         }
     }, [fontsLoaded, fontError]);
 
-    if (!fontsLoaded && !fontError)
-        return null;
+    if (!fontsLoaded && !fontError) return null;
 
-    const inUseTheme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
+    const inUseTheme =
+        colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
     const theme = deepmerge(inUseTheme, themeFonts);
 
     return (
         <AuthenticationProvider>
             <PaperProvider theme={theme}>
                 <NavigationContainer onReady={onLayoutRootView} theme={theme}>
-                    <AppLayout/>
+                    <AppLayout />
                 </NavigationContainer>
             </PaperProvider>
         </AuthenticationProvider>

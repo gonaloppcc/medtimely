@@ -1,5 +1,5 @@
 import React from 'react';
-import { Appbar } from 'react-native-paper';
+import {Appbar} from 'react-native-paper';
 import {signOut} from '../services/auth';
 import {useAuthentication} from '../hooks/useAuthentication';
 
@@ -11,7 +11,7 @@ export const ProfileHeader = () => {
             await signOut();
         };
 
-        return <Appbar.Action icon="account-circle" onPress={onProfilePress}/>;
+        return <Appbar.Action icon="account-circle" onPress={onProfilePress} />;
     } else {
         return null;
     }

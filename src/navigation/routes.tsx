@@ -19,30 +19,45 @@ export type RootStackParamList = {
     Records: undefined;
     Settings: undefined;
 
-    Record: { id: string };
-}
-
+    Record: {id: string};
+};
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 // Screens that don't require authentication
 const NotLoggedInScreens = () => {
-    return <>
-        <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Login" component={LoginScreen} options={{headerTransparent: true}}/>
-    </>;
+    return (
+        <>
+            <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={{headerShown: false}}
+            />
+            <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{headerTransparent: true}}
+            />
+        </>
+    );
 };
 
 // Screens that require authentication
 const LoggedInScreens = () => {
-    return <>
-        <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="Medications" component={MedicationsScreen}/>
-        <Stack.Screen name="Records" component={RecordsScreen}/>
-        <Stack.Screen name="Settings" component={SettingsScreen}/>
+    return (
+        <>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Medications" component={MedicationsScreen} />
+            <Stack.Screen name="Records" component={RecordsScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
 
-        <Stack.Screen name="Record" component={RecordScreen} options={{presentation: 'modal'}}/>
-    </>;
+            <Stack.Screen
+                name="Record"
+                component={RecordScreen}
+                options={{presentation: 'modal'}}
+            />
+        </>
+    );
 };
 
 export {Stack, LoggedInScreens, NotLoggedInScreens};

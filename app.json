@@ -1,43 +1,40 @@
 {
-  "expo": {
-    "name": "MedTimely",
-    "slug": "medtimely",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "owner": "medtimely",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/adaptive-icon-fg.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#c31a38"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "pt.medtimely.medtimely"
-    },
-    "android": {
-      "package": "pt.medtimely.medtimely",
-      "googleServicesFile": "./google-services.json",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon-fg.png",
-        "backgroundImage": "./assets/adaptive-icon-bg.png",
-        "monochromeImage": "./assets/adaptive-icon-mono.png"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "551dd5ec-27dd-424e-bb55-625fd92ae8d4"
-      }
-    },
-    "plugins": [
-    ]
-  }
+    "expo": {
+        "name": "MedTimely",
+        "slug": "medtimely",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "owner": "medtimely",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/adaptive-icon-fg.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#c31a38"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true,
+            "googleServicesFile": "./GoogleService-Info.plist",
+            "bundleIdentifier": "pt.medtimely.medtimely"
+        },
+        "android": {
+            "package": "pt.medtimely.medtimely",
+            "googleServicesFile": "./google-services.json",
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon-fg.png",
+                "backgroundImage": "./assets/adaptive-icon-bg.png",
+                "monochromeImage": "./assets/adaptive-icon-mono.png"
+            }
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "551dd5ec-27dd-424e-bb55-625fd92ae8d4"
+            }
+        },
+        "plugins": []
+    }
 }

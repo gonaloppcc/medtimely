@@ -9,7 +9,6 @@ interface WeekDayProps {
     selectDay: (day: Date) => void;
 }
 
-
 const dayNumberColor = '#B1A7A6';
 const dayNameColor = '#000';
 const selectedDayColor = '#F5F3F4';
@@ -23,7 +22,7 @@ export const WeekDay = ({dayNumber, dayName, isSelected}: WeekDayProps) => {
         backgroundColor: '#FFFFFF',
         gap: 8,
     };
-    
+
     if (isSelected) {
         style.backgroundColor = selectedDayColor;
     }
