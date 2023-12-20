@@ -1,17 +1,21 @@
 import React from 'react';
 import { SignUpScreen } from '../screens/SignUpScreen';
 import { LoginScreen } from '../screens/LoginScreen';
-import { HomeNav } from '../screens/authenticated/HomeScreen';
+import { HomeScreen } from '../screens/authenticated/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RecordScreen } from '../screens/authenticated/RecordScreen';
 import { MedicationsScreen } from '../screens/authenticated/MedicationsScreen';
 import { RecordsScreen } from '../screens/authenticated/RecordsScreen';
 import { SettingsScreen } from '../screens/authenticated/SettingsScreen';
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
+import { Icon } from 'react-native-paper';
 
 export type RootStackParamList = {
     // Unauthenticated screens
     SignUp: undefined;
     Login: undefined;
+
+    Base: undefined;
 
     // Authenticated screens
     Home: undefined;
@@ -23,6 +27,7 @@ export type RootStackParamList = {
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
+const Tab = createMaterialBottomTabNavigator();
 
 // Screens that don't require authentication
 const NotLoggedInScreens = () => {
@@ -42,14 +47,18 @@ const NotLoggedInScreens = () => {
     );
 };
 
+const HomeNav = () => <Tab.Navigator>
+    <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarIcon: ({ color }) => <Icon source="home" color={color} size={24} /> }} />
+    <Tab.Screen name="Medications" component={MedicationsScreen} options={{ tabBarIcon: ({ color }) => <Icon source="pill" color={color} size={24} /> }} />
+    <Tab.Screen name="Records" component={RecordsScreen} options={{ tabBarIcon: ({ color }) => <Icon source="account-circle" color={color} size={24} /> }} />
+    <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarIcon: ({ color }) => <Icon source="cog" color={color} size={24} /> }} />
+</Tab.Navigator>
+
 // Screens that require authentication
 const LoggedInScreens = () => {
     return (
         <>
-            <Stack.Screen name="Home" component={HomeNav} />
-            <Stack.Screen name="Medications" component={MedicationsScreen} />
-            <Stack.Screen name="Records" component={RecordsScreen} />
-            <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="Base" component={HomeNav} />
 
             <Stack.Screen
                 name="Record"

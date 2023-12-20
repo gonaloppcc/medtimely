@@ -14,8 +14,11 @@ import {
 } from './src/theme';
 import deepmerge from 'ts-deepmerge';
 import { AppLayout } from './src/components/AppLayout';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 SplashScreen.preventAutoHideAsync();
+
+const queryClient = new QueryClient();
 
 export default function App() {
     const [fontsLoaded, fontError] = useFonts({
@@ -41,12 +44,14 @@ export default function App() {
     const theme = deepmerge(inUseTheme, themeFonts);
 
     return (
-        <AuthenticationProvider>
-            <PaperProvider theme={theme}>
-                <NavigationContainer onReady={onLayoutRootView} theme={theme}>
-                    <AppLayout />
-                </NavigationContainer>
-            </PaperProvider>
-        </AuthenticationProvider>
+        <QueryClientProvider client={queryClient}>
+            <AuthenticationProvider>
+                <PaperProvider theme={theme}>
+                    <NavigationContainer onReady={onLayoutRootView} theme={theme}>
+                        <AppLayout />
+                    </NavigationContainer>
+                </PaperProvider>
+            </AuthenticationProvider>
+        </QueryClientProvider>
     );
 }
