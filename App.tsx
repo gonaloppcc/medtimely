@@ -47,7 +47,10 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
             <AuthenticationProvider>
                 <PaperProvider theme={theme}>
-                    <NavigationContainer onReady={onLayoutRootView} theme={theme}>
+                    <NavigationContainer
+                        onReady={onLayoutRootView}
+                        theme={theme}
+                    >
                         <AppLayout />
                     </NavigationContainer>
                 </PaperProvider>

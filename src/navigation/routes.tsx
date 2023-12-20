@@ -47,12 +47,46 @@ const NotLoggedInScreens = () => {
     );
 };
 
-const HomeNav = () => <Tab.Navigator>
-    <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarIcon: ({ color }) => <Icon source="home" color={color} size={24} /> }} />
-    <Tab.Screen name="Medications" component={MedicationsScreen} options={{ tabBarIcon: ({ color }) => <Icon source="pill" color={color} size={24} /> }} />
-    <Tab.Screen name="Records" component={RecordsScreen} options={{ tabBarIcon: ({ color }) => <Icon source="account-circle" color={color} size={24} /> }} />
-    <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarIcon: ({ color }) => <Icon source="cog" color={color} size={24} /> }} />
-</Tab.Navigator>
+const HomeNav = () => (
+    <Tab.Navigator>
+        <Tab.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+                tabBarIcon: ({ color }) => (
+                    <Icon source="home" color={color} size={24} />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="Medications"
+            component={MedicationsScreen}
+            options={{
+                tabBarIcon: ({ color }) => (
+                    <Icon source="pill" color={color} size={24} />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="Records"
+            component={RecordsScreen}
+            options={{
+                tabBarIcon: ({ color }) => (
+                    <Icon source="account-circle" color={color} size={24} />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+                tabBarIcon: ({ color }) => (
+                    <Icon source="cog" color={color} size={24} />
+                ),
+            }}
+        />
+    </Tab.Navigator>
+);
 
 // Screens that require authentication
 const LoggedInScreens = () => {
