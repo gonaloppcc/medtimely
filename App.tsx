@@ -14,7 +14,7 @@ import {
 } from './src/theme';
 import deepmerge from 'ts-deepmerge';
 import { AppLayout } from './src/components/AppLayout';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 SplashScreen.preventAutoHideAsync();
 

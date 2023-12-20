@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
@@ -9,7 +10,11 @@ import { useRecords } from '../../hooks/useRecords';
 
 export function HomeScreen() {
     const user = useAuthentication();
-    const { isSuccess, isLoading, isError, records, refetch } = useRecords('1'); // TODO: Replace with user's token
+    const [selectedDay, setSelectedDay] = useState(new Date());
+    const { isSuccess, isLoading, isError, records, refetch } = useRecords(
+        '1',
+        selectedDay
+    ); // TODO: Replace with user's token
 
     console.log('' + isSuccess + isLoading + isError + records + refetch); // TODO: Remove this once the data fetch call is implemented
 
@@ -18,10 +23,6 @@ export function HomeScreen() {
     const userName = 'Jack'; // TODO: Replace with user's name
 
     console.log(userName);
-
-    const [selectedDay, setSelectedDay] = React.useState(
-        new Date(2023, 11, 17)
-    );
 
     const selectDay = (day: Date) => {
         setSelectedDay(day);
@@ -33,8 +34,10 @@ export function HomeScreen() {
             <WeekDayPicker
                 selectedDay={selectedDay}
                 selectDay={selectDay}
-                weekDate={new Date(2023, 11, 17)}
+                startDay={new Date()}
             />
+            {isLoading && <Text variant="headlineMedium">Loading...</Text>}
+            {isError && <Text variant="headlineMedium">Error</Text>}
             <RecordCards records={records} />
         </View>
     );

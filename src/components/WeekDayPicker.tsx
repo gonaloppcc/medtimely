@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { WeekDay } from './WeekDay';
 
 interface WeekDayPickerProps {
-    weekDate: Date;
+    startDay: Date;
     selectDay: (day: Date) => void;
     selectedDay: Date;
 }
@@ -19,14 +19,14 @@ const style = StyleSheet.create({
 });
 
 export const WeekDayPicker = ({
-    weekDate,
+    startDay,
     selectedDay,
     selectDay,
 }: WeekDayPickerProps) => {
     return (
         <View style={style.picker}>
             {[...Array(7)].map((_, i) => {
-                const date = new Date(weekDate);
+                const date = new Date(startDay);
                 date.setDate(date.getDate() + i);
 
                 const day = date.toLocaleString('default', {
@@ -40,13 +40,17 @@ export const WeekDayPicker = ({
 
                 const isSelected = selectedDay.getDate() === date.getDate();
 
+                const setSelectedDay = () => {
+                    selectDay(date);
+                };
+
                 return (
                     <WeekDay
                         key={i}
                         dayNumber={dayNumber}
                         dayName={dayName}
                         isSelected={isSelected}
-                        selectDay={selectDay}
+                        selectDay={setSelectedDay}
                     />
                 );
             })}
