@@ -7,7 +7,6 @@ import {
     Stack,
 } from '../navigation/routes';
 import React from 'react';
-import { ProfileHeader } from './ProfileHeader';
 
 // Only shows if the user is logged in
 
