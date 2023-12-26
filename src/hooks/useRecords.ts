@@ -4,11 +4,11 @@ import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
 import { getRecords } from '../services/records';
 
-export interface useBetsProps extends FetcherProps {
+export interface useRecordsProps extends FetcherProps {
     records: MedicationRecord[];
 }
 
-export const useRecords = (token: string, date: Date): useBetsProps => {
+export const useRecords = (token: string, date: Date): useRecordsProps => {
     const {
         isSuccess,
         isLoading,

@@ -2,8 +2,7 @@ import * as React from 'react';
 
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { NativeStackScreenProps } from 'react-native-screens/native-stack';
-import { RootStackParamList } from '../../navigation/routes';
+import { useNavigation } from '@react-navigation/native';
 
 // TODO: This is just for now, it should be replaced with data from the database
 const MEDICATION_DETAILED_RECORD = {
@@ -16,25 +15,24 @@ const MEDICATION_DETAILED_RECORD = {
     date: new Date(2023, 11, 17),
 };
 
-export function RecordScreen({
-    navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Record'>) {
+export function RecordScreen() {
+    const navigation2 = useNavigation();
     const { name, amount, dosage, form, missed, time, date } =
         MEDICATION_DETAILED_RECORD;
 
     const headerRight = () => (
         <Appbar.Action
             icon="pencil"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation2.navigate('EditRecord')}
         />
     );
 
     React.useEffect(() => {
-        navigation.setOptions({
+        navigation2.setOptions({
             headerTitle: name,
             headerRight,
         });
-    }, [navigation, name]);
+    }, [navigation2, name]);
 
     return (
         <View style={styles.container}>

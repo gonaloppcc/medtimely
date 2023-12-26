@@ -3,12 +3,13 @@ import { SignUpScreen } from '../screens/SignUpScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { HomeScreen } from '../screens/authenticated/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import { RecordScreen } from '../screens/authenticated/RecordScreen';
+import { RecordScreen } from '../screens/authenticated/records/RecordScreen';
 import { MedicationsScreen } from '../screens/authenticated/MedicationsScreen';
-import { RecordsScreen } from '../screens/authenticated/RecordsScreen';
+import { RecordsScreen } from '../screens/authenticated/records/RecordsScreen';
 import { SettingsScreen } from '../screens/authenticated/SettingsScreen';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { Icon } from 'react-native-paper';
+import { EditRecordScreen } from '../screens/authenticated/records/EditRecordScreen';
 
 export type RootStackParamList = {
     // Unauthenticated screens
@@ -24,6 +25,7 @@ export type RootStackParamList = {
     Settings: undefined;
 
     Record: { id: string };
+    EditRecord: { id: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -47,11 +49,25 @@ const NotLoggedInScreens = () => {
     );
 };
 
+const HomeScreens = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Record" component={RecordScreen} />
+            <Stack.Screen
+                name="EditRecord"
+                component={EditRecordScreen}
+                options={{ headerTitle: 'Edit Medication Record' }}
+            />
+        </Stack.Navigator>
+    );
+};
+
 const HomeNav = () => (
     <Tab.Navigator>
         <Tab.Screen
-            name="Home"
-            component={HomeScreen}
+            name="Home Screens"
+            component={HomeScreens}
             options={{
                 tabBarIcon: ({ color }) => (
                     <Icon source="home" color={color} size={24} />
@@ -92,12 +108,10 @@ const HomeNav = () => (
 const LoggedInScreens = () => {
     return (
         <>
-            <Stack.Screen name="Base" component={HomeNav} />
-
             <Stack.Screen
-                name="Record"
-                component={RecordScreen}
-                options={{ presentation: 'modal' }}
+                name="Base"
+                component={HomeNav}
+                options={{ headerShown: false }}
             />
         </>
     );

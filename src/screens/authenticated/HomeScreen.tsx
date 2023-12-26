@@ -7,10 +7,14 @@ import { useAuthentication } from '../../hooks/useAuthentication';
 import { WeekDayPicker } from '../../components/WeekDayPicker';
 import { RecordCards } from '../../components/RecordCards';
 import { useRecords } from '../../hooks/useRecords';
+import { ProgressIndicator } from '../../components/ProgressIndicator';
+
+// TODO: In the future this should be changeable by the user
+const startDay = new Date();
 
 export function HomeScreen() {
     const user = useAuthentication();
-    const [selectedDay, setSelectedDay] = useState(new Date());
+    const [selectedDay, setSelectedDay] = useState(startDay);
     const { isSuccess, isLoading, isError, records, refetch } = useRecords(
         '1',
         selectedDay
@@ -34,9 +38,9 @@ export function HomeScreen() {
             <WeekDayPicker
                 selectedDay={selectedDay}
                 selectDay={selectDay}
-                startDay={new Date()}
+                startDay={startDay}
             />
-            {isLoading && <Text variant="headlineMedium">Loading...</Text>}
+            {isLoading && <ProgressIndicator />}
             {isError && <Text variant="headlineMedium">Error</Text>}
             <RecordCards records={records} />
         </View>
