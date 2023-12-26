@@ -10,6 +10,7 @@ import { SettingsScreen } from '../screens/authenticated/SettingsScreen';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { Icon } from 'react-native-paper';
 import { EditRecordScreen } from '../screens/authenticated/records/EditRecordScreen';
+import { ProfileHeader } from '../components/ProfileHeader';
 
 export type RootStackParamList = {
     // Unauthenticated screens
@@ -52,7 +53,13 @@ const NotLoggedInScreens = () => {
 const HomeScreens = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{
+                    headerRight: () => <ProfileHeader />,
+                }}
+            />
             <Stack.Screen name="Record" component={RecordScreen} />
             <Stack.Screen
                 name="EditRecord"

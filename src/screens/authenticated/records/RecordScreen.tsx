@@ -23,6 +23,7 @@ export function RecordScreen() {
     const headerRight = () => (
         <Appbar.Action
             icon="pencil"
+            // @ts-expect-error TODO: Fix this if possible
             onPress={() => navigation2.navigate('EditRecord')}
         />
     );

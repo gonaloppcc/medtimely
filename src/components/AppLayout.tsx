@@ -23,10 +23,7 @@ export const AppLayout = () => {
     return (
         <>
             <StatusBar style={style} />
-            <Stack.Navigator
-                initialRouteName="SignUp"
-                screenOptions={{ headerRight: ProfileHeader }}
-            >
+            <Stack.Navigator initialRouteName="SignUp">
                 {isLoggedIn ? LoggedInScreens() : NotLoggedInScreens()}
             </Stack.Navigator>
         </>
