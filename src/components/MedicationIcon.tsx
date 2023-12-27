@@ -1,9 +1,10 @@
 import React from 'react';
 import { Icon, useTheme } from 'react-native-paper';
 import { medicationFormToIconName } from '../model/Medicine';
+import { MedicationRecordForm } from '../model/MedicationRecord';
 
 export interface MedIconProps {
-    form: string
+    form: MedicationRecordForm
 }
 
 export const MedicationIcon = ({
