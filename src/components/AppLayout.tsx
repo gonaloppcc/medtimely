@@ -7,7 +7,6 @@ import {
     Stack,
 } from '../navigation/routes';
 import React from 'react';
-import { ProfileHeader } from './ProfileHeader';
 
 // Only shows if the user is logged in
 
@@ -23,10 +22,7 @@ export const AppLayout = () => {
     return (
         <>
             <StatusBar style={style} />
-            <Stack.Navigator
-                initialRouteName="SignUp"
-                screenOptions={{ headerRight: ProfileHeader }}
-            >
+            <Stack.Navigator initialRouteName="SignUp">
                 {isLoggedIn ? LoggedInScreens() : NotLoggedInScreens()}
             </Stack.Navigator>
         </>

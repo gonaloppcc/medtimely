@@ -89,6 +89,8 @@ export const LoginScreen = ({
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             onSubmitEditing={() => {
+                                // @ts-expect-error Needed to focus on next input
+                                // noinspection JSUnresolvedReference
                                 passwordTextInput.current.focus();
                             }}
                             blurOnSubmit={false}

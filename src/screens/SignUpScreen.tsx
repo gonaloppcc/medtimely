@@ -38,7 +38,8 @@ export const SignUpScreen = ({
     const insets = useSafeAreaInsets();
     const passwordTextInput = React.useRef(null);
     const confirmPasswordTextInput = React.useRef(null);
-    const [submitError, setSubmitError] = React.useState(null);
+    const [submitErrorMessage, setSubmitErrorMessage] =
+        React.useState<string>('');
 
     const theme = useTheme();
 
@@ -60,8 +61,9 @@ export const SignUpScreen = ({
                     values.password
                 );
             } catch (error) {
-                const errorMessage = error.message;
-                setSubmitError(errorMessage);
+                const errorMessage =
+                    (error.message as string) || 'Something went wrong';
+                setSubmitErrorMessage(errorMessage);
             }
         },
     });
@@ -94,6 +96,8 @@ export const SignUpScreen = ({
                         onChangeText={handleChange('email')}
                         value={values.email}
                         onSubmitEditing={() => {
+                            // @ts-expect-error Needed to focus on next input
+                            // noinspection JSUnresolvedReference
                             passwordTextInput.current.focus();
                         }}
                         blurOnSubmit={false}
@@ -109,6 +113,7 @@ export const SignUpScreen = ({
 
                     <TextInput
                         id="password"
+                        ref={passwordTextInput}
                         placeholder="Password"
                         autoCapitalize="none"
                         autoCorrect={false}
@@ -118,6 +123,8 @@ export const SignUpScreen = ({
                         onChangeText={handleChange('password')}
                         value={values.password}
                         onSubmitEditing={() => {
+                            // @ts-expect-error Needed to focus on next input
+                            // noinspection JSUnresolvedReference
                             confirmPasswordTextInput.current.focus();
                         }}
                         blurOnSubmit={false}
@@ -133,6 +140,7 @@ export const SignUpScreen = ({
 
                     <TextInput
                         id="confirmPassword"
+                        ref={confirmPasswordTextInput}
                         placeholder="Confirm password"
                         autoCapitalize="none"
                         autoCorrect={false}
@@ -152,12 +160,12 @@ export const SignUpScreen = ({
                         </Text>
                     )}
 
-                    {submitError && (
+                    {submitErrorMessage && (
                         <Text
                             variant="bodySmall"
                             style={{ color: theme.colors.error }}
                         >
-                            {submitError}
+                            {submitErrorMessage}
                         </Text>
                     )}
 
