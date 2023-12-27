@@ -51,5 +51,5 @@ export enum MedicationRecordForm {
     DROPPER = 'Dropper',
     SWAB = 'Swab',
     TINCTURE = 'Tincture',
-    LIQUID = "Liquid",
+    LIQUID = 'Liquid',
 }

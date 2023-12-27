@@ -7,7 +7,6 @@ import { Medicine } from '../../model/Medicine';
 import { MedicationRecordForm } from '../../model/MedicationRecord';
 import { FilterByForm } from '../../components/FilterByForm';
 
-
 const MEDICATION_DETAILED_1 = {
     name: 'Paracetamol',
     amount: 1,
@@ -33,7 +32,9 @@ const MEDICATION_DETAILED_3 = {
 };
 
 export function MedicationsScreen() {
-    const [selectForm, setSelectForm] = React.useState<MedicationRecordForm |''>('');
+    const [selectForm, setSelectForm] = React.useState<
+        MedicationRecordForm | ''
+    >('');
     const [medSelected, setMedSelected] = React.useState<Medicine[]>([]);
 
     //TODO: Change this
@@ -46,16 +47,15 @@ export function MedicationsScreen() {
 
     React.useEffect(() => {
         if (selectForm !== '') {
-            setMedSelected(medicines.filter(med => med.form === selectForm));
+            setMedSelected(medicines.filter((med) => med.form === selectForm));
         } else {
             setMedSelected(medicines);
         }
     }, [selectForm]);
 
-    const medForms = Array.from(new Set(medicines.map(value => value.form)));
+    const medForms = Array.from(new Set(medicines.map((value) => value.form)));
 
     const onSelecFilter = (newValue) => {
-
         if (selectForm !== newValue) {
             setSelectForm(newValue);
         } else {
@@ -66,8 +66,12 @@ export function MedicationsScreen() {
     return (
         <View style={styles.container}>
             <Text>Medications Screen</Text>
-            <FilterByForm forms={medForms} onValueChange={onSelecFilter} value={selectForm}/>
-            <MedicineCards  medicines={medSelected}/>
+            <FilterByForm
+                forms={medForms}
+                onValueChange={onSelecFilter}
+                value={selectForm}
+            />
+            <MedicineCards medicines={medSelected} />
         </View>
     );
 }

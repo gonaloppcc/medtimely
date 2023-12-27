@@ -4,17 +4,13 @@ import { medicationFormToIconName } from '../model/Medicine';
 import { MedicationRecordForm } from '../model/MedicationRecord';
 
 export interface MedIconProps {
-    form: MedicationRecordForm
+    form: MedicationRecordForm;
 }
 
-export const MedicationIcon = ({
-    form,
-}: MedIconProps) => {
+export const MedicationIcon = ({ form }: MedIconProps) => {
     const theme = useTheme();
 
     const iconName = medicationFormToIconName(form);
 
-    return (
-            <Icon size={40} source={iconName} color={theme.colors.onSurface} />
-    );
+    return <Icon size={40} source={iconName} color={theme.colors.onSurface} />;
 };

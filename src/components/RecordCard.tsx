@@ -40,7 +40,11 @@ export const RecordCard = ({
 
     return (
         <TouchableOpacity onPress={onPress} style={style}>
-            <Icon size={40} source={medicationFormToIconName(form)} color={theme.colors.onSurface} />
+            <Icon
+                size={40}
+                source={medicationFormToIconName(form)}
+                color={theme.colors.onSurface}
+            />
             <View style={styles.innerStyle}>
                 <Text
                     variant="labelLarge"
