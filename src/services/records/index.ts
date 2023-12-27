@@ -5,9 +5,14 @@ import {
     MedicationRecordForm,
 } from '../../model/MedicationRecord';
 
+const SMALL_STALL_TIME = 1000;
 const STALL_TIME = 4000;
 
-const MEDICATION_RECORDS_BY_DATE = {
+type MedicationRecordsByDate = {
+    [D in string]: MedicationRecord[];
+};
+
+const MEDICATION_RECORDS_BY_DATE: MedicationRecordsByDate = {
     '2023-12-25': [
         {
             name: 'Fluoxetine',
@@ -15,6 +20,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-12-25T08:00:00'),
         },
         {
             name: 'Paracetamol',
@@ -22,6 +28,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-25T12:00:00'),
         },
         {
             name: 'Loratadine',
@@ -29,6 +36,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-25T16:00:00'),
         },
         {
             name: 'Cetirizine',
@@ -36,6 +44,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-25T20:00:00'),
         },
         {
             name: 'Diphenhydramine',
@@ -43,6 +52,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-25T22:00:00'),
         },
         {
             name: 'Ibuprofen',
@@ -50,6 +60,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-25T23:00:00'),
         },
         {
             name: 'Aspirin',
@@ -57,6 +68,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.FOAM,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-25T23:30:00'),
         },
         {
             name: 'Benadryl',
@@ -64,6 +76,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.PASTE,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-25T23:45:00'),
         },
         {
             name: 'Ifresh',
@@ -71,6 +84,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.DROPS,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-25T23:50:00'),
         },
     ],
     '2023-12-26': [
@@ -80,6 +94,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-12-26T08:00:00'),
         },
         {
             name: 'Paracetamol',
@@ -87,6 +102,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-26T12:00:00'),
         },
         {
             name: 'Loratadine',
@@ -94,6 +110,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-26T16:00:00'),
         },
         {
             name: 'Cetirizine',
@@ -101,6 +118,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-26T20:00:00'),
         },
         {
             name: 'Diphenhydramine',
@@ -108,6 +126,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-26T22:00:00'),
         },
         {
             name: 'Ibuprofen',
@@ -115,6 +134,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-12-26T23:00:00'),
         },
         {
             name: 'Aspirin',
@@ -122,6 +142,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-26T23:30:00'),
         },
         {
             name: 'Benadryl',
@@ -129,6 +150,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-26T23:45:00'),
         },
         {
             name: 'Ifresh',
@@ -136,6 +158,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.DROPS,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-26T23:50:00'),
         },
     ],
     '2023-12-27': [
@@ -145,6 +168,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-12-27T08:00:00'),
         },
         {
             name: 'Diazepam',
@@ -152,6 +176,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-27T12:00:00'),
         },
         {
             name: 'Ecstasy',
@@ -159,6 +184,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-27T16:00:00'),
         },
         {
             name: 'Fentanyl',
@@ -166,6 +192,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-27T20:00:00'),
         },
     ],
     '2023-12-28': [
@@ -175,6 +202,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-12-28T08:00:00'),
         },
         {
             name: 'Ibuprofen',
@@ -182,6 +210,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-28T12:00:00'),
         },
         {
             name: 'Jenkem',
@@ -189,6 +218,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-28T16:00:00'),
         },
         {
             name: 'Ketamine',
@@ -196,6 +226,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-28T20:00:00'),
         },
     ],
     '2023-12-29': [
@@ -205,6 +236,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-12-29T08:00:00'),
         },
         {
             name: 'Meth',
@@ -212,6 +244,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-29T12:00:00'),
         },
         {
             name: 'Nutmeg',
@@ -219,6 +252,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-29T16:00:00'),
         },
         {
             name: 'Opium',
@@ -226,6 +260,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-29T20:00:00'),
         },
     ],
     '2023-12-30': [
@@ -235,6 +270,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-12-30T08:00:00'),
         },
         {
             name: 'Quaaludes',
@@ -242,6 +278,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-30T12:00:00'),
         },
         {
             name: 'Ritalin',
@@ -249,6 +286,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-30T16:00:00'),
         },
         {
             name: 'Speed',
@@ -256,6 +294,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-30T20:00:00'),
         },
     ],
     '2023-12-31': [
@@ -265,6 +304,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-12-31T08:00:00'),
         },
         {
             name: 'U-47700',
@@ -272,6 +312,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-31T12:00:00'),
         },
         {
             name: 'Valium',
@@ -279,6 +320,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-31T16:00:00'),
         },
         {
             name: 'Weed',
@@ -286,6 +328,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-12-31T20:00:00'),
         },
     ],
     '2023-01-01': [
@@ -295,6 +338,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 3,
             missed: true,
+            time: new Date('2023-01-01T08:00:00'),
         },
         {
             name: 'Yaba',
@@ -302,6 +346,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-01-01T12:00:00'),
         },
         {
             name: 'Zolpidem',
@@ -309,6 +354,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-01-01T16:00:00'),
         },
         {
             name: 'Adderall',
@@ -316,6 +362,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-01-01T20:00:00'),
         },
         {
             name: 'Bath Salts',
@@ -323,6 +370,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2023-01-01T22:00:00'),
         },
         {
             name: 'Cannabis',
@@ -330,6 +378,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2022-01-01T23:00:00'),
         },
         {
             name: 'Dextromethorphan',
@@ -337,6 +386,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2022-01-01T23:30:00'),
         },
         {
             name: 'Ephedrine',
@@ -344,6 +394,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2022-01-01T23:45:00'),
         },
         {
             name: 'Fentanyl',
@@ -351,6 +402,7 @@ const MEDICATION_RECORDS_BY_DATE = {
             form: MedicationRecordForm.TABLET,
             amount: 1,
             missed: false,
+            time: new Date('2022-01-01T23:50:00'),
         },
     ],
 };
@@ -368,6 +420,12 @@ export const getRecords = async (
             const dateString = date.toISOString().split('T')[0];
             const MEDICATION_RECORDS = MEDICATION_RECORDS_BY_DATE[dateString];
 
+            // If there are no records for the date, return an empty array
+            if (!MEDICATION_RECORDS) {
+                resolve([]);
+                return;
+            }
+
             resolve(MEDICATION_RECORDS);
         }, STALL_TIME);
     });
@@ -379,6 +437,7 @@ const RECORD: MedicationRecord = {
     form: MedicationRecordForm.TABLET,
     amount: 3,
     missed: true,
+    time: new Date(),
 };
 export const getRecord = async (
     token: string,
@@ -389,7 +448,7 @@ export const getRecord = async (
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(RECORD);
-        }, 1000);
+        }, SMALL_STALL_TIME);
     });
 };
 
@@ -403,8 +462,12 @@ export const createRecord = async (
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve('Created');
-        }, STALL_TIME);
+            // Create mock record creation here
+            const day = record.time.toISOString().split('T')[0];
+            MEDICATION_RECORDS_BY_DATE[day].push(record);
+
+            resolve('CreatedID'); // TODO: Replace with actual ID
+        }, SMALL_STALL_TIME);
     });
 };
 
@@ -423,6 +486,6 @@ export const updateRecord = async (
             RECORD.missed = record.missed;
 
             resolve(RECORD);
-        }, 1000);
+        }, SMALL_STALL_TIME);
     });
 };

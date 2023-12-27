@@ -3,24 +3,24 @@ import { useMutation } from '@tanstack/react-query';
 import { createRecord } from '../services/records';
 
 interface UseCreateRecordReturn {
-    createRecord: () => void;
+    createRecord: (record: MedicationRecord) => Promise<string>;
 }
 
 export const useCreateRecord = (
     token: string,
-    record: MedicationRecord,
     onSuccess: () => void,
     onError: (error: Error) => void
 ): UseCreateRecordReturn => {
     const createRecordMutation = useMutation({
-        mutationFn: async () => {
-            await createRecord(token, record);
+        mutationFn: async (record: MedicationRecord) => {
+            return await createRecord(token, record);
         },
         onSuccess,
         onError,
     });
 
     return {
-        createRecord: () => createRecordMutation.mutate(),
+        createRecord: async (record: MedicationRecord) =>
+            await createRecordMutation.mutateAsync(record),
     };
 };

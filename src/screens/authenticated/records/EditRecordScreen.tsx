@@ -13,13 +13,6 @@ export const EditRecordScreen = () => {
     const { isLoading, isSuccess, record } = useRecord('1', '1'); // TODO: Replace the token and id with the real ones
     const { updateRecord } = useUpdateRecord(
         '1',
-        {
-            name: record?.name == 'Paracetamol' ? 'Ibuprofen' : 'Paracetamol',
-            amount: 100,
-            dosage: '100mg',
-            form: MedicationRecordForm.TABLET,
-            missed: false,
-        },
         () => {
             console.log('updated');
         },
@@ -29,7 +22,16 @@ export const EditRecordScreen = () => {
     );
 
     const onPressHandler = () => {
-        updateRecord();
+        const newRecord: MedicationRecord = {
+            name: record?.name == 'Paracetamol' ? 'Ibuprofen' : 'Paracetamol',
+            amount: 100,
+            dosage: '100mg',
+            form: MedicationRecordForm.TABLET,
+            missed: false,
+            time: record?.time || new Date(),
+        };
+
+        updateRecord(newRecord);
     };
 
     return (

@@ -8,25 +8,24 @@ import { WeekDayPicker } from '../../components/WeekDayPicker';
 import { RecordCards } from '../../components/RecordCards';
 import { useRecords } from '../../hooks/useRecords';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
+import { useRoute } from '../../hooks/useRoute';
 
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
 export function HomeScreen() {
     const user = useAuthentication();
-    const [selectedDay, setSelectedDay] = useState(startDay);
-    const { isSuccess, isLoading, isError, records, refetch } = useRecords(
-        '1',
+    const { params } = useRoute<'Home'>();
+    const initialSelectedDay = new Date(
+        params?.day ?? new Date().toISOString()
+    );
+    const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
+    const { isSuccess, isLoading, isError, records } = useRecords(
+        user?.uid ?? '', // TODO: Replace with user's token in the future
         selectedDay
-    ); // TODO: Replace with user's token
-
-    console.log('' + isSuccess + isLoading + isError + records + refetch); // TODO: Remove this once the data fetch call is implemented
-
-    console.log(JSON.stringify(user));
+    );
 
     const userName = 'Jack'; // TODO: Replace with user's name
-
-    console.log(userName);
 
     const selectDay = (day: Date) => {
         setSelectedDay(day);
@@ -42,7 +41,7 @@ export function HomeScreen() {
             />
             {isLoading && <ProgressIndicator />}
             {isError && <Text variant="headlineMedium">Error</Text>}
-            <RecordCards records={records} />
+            {isSuccess && <RecordCards records={records} />}
         </View>
     );
 }

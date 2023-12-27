@@ -4,8 +4,7 @@ import { Formik } from 'formik';
 import { loginWithEmailAndPassword } from '../services/auth';
 import { StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
-import { NativeStackScreenProps } from 'react-native-screens/native-stack';
-import { RootStackParamList } from '../navigation/routes';
+import { useNav } from '../hooks/useNav';
 
 // FIXME: Should be in a separate file
 export const formStyle = StyleSheet.create({
@@ -33,10 +32,9 @@ const initialValues: Values = {
     password: '',
 };
 
-export const LoginScreen = ({
-    navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Login'>) => {
+export const LoginScreen = () => {
     const passwordTextInput = React.useRef(null);
+    const { navigate } = useNav();
     const theme = useTheme();
 
     const [submitError, setSubmitError] = React.useState(null);
@@ -45,7 +43,7 @@ export const LoginScreen = ({
         try {
             await loginWithEmailAndPassword(values.email, values.password);
             alert('Logged in');
-            navigation.navigate('Home');
+            navigate('Home', {});
         } catch (error) {
             const errorMessage = error.message;
             setSubmitError(errorMessage);

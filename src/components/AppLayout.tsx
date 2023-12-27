@@ -8,8 +8,6 @@ import {
 } from '../navigation/routes';
 import React from 'react';
 
-// Only shows if the user is logged in
-
 export const AppLayout = () => {
     const theme = useTheme();
     const user = useAuthentication();

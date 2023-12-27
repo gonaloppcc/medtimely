@@ -3,12 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateRecord } from '../services/records';
 
 interface UseUpdateRecordReturn {
-    updateRecord: () => void;
+    updateRecord: (record: MedicationRecord) => void;
 }
 
 export const useUpdateRecord = (
     token: string,
-    record: MedicationRecord,
     onSuccess: () => void,
     onError: (error: Error) => void
 ): UseUpdateRecordReturn => {
@@ -18,15 +17,15 @@ export const useUpdateRecord = (
         mutationFn: async (record: MedicationRecord) => {
             return await updateRecord(token, record);
         },
-        onSuccess,
-        onError,
-        onSettled: () => {
-            console.log('onSettled');
-            return queryClient.setQueryData(['record', '1'], record); // TODO: Replace the hardcoded id with the record id
+        onSuccess: (data, variables) => {
+            queryClient.setQueryData(['record', '1'], variables); // TODO: Replace the hardcoded id with the record id
+            onSuccess();
         },
+        onError,
     });
 
     return {
-        updateRecord: () => updateRecordMutation.mutate(record),
+        updateRecord: (record: MedicationRecord) =>
+            updateRecordMutation.mutate(record),
     };
 };

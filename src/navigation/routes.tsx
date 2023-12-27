@@ -11,6 +11,8 @@ import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navig
 import { Icon } from 'react-native-paper';
 import { EditRecordScreen } from '../screens/authenticated/records/EditRecordScreen';
 import { ProfileHeader } from '../components/ProfileHeader';
+import { CreateRecordScreen } from '../screens/authenticated/records/CreateRecordScreen';
+import { AddRecordHeader } from '../components/AddRecordHeader';
 
 export type RootStackParamList = {
     // Unauthenticated screens
@@ -20,13 +22,16 @@ export type RootStackParamList = {
     Base: undefined;
 
     // Authenticated screens
-    Home: undefined;
+    Home: {
+        day?: string; // Day string since Date is not serializable
+    };
     Medications: undefined;
     Records: undefined;
     Settings: undefined;
 
     Record: { id: string };
     EditRecord: { id: string };
+    CreateRecord: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -50,14 +55,16 @@ const NotLoggedInScreens = () => {
     );
 };
 
+// Only shows if the user is logged in
 const HomeScreens = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name="Home"
+                name="Records"
                 component={HomeScreen}
                 options={{
                     headerRight: () => <ProfileHeader />,
+                    headerLeft: () => <AddRecordHeader />,
                 }}
             />
             <Stack.Screen name="Record" component={RecordScreen} />
@@ -66,6 +73,11 @@ const HomeScreens = () => {
                 component={EditRecordScreen}
                 options={{ headerTitle: 'Edit Medication Record' }}
             />
+            <Stack.Screen
+                name="CreateRecord"
+                component={CreateRecordScreen}
+                options={{ headerTitle: 'Add Record' }}
+            />
         </Stack.Navigator>
     );
 };
@@ -73,7 +85,7 @@ const HomeScreens = () => {
 const HomeNav = () => (
     <Tab.Navigator>
         <Tab.Screen
-            name="Home Screens"
+            name="Home"
             component={HomeScreens}
             options={{
                 tabBarIcon: ({ color }) => (
