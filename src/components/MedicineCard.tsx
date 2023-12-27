@@ -1,8 +1,9 @@
 import React from 'react';
-import { Icon, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNav } from '../hooks/useNav';
 import { Medicine } from '../model/Medicine';
+import { MedicationIcon } from './MedicationIcon';
 
 type MedCardProps = Medicine & {
     // Added any extra props here
@@ -16,7 +17,7 @@ export const MedicationCard = ({
     const theme = useTheme();
     const nav = useNav();
 
-    const title = amount == null || amount == 1 ? name : `${name} (x${amount})`;
+    const title = name;
 
     const backgroundColor = theme.colors.surface;
 
@@ -28,14 +29,14 @@ export const MedicationCard = ({
 
     const subtitle = `${form}, ${dosage}`;
 
-
-    const onPress = () => {subtitle
+    const onPress = () => {
+        subtitle;
         nav.navigate('Record', { id: '1' });
     };
 
     return (
         <TouchableOpacity onPress={onPress} style={style}>
-            <Icon size={40} source="pill" color={theme.colors.onSurface} />
+            <MedicationIcon form={form} />
             <View style={styles.innerStyle}>
                 <Text
                     variant="labelLarge"
@@ -71,7 +72,6 @@ const styles = StyleSheet.create({
         padding: 12,
         borderStyle: 'solid',
         borderWidth: 1,
-        // borderColor: 'rgba(0,0,0,0.15)',
     },
     innerStyle: {
         display: 'flex',
