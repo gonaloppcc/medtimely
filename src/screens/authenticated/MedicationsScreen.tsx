@@ -1,34 +1,32 @@
 import * as React from 'react';
+import { useState } from 'react';
 
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { Medicine } from '../../model/Medicine';
 import { MedicationRecordForm } from '../../model/MedicationRecord';
 import { FilterByForm } from '../../components/FilterByForm';
 import { useMedications } from '../../hooks/useMedications';
 import { MedicineCards } from '../../components/MedicineCards';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
+import { useNav } from '../../hooks/useNav';
 
 export function MedicationsScreen() {
-    const [selectForm, setSelectForm] = React.useState<
-        MedicationRecordForm | ''
-    >('');
-    const [medSelected, setMedSelected] = React.useState<Medicine[]>([]);
+    const nav = useNav();
+    const [selectForm, setSelectForm] = useState<MedicationRecordForm | ''>('');
     const { isSuccess, isLoading, isError, medications } = useMedications('1'); // TODO: Replace with user's token
 
-    React.useEffect(() => {
-        if (selectForm !== '') {
-            setMedSelected(
-                medications.filter((med) => med.form === selectForm)
-            );
-        } else {
-            setMedSelected(medications);
-        }
-    }, [selectForm, isSuccess]);
-
-    const medForms = Array.from(
+    const medicationForms = Array.from(
         new Set(medications.map((value) => value.form))
     );
+
+    const medicationsFiltered =
+        selectForm === ''
+            ? medications
+            : medications.filter((med) => med.form === selectForm);
+
+    nav.setOptions({
+        headerTitle: 'Medications',
+    });
 
     const onSelectFilter = (newValue) => {
         if (selectForm !== newValue) {
@@ -42,7 +40,7 @@ export function MedicationsScreen() {
         <View style={styles.container}>
             <Text>Medications Screen</Text>
             <FilterByForm
-                forms={medForms}
+                forms={medicationForms}
                 onValueChange={onSelectFilter}
                 value={selectForm}
             />
@@ -52,7 +50,7 @@ export function MedicationsScreen() {
             {isLoading && <ProgressIndicator />}
             {isSuccess && (
                 <>
-                    <MedicineCards medicines={medSelected} />
+                    <MedicineCards medicines={medicationsFiltered} />
                 </>
             )}
         </View>
