@@ -2,60 +2,35 @@ import * as React from 'react';
 
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { MedicineCards } from '../../components/MedicineCards';
 import { Medicine } from '../../model/Medicine';
 import { MedicationRecordForm } from '../../model/MedicationRecord';
 import { FilterByForm } from '../../components/FilterByForm';
-
-const MEDICATION_DETAILED_1 = {
-    name: 'Paracetamol',
-    amount: 1,
-    dosage: '500mg',
-    form: MedicationRecordForm.TABLET,
-    time: '12:00',
-};
-
-const MEDICATION_DETAILED_2 = {
-    name: 'Vitamin C',
-    amount: 2,
-    dosage: '100mg',
-    form: MedicationRecordForm.INJECTION,
-    time: '13:00',
-};
-
-const MEDICATION_DETAILED_3 = {
-    name: 'Antibiotic',
-    amount: 1,
-    dosage: '50mg',
-    form: MedicationRecordForm.LIQUID,
-    time: '17:00',
-};
+import { useMedications } from '../../hooks/useMedications';
+import { MedicineCards } from '../../components/MedicineCards';
+import { ProgressIndicator } from '../../components/ProgressIndicator';
 
 export function MedicationsScreen() {
     const [selectForm, setSelectForm] = React.useState<
         MedicationRecordForm | ''
     >('');
     const [medSelected, setMedSelected] = React.useState<Medicine[]>([]);
-
-    //TODO: Change this
-    const medicines: Medicine[] = [];
-    for (let i = 0; i < 5; i++) {
-        medicines.push(MEDICATION_DETAILED_1);
-        medicines.push(MEDICATION_DETAILED_2);
-        medicines.push(MEDICATION_DETAILED_3);
-    }
+    const { isSuccess, isLoading, isError, medications } = useMedications('1'); // TODO: Replace with user's token
 
     React.useEffect(() => {
         if (selectForm !== '') {
-            setMedSelected(medicines.filter((med) => med.form === selectForm));
+            setMedSelected(
+                medications.filter((med) => med.form === selectForm)
+            );
         } else {
-            setMedSelected(medicines);
+            setMedSelected(medications);
         }
-    }, [selectForm]);
+    }, [selectForm, isSuccess]);
 
-    const medForms = Array.from(new Set(medicines.map((value) => value.form)));
+    const medForms = Array.from(
+        new Set(medications.map((value) => value.form))
+    );
 
-    const onSelecFilter = (newValue) => {
+    const onSelectFilter = (newValue) => {
         if (selectForm !== newValue) {
             setSelectForm(newValue);
         } else {
@@ -68,10 +43,18 @@ export function MedicationsScreen() {
             <Text>Medications Screen</Text>
             <FilterByForm
                 forms={medForms}
-                onValueChange={onSelecFilter}
+                onValueChange={onSelectFilter}
                 value={selectForm}
             />
-            <MedicineCards medicines={medSelected} />
+            {isError && (
+                <Text variant="headlineMedium">Something went wrong</Text>
+            )}
+            {isLoading && <ProgressIndicator />}
+            {isSuccess && (
+                <>
+                    <MedicineCards medicines={medSelected} />
+                </>
+            )}
         </View>
     );
 }
