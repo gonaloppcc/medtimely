@@ -28,7 +28,7 @@ export function MedicationsScreen() {
         headerTitle: 'Medications',
     });
 
-    const onSelectFilter = (newValue) => {
+    const onSelectFilter = (newValue: '' | MedicationRecordForm) => {
         if (selectForm !== newValue) {
             setSelectForm(newValue);
         } else {
