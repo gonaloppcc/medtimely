@@ -29,6 +29,7 @@ export const MedicationCard = ({
 
     const subtitle = `${form}, ${dosage}`;
 
+    //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
         subtitle;
         nav.navigate('Record', { id: '1' });

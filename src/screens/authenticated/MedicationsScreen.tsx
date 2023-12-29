@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { MedicationRecordForm } from '../../model/MedicationRecord';
-import { FilterByForm } from '../../components/FilterByForm';
+import { MedicationFormFilterButtons } from '../../components/MedicationFormFilterButtons';
 import { useMedications } from '../../hooks/useMedications';
 import { MedicineCards } from '../../components/MedicineCards';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
@@ -39,7 +39,7 @@ export function MedicationsScreen() {
     return (
         <View style={styles.container}>
             <Text>Medications Screen</Text>
-            <FilterByForm
+            <MedicationFormFilterButtons
                 forms={medicationForms}
                 onValueChange={onSelectFilter}
                 value={selectForm}

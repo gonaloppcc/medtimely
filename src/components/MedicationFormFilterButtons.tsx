@@ -5,13 +5,15 @@ import { SegmentedButtons } from 'react-native-paper';
 import { medicationFormToIconName } from '../model/Medicine';
 import { useAppTheme } from '../theme';
 
+const ROUNDNESS = 0.8;
+
 export interface FilterByFormProps {
     forms: MedicationRecordForm[];
     onValueChange: (newValue: MedicationRecordForm | '') => void;
     value: MedicationRecordForm | '';
 }
 
-export const FilterByForm = ({
+export const MedicationFormFilterButtons = ({
     forms,
     value,
     onValueChange,
@@ -34,7 +36,7 @@ export const FilterByForm = ({
                 onValueChange={onValueChange}
                 buttons={medButtons}
                 theme={{
-                    roundness: 0.8,
+                    roundness: ROUNDNESS,
                     colors: {
                         secondaryContainer: theme.colors.brandContainer,
                     },
