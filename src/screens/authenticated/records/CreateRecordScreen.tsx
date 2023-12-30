@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useCreateRecord } from '../../../hooks/useCreateRecord';
 import {
@@ -15,7 +15,6 @@ import * as Yup from 'yup';
 import { ErrorMessage } from '../../../hooks/ErrorMessage';
 import { Switch } from '../../../components/Switch';
 import { Picker } from '../../../components/Picker';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Values {
     name: string;
