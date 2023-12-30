@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useCreateRecord } from '../../../hooks/useCreateRecord';
 import {
@@ -13,6 +13,9 @@ import { useFormik } from 'formik';
 import { useAppTheme } from '../../../theme';
 import * as Yup from 'yup';
 import { ErrorMessage } from '../../../hooks/ErrorMessage';
+import { Switch } from '../../../components/Switch';
+import { Picker } from '../../../components/Picker';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Values {
     name: string;
@@ -83,6 +86,7 @@ export const CreateRecordScreen = () => {
         isSubmitting,
         handleSubmit,
         handleChange,
+        setFieldValue,
         errors,
         touched,
     } = useFormik<Values>({
@@ -144,13 +148,20 @@ export const CreateRecordScreen = () => {
                         Medication Form - How do you take this medication? (e.g.
                         Tablet, Capsule, Liquid, etc.)
                     </Text>
-                    <Input
-                        // TODO: Change this to a dropdown
-                        id="form"
-                        label="Form"
-                        placeholder=""
-                        value={values.form}
-                        onChangeText={handleChange('form')}
+                    <Picker
+                        selectedValue={values.form}
+                        onValueChange={handleChange('form')}
+                        items={[
+                            // TODO: Make this a constant
+                            { label: 'Tablet', value: 'TABLET' },
+                            { label: 'Capsule', value: 'CAPSULE' },
+                            { label: 'Liquid', value: 'LIQUID' },
+                            { label: 'Injection', value: 'INJECTION' },
+                            { label: 'Inhaler', value: 'INHALER' },
+                            { label: 'Patch', value: 'PATCH' },
+                            { label: 'Suppository', value: 'SUPPOSITORY' },
+                            { label: 'Other', value: 'OTHER' },
+                        ]}
                     />
                     {touched.form && errors.form && (
                         <ErrorMessage errorMessage={errors.form} />
@@ -159,13 +170,13 @@ export const CreateRecordScreen = () => {
 
                 <View style={styles.field}>
                     <Text>Did you not take the medication?</Text>
-                    <Input
-                        // TODO: Change this to a dropdown
+                    <Switch
                         id="missed"
-                        label="Missed"
-                        placeholder="Yes or No"
-                        value={values.missed ? 'Yes' : 'No'}
-                        onChangeText={handleChange('missed')}
+                        value={values.missed}
+                        onValueChange={(value) => {
+                            setFieldValue('missed', value);
+                            return;
+                        }}
                     />
                     {touched.missed && errors.missed && (
                         <ErrorMessage errorMessage={errors.missed} />
