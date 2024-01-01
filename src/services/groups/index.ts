@@ -1,24 +1,24 @@
 import { Group } from '../../model/group';
 
-const GROUPS = {
-    '1': [{
-        name: "group 1",
+const GROUPS: Group[] = [
+    {
+        groupName: "group 1",
         description: "description 1"
-    }],
-    '2': [{
-        name: "group 2",
+    },
+    {
+        groupName: "group 2",
         description: "description 2"
-    }],
-    '3': [{
-        name: "group 3",
+    },
+    {
+        groupName: "group 3",
         description: "description 3"
-    }],
-    '4': [{
-        name: "group 4",
+    },
+    {
+        groupName: "group 4",
         description: "description 4"
-    }]
+    }
 
-}
+]
 
 const SMALL_STALL_TIME = 1000;
 const STALL_TIME = 4000;
@@ -31,14 +31,9 @@ export const getGroups = async (
     )
 
     return new Promise((resolve) => {
-        const groups = GROUPS[token]
         setTimeout(() => {
-            if (!GROUPS) {
-                resolve([])
-                return;
-            }
 
-            resolve(groups)
+            resolve(GROUPS)
         }, STALL_TIME)
     })
 }
@@ -51,7 +46,7 @@ export const createGroup = async(
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            GROUPS[token].push(group)
+            GROUPS.push(group)
 
             resolve("CreatedID");
         }, SMALL_STALL_TIME)

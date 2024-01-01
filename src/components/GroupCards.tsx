@@ -1,19 +1,22 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { GroupCard } from './GroupCard';
+import { Group } from '../model/group';
 
-export const GroupCards = () => {
+interface GroupProps {
+    groups: Group[]
+}
+
+export const GroupCards = ({ groups }: GroupProps) => {
     //TODO GroupCard taking info 
     return (
         <ScrollView
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
+            {groups.map((group, index) => {
+                return <GroupCard key={index} {...group} />;
+            })}
         </ScrollView>
     );
 };

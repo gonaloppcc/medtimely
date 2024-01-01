@@ -16,6 +16,7 @@ import { AddRecordHeader } from '../components/AddRecordHeader';
 import { GroupsScreen } from '../screens/authenticated/groups/GroupsScreen'
 import { AddGroupHeader } from '../components/AddGroupHeader';
 import { CreateGroupScreen } from '../screens/authenticated/groups/CreateGroupScreen';
+import { GroupScreen } from '../screens/authenticated/groups/GroupScreen';
 
 export type RootStackParamList = {
     // Unauthenticated screens
@@ -37,6 +38,9 @@ export type RootStackParamList = {
     CreateRecord: undefined;
 
     Groups: undefined;
+    Group: { id: string };
+    GroupsScreen: undefined;
+    CreateGroup: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -91,12 +95,13 @@ const GroupsScreens = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name="Groups"
+                name="GroupsScreen"
                 component={GroupsScreen}
                 options={{
-                    headerLeft: () => <AddGroupHeader />
+                    headerLeft: () => <AddGroupHeader />,
                 }}
             />
+            <Stack.Screen name="Group" component={GroupScreen}/>
             <Stack.Screen
                 name="CreateGroup"
                 component={CreateGroupScreen}

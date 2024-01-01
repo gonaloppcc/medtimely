@@ -13,17 +13,17 @@ import { useCreateGroup } from '../../../hooks/useCreateGroup';
 
 interface Values {
     groupName: string;
-    groupDescription: string;
+    description: string;
 }
 
 const initialValues: Values = {
     groupName: '',
-    groupDescription: ''
+    description: ''
 };
 
 const schema = Yup.object().shape({
     groupName: Yup.string().required('Required'),
-    groupDescription: Yup.string().required('Required')
+    description: Yup.string().required('Required')
 });
 
 export const CreateGroupScreen = () => {
@@ -41,9 +41,9 @@ export const CreateGroupScreen = () => {
         }
     );
 
-    nav.setOptions({
-        headerTitle: 'Add Group',
-    });
+    // nav.setOptions({
+    //    headerTitle: 'Add Group',
+    //});
 
     const onSubmit = async (values: Values) => {
         const newGroup: Group = { ...values };
@@ -52,9 +52,7 @@ export const CreateGroupScreen = () => {
 
         try {
             await createGroup(newGroup);
-
-            // Pass the time as a string to the home screen
-            nav.push('Groups', {}); // Push is needed in order to refresh the home screen state
+            nav.push("GroupsScreen")
         } catch (error) {
             const errorMessage =
                 (error.message as string) || 'Something went wrong';
@@ -78,7 +76,6 @@ export const CreateGroupScreen = () => {
 
     return (
         <View style={styles.form}>
-            {/* TODO: Add a form to create the record */}
             <View style={styles.inputContainer}>
                 <View style={styles.field}>
                     <Text>Group Name</Text>
@@ -99,11 +96,11 @@ export const CreateGroupScreen = () => {
                         id="groupDescription"
                         label="GroupDescription"
                         placeholder=""
-                        value={values.groupDescription}
-                        onChangeText={handleChange('groupDescription')}
+                        value={values.description}
+                        onChangeText={handleChange('description')}
                     />
-                    {touched.groupDescription && errors.groupDescription && (
-                        <ErrorMessage errorMessage={errors.groupDescription} />
+                    {touched.description && errors.description && (
+                        <ErrorMessage errorMessage={errors.description} />
                     )}
                 </View>
             </View>

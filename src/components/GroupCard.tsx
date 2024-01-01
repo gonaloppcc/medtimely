@@ -1,12 +1,12 @@
 import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { MedicationRecord } from '../model/MedicationRecord';
+import { Group } from '../model/group';
 import { useNav } from '../hooks/useNav';
 
-
-export const GroupCard = () => {
+export const GroupCard = ({groupName, description}:Group) => {
     const theme = useTheme();
+    const nav = useNav();
 
     const backgroundColor = theme.colors.errorContainer
 
@@ -16,15 +16,20 @@ export const GroupCard = () => {
         borderColor: theme.colors.outline,
     };
 
+        //TODO: Change this later to a dynamic id and the corret route
+        const onPress = () => {
+            nav.navigate('Group', { id: '1' });
+        };
+
     return (
-        <TouchableOpacity style={style}>
-            <Icon size={40} source="group" color={theme.colors.onSurface} />
+        <TouchableOpacity style={style} onPress={onPress}>
+            <Icon size={40} source="account-group" color={theme.colors.onSurface} />
             <View style={styles.innerStyle}>
                 <Text
                     variant="labelLarge"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {"Group"}
+                    {groupName}
                 </Text>
                 <Text
                     variant="labelMedium"
@@ -36,7 +41,7 @@ export const GroupCard = () => {
                     variant="labelLarge"
                     style={{ color: theme.colors.error }}
                 >
-                    {"Description"}
+                    {description}
                 </Text>
             </View>
         </TouchableOpacity>
