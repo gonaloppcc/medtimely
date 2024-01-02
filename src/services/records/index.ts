@@ -1,5 +1,5 @@
 // noinspection SpellCheckingInspection
-import {db} from '../../../firebaseConfig';
+import { db } from '../../../firebaseConfig';
 import {
     getDocs,
     collection,
@@ -8,7 +8,9 @@ import {
     doc,
     DocumentReference,
     DocumentSnapshot,
-    getDoc
+    getDoc,
+    addDoc,
+    Timestamp,
 } from 'firebase/firestore';
 
 import {
@@ -16,7 +18,7 @@ import {
     MedicationRecordForm,
 } from '../../model/MedicationRecord';
 
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 
 const SMALL_STALL_TIME = 1000;
 const RECORDS_COLLECTION = 'medicationRecords';
@@ -44,7 +46,8 @@ export const getRecords = async (
     // todo: use onSnapshot
     const matchDocs = await getDocs(q);
 
-    const matchRecords: MedicationRecord[] = matchDocs.docs.map(snapshotToRecord);
+    const matchRecords: MedicationRecord[] =
+        matchDocs.docs.map(snapshotToRecord);
     console.log(matchRecords);
     return matchRecords;
 };
@@ -66,13 +69,11 @@ export const getRecord = async (
     try {
         const docSnap: DocumentSnapshot = await getDoc(docRef);
         if (docSnap.exists()) {
-            return snapshotToRecord(docSnap)
-        }
-        else {
+            return snapshotToRecord(docSnap);
+        } else {
             throw new Error(`No record with id=${id} exists`);
         }
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e);
         throw e;
     }
@@ -84,17 +85,12 @@ export const createRecord = async (
 ): Promise<string> => {
     console.log(`Creating record=${record} for token=${token}`);
 
-    // TODO: Implement this
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            // Create mock record creation here
-            const day = record.scheduledTime.toISOString().split('T')[0];
-            MEDICATION_RECORDS_BY_DATE[day].push(record);
-
-            resolve('CreatedID'); // TODO: Replace with actual ID
-        }, SMALL_STALL_TIME);
+    const docRef = await addDoc(collection(db, RECORDS_COLLECTION), {
+        ...record,
+        scheduledTime: Timestamp.fromDate(record.scheduledTime),
+        user: doc(db, 'users', token),
     });
+    return docRef.id;
 };
 
 export const updateRecord = async (
@@ -118,11 +114,10 @@ export const updateRecord = async (
 
 const snapshotToRecord = (doc: DocumentSnapshot): MedicationRecord => {
     if (doc.exists()) {
-        const data = doc.data()
-        const scheduledTime = data.scheduledTime.toDate()
-        return {...data, scheduledTime, id: doc.id} as MedicationRecord
+        const data = doc.data();
+        const scheduledTime = data.scheduledTime.toDate();
+        return { ...data, scheduledTime, id: doc.id } as MedicationRecord;
+    } else {
+        throw new Error('Document does not exist');
     }
-    else {
-        throw new Error("Document does not exist");
-    }
-}
+};
