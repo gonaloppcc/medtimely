@@ -1,9 +1,9 @@
 import { addDoc, collection, Timestamp, writeBatch } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
 import {
     MedicationRecord,
     MedicationRecordForm,
 } from '../src/model/MedicationRecord';
+import { db } from '../src/firebase';
 
 if (process.argv.length !== 3) {
     // 3 because the first argument is node, the second is the script name

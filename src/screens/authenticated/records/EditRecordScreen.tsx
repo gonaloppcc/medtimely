@@ -28,7 +28,7 @@ export const EditRecordScreen = () => {
             dosage: '100mg',
             form: MedicationRecordForm.TABLET,
             missed: false,
-            time: record?.time || new Date(),
+            scheduledTime: record?.scheduledTime || new Date(),
         };
 
         updateRecord(newRecord);

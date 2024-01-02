@@ -35,6 +35,7 @@
         "expo-splash-screen": "~0.20.5",
         "expo-status-bar": "~1.6.0",
         "firebase": "^10.7.1",
+        "firebase-admin": "^12.0.0",
         "firelordjs": "^2.7.1",
         "formik": "^2.4.5",
         "react": "18.2.0",

@@ -1,5 +1,4 @@
 // noinspection SpellCheckingInspection
-import { db } from '../../../firebaseConfig';
 import {
     getDocs,
     collection,
@@ -19,17 +18,22 @@ import {
 } from '../../model/MedicationRecord';
 
 import dayjs from 'dayjs';
+import { db } from '../../firebase';
 
 const SMALL_STALL_TIME = 1000;
 const RECORDS_COLLECTION = 'medicationRecords';
 const records = collection(db, RECORDS_COLLECTION);
 
+const getUserRecordCollection = (userId: string) => {
+    return collection(db, `users/${userId}/records`);
+};
+
 export const getRecords = async (
-    token: string,
+    userId: string,
     date: Date
 ): Promise<MedicationRecord[]> => {
     console.log(
-        `Fetching records in date=${date.toDateString()} for token=${token}`
+        `Fetching records in date=${date.toDateString()} for token=${userId}`
     );
 
     // date is stored as timestamp in the db
@@ -38,8 +42,7 @@ export const getRecords = async (
 
     // TODO: get only records of current user
     const q = query(
-        records,
-        //where('user', '==', token),
+        getUserRecordCollection(userId),
         where('scheduledTime', '<=', endDate),
         where('scheduledTime', '>=', startDate)
     );
