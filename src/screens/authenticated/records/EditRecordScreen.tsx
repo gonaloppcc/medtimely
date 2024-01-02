@@ -8,9 +8,11 @@ import {
     MedicationRecord,
     MedicationRecordForm,
 } from '../../../model/MedicationRecord';
+import { useAuthentication } from '../../../hooks/useAuthentication';
 
 export const EditRecordScreen = () => {
-    const { isLoading, isSuccess, record } = useRecord('1', '1'); // TODO: Replace the token and id with the real ones
+    const uid = useAuthentication()?.uid || '';
+    const { isLoading, isSuccess, record } = useRecord('1', uid); // TODO: Replace the token and id with the real ones
     const { updateRecord } = useUpdateRecord(
         '1',
         () => {

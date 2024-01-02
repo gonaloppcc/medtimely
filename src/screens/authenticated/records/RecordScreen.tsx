@@ -4,22 +4,19 @@ import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useNavOptions } from '../../../hooks/useNavOptions';
-
-// TODO: This is just for now, it should be replaced with data from the database
-const MEDICATION_DETAILED_RECORD = {
-    name: 'Paracetamol',
-    amount: 1,
-    dosage: '500mg',
-    form: 'Tablet',
-    missed: false,
-    time: '12:00',
-    date: new Date(2023, 11, 17),
-};
+import { useRecord } from '../../../hooks/useRecord';
+import { useAuthentication } from '../../../hooks/useAuthentication';
+import { useRoute } from '../../../hooks/useRoute';
+import { ProgressIndicator } from '../../../components/ProgressIndicator';
 
 export function RecordScreen() {
     const nav = useNavigation();
-    const { name, amount, dosage, form, missed, time, date } =
-        MEDICATION_DETAILED_RECORD;
+    const route = useRoute();
+
+    // @ts-ignore
+    const recordId = route.params!.id as string;
+    const uid = useAuthentication()?.uid || '';
+    const { isSuccess, isLoading, isError, record } = useRecord(recordId, uid);
 
     const headerRight = () => (
         <Appbar.Action
@@ -30,19 +27,28 @@ export function RecordScreen() {
     );
 
     useNavOptions({
-        headerTitle: name,
+        headerTitle: isSuccess ? record!.name : 'Record not found',
         headerRight,
     });
 
     return (
         <View style={styles.container}>
-            <Text variant="headlineMedium">{name}</Text>
-            <Text variant="labelMedium">{dosage}</Text>
-            <Text variant="labelMedium">{form}</Text>
-            <Text variant="labelMedium">{amount}</Text>
-            <Text variant="labelMedium">{time}</Text>
-            <Text variant="labelMedium">{date.toDateString()}</Text>
-            <Text variant="labelMedium">{missed ? 'Missed' : 'Taken'}</Text>
+            {isLoading && <ProgressIndicator />}
+            {isError && <Text>Something went wrong</Text>}
+            {isSuccess && (
+                <>
+                    <Text variant="headlineMedium">{record!.name}</Text>
+                    <Text variant="labelMedium">{record!.dosage}</Text>
+                    <Text variant="labelMedium">{record!.form}</Text>
+                    <Text variant="labelMedium">{record!.amount}</Text>
+                    <Text variant="labelMedium">
+                        {record!.scheduledTime.toDateString()}
+                    </Text>
+                    <Text variant="labelMedium">
+                        {record!.missed ? 'Missed' : 'Taken'}
+                    </Text>
+                </>
+            )}
         </View>
     );
 }
