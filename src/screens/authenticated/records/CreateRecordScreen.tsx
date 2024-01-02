@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useCreateRecord } from '../../../hooks/useCreateRecord';
 import {
@@ -96,7 +96,7 @@ export const CreateRecordScreen = () => {
     });
 
     return (
-        <View style={styles.form}>
+        <ScrollView contentContainerStyle={styles.form}>
             {/* TODO: Add a form to create the record */}
             <View style={styles.inputContainer}>
                 <View style={styles.field}>
@@ -211,7 +211,7 @@ export const CreateRecordScreen = () => {
             >
                 Add Record
             </Button>
-        </View>
+        </ScrollView>
     );
 };
 
@@ -224,7 +224,6 @@ const styles = StyleSheet.create({
         gap: 20,
         width: '100%',
         padding: 22,
-        height: '100%',
     },
     inputContainer: {
         display: 'flex',
