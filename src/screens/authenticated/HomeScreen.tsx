@@ -20,7 +20,7 @@ export function HomeScreen() {
         params?.day ?? new Date().toISOString()
     );
     const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
-    const { isSuccess, isLoading, isError, records } = useRecords(
+    const { isSuccess, isLoading, isError, records, refetch } = useRecords(
         user?.uid ?? '', // TODO: Replace with user's token in the future
         selectedDay
     );
@@ -41,7 +41,13 @@ export function HomeScreen() {
             />
             {isLoading && <ProgressIndicator />}
             {isError && <Text variant="headlineMedium">Error</Text>}
-            {isSuccess && <RecordCards records={records} />}
+            {isSuccess && (
+                <RecordCards
+                    isRefreshing={isLoading}
+                    onRefresh={refetch}
+                    records={records}
+                />
+            )}
         </View>
     );
 }

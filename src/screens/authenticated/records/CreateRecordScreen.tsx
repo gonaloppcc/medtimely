@@ -16,6 +16,7 @@ import { ErrorMessage } from '../../../hooks/ErrorMessage';
 import { Switch } from '../../../components/Switch';
 import { Picker } from '../../../components/Picker';
 import { useNavOptions } from '../../../hooks/useNavOptions';
+import { useAuthentication } from '../../../hooks/useAuthentication';
 
 interface Values {
     name: string;
@@ -38,10 +39,10 @@ const initialValues: Values = {
 const schema = Yup.object().shape({
     name: Yup.string().required('Required'),
     amount: Yup.number().required('Required'),
-    dosage: Yup.number().required('Required'),
+    dosage: Yup.string().required('Required'),
     form: Yup.string().required('Required'),
     missed: Yup.boolean().required('Required'),
-    time: Yup.date().required('Required'),
+    time: Yup.string().required('Required'),
 });
 
 export const CreateRecordScreen = () => {
@@ -49,10 +50,23 @@ export const CreateRecordScreen = () => {
         React.useState<string>('');
     const nav = useNav();
     const theme = useAppTheme();
+    const uid = useAuthentication()?.uid || '';
     const { createRecord } = useCreateRecord(
-        '1', // TODO: Replace with user id in the future
-        () => {
-            console.log('updated');
+        uid,
+        (newRecord) => {
+            // Pass the time as a string to the home screen
+            try {
+                nav.push('Home', {
+                    day: newRecord.scheduledTime.toISOString(),
+                }); // Push is needed in order to refresh the home screen state
+
+                console.log('updated');
+            } catch (error) {
+                console.log(error);
+                setSubmitErrorMessage(
+                    'Something went wrong while navigating back to the home screen'
+                );
+            }
         },
         () => {
             console.log('error');
@@ -70,9 +84,6 @@ export const CreateRecordScreen = () => {
 
         try {
             await createRecord(newRecord);
-
-            // Pass the time as a string to the home screen
-            nav.push('Home', { day: newRecord.scheduledTime.toISOString() }); // Push is needed in order to refresh the home screen state
         } catch (error) {
             const errorMessage =
                 (error.message as string) || 'Something went wrong';
@@ -134,7 +145,6 @@ export const CreateRecordScreen = () => {
                         id="dosage"
                         label="Dosage"
                         placeholder=""
-                        keyboardType="numeric"
                         value={values.dosage}
                         onChangeText={handleChange('dosage')}
                     />

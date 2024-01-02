@@ -92,13 +92,20 @@ export const createRecord = async (
 ): Promise<string> => {
     console.log(`Creating record=${record} for user with id=${userId}`);
 
-    const docRef = await addDoc(getUserRecordCollection(userId), {
-        ...record,
-        scheduledTime: Timestamp.fromDate(record.scheduledTime),
-        user: doc(db, 'users', userId),
-    });
+    try {
+        const docRef = await addDoc(getUserRecordCollection(userId), {
+            ...record,
+            scheduledTime: Timestamp.fromDate(record.scheduledTime),
+            user: doc(db, 'users', userId),
+        });
 
-    return docRef.id;
+        console.log(`Created record with id=${docRef.id}`);
+
+        return docRef.id;
+    } catch (e) {
+        console.error('Error adding document: ', e);
+        throw e;
+    }
 };
 
 export const updateRecord = async (

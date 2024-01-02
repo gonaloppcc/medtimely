@@ -1,5 +1,5 @@
 import { MedicationRecord } from '../model/MedicationRecord';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createRecord } from '../services/records';
 
 interface UseCreateRecordReturn {
@@ -7,15 +7,21 @@ interface UseCreateRecordReturn {
 }
 
 export const useCreateRecord = (
-    token: string,
-    onSuccess: () => void,
+    userId: string,
+    onSuccess: (record: MedicationRecord) => void,
     onError: (error: Error) => void
 ): UseCreateRecordReturn => {
+    const queryClient = useQueryClient();
     const createRecordMutation = useMutation({
         mutationFn: async (record: MedicationRecord) => {
-            return await createRecord(token, record);
+            return await createRecord(userId, record);
         },
-        onSuccess,
+        onSuccess: async (_, variables) => {
+            await queryClient.invalidateQueries({
+                queryKey: ['records', userId],
+            });
+            onSuccess(variables);
+        },
         onError,
     });
 

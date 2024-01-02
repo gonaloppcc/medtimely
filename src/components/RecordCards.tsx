@@ -1,14 +1,27 @@
 import React from 'react';
 import { MedicationRecord } from '../model/MedicationRecord';
-import { ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { RecordCard } from './RecordCard';
 
 interface MedCardsProps {
     records: MedicationRecord[];
+    isRefreshing: boolean;
+    onRefresh?: () => void;
 }
-export const RecordCards = ({ records }: MedCardsProps) => {
+
+export const RecordCards = ({
+    records,
+    isRefreshing,
+    onRefresh,
+}: MedCardsProps) => {
     return (
         <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={onRefresh}
+                ></RefreshControl>
+            }
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >
