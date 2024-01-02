@@ -151,6 +151,7 @@ export const CreateRecordScreen = () => {
                     <Picker
                         selectedValue={values.form}
                         onValueChange={handleChange('form')}
+                        label='Medication form'
                         items={[
                             // TODO: Make this a constant
                             { label: 'Tablet', value: 'TABLET' },
