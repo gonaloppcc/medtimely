@@ -13,7 +13,7 @@ export function RecordScreen() {
     const nav = useNavigation();
     const route = useRoute();
 
-    // @ts-ignore
+    // @ts-expect-error TODO: Fix this if possible. This is a mistype in the screens options types
     const recordId = route.params!.id as string;
     const uid = useAuthentication()?.uid || '';
     const { isSuccess, isLoading, isError, record } = useRecord(recordId, uid);

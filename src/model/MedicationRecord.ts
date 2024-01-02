@@ -1,5 +1,5 @@
 export interface MedicationRecord {
-    id?: string // ID only set when retrieved from db
+    id?: string; // ID only set when retrieved from db
     name: string;
     dosage: string;
     form: MedicationRecordForm;
