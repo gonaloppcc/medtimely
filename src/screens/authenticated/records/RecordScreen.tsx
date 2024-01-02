@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useNavOptions } from '../../../hooks/useNavOptions';
 
 // TODO: This is just for now, it should be replaced with data from the database
 const MEDICATION_DETAILED_RECORD = {
@@ -16,7 +17,7 @@ const MEDICATION_DETAILED_RECORD = {
 };
 
 export function RecordScreen() {
-    const navigation2 = useNavigation();
+    const nav = useNavigation();
     const { name, amount, dosage, form, missed, time, date } =
         MEDICATION_DETAILED_RECORD;
 
@@ -24,16 +25,14 @@ export function RecordScreen() {
         <Appbar.Action
             icon="pencil"
             // @ts-expect-error TODO: Fix this if possible
-            onPress={() => navigation2.navigate('EditRecord')}
+            onPress={() => nav.navigate('EditRecord')}
         />
     );
 
-    React.useEffect(() => {
-        navigation2.setOptions({
-            headerTitle: name,
-            headerRight,
-        });
-    }, [navigation2, name]);
+    useNavOptions({
+        headerTitle: name,
+        headerRight,
+    });
 
     return (
         <View style={styles.container}>

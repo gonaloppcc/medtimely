@@ -1,28 +1,14 @@
 import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { MedicationRecord } from '../model/MedicationRecord';
+import { Group } from '../model/group';
 import { useNav } from '../hooks/useNav';
-import { medicationFormToIconName } from '../model/Medicine';
 
-type MedCardProps = MedicationRecord & {
-    // Added any extra props here
-};
-export const RecordCard = ({
-    amount,
-    dosage,
-    form,
-    missed,
-    name,
-}: MedCardProps) => {
+export const GroupCard = ({ groupName, description }: Group) => {
     const theme = useTheme();
     const nav = useNav();
 
-    const title = amount == null || amount == 1 ? name : `${name} (x${amount})`;
-
-    const backgroundColor = missed
-        ? theme.colors.errorContainer
-        : theme.colors.surface;
+    const backgroundColor = theme.colors.errorContainer;
 
     const style = {
         ...styles.container,
@@ -30,19 +16,16 @@ export const RecordCard = ({
         borderColor: theme.colors.outline,
     };
 
-    const subtitle = `${form}, ${dosage}`;
-
-    const takenText = missed ? 'Not taken' : 'Taken';
-
+    //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
-        nav.navigate('Record', { id: '1' });
+        nav.navigate('Group', { id: '1' });
     };
 
     return (
-        <TouchableOpacity onPress={onPress} style={style}>
+        <TouchableOpacity style={style} onPress={onPress}>
             <Icon
                 size={40}
-                source={medicationFormToIconName(form)}
+                source="account-group"
                 color={theme.colors.onSurface}
             />
             <View style={styles.innerStyle}>
@@ -50,19 +33,19 @@ export const RecordCard = ({
                     variant="labelLarge"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {title}
+                    {groupName}
                 </Text>
                 <Text
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {subtitle}
+                    {'Number of elements'}
                 </Text>
                 <Text
                     variant="labelLarge"
                     style={{ color: theme.colors.error }}
                 >
-                    {takenText}
+                    {description}
                 </Text>
             </View>
         </TouchableOpacity>

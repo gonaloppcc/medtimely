@@ -1,28 +1,25 @@
 import React from 'react';
-import { Icon, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { MedicationRecord } from '../model/MedicationRecord';
 import { useNav } from '../hooks/useNav';
-import { medicationFormToIconName } from '../model/Medicine';
+import { Medicine } from '../model/Medicine';
+import { MedicationIcon } from './MedicationIcon';
 
-type MedCardProps = MedicationRecord & {
+type MedCardProps = Medicine & {
     // Added any extra props here
 };
-export const RecordCard = ({
+export const MedicationCard = ({
     amount,
     dosage,
     form,
-    missed,
     name,
 }: MedCardProps) => {
     const theme = useTheme();
     const nav = useNav();
 
-    const title = amount == null || amount == 1 ? name : `${name} (x${amount})`;
+    const title = name;
 
-    const backgroundColor = missed
-        ? theme.colors.errorContainer
-        : theme.colors.surface;
+    const backgroundColor = theme.colors.surface;
 
     const style = {
         ...styles.container,
@@ -32,19 +29,15 @@ export const RecordCard = ({
 
     const subtitle = `${form}, ${dosage}`;
 
-    const takenText = missed ? 'Not taken' : 'Taken';
-
+    //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
+        subtitle;
         nav.navigate('Record', { id: '1' });
     };
 
     return (
         <TouchableOpacity onPress={onPress} style={style}>
-            <Icon
-                size={40}
-                source={medicationFormToIconName(form)}
-                color={theme.colors.onSurface}
-            />
+            <MedicationIcon form={form} />
             <View style={styles.innerStyle}>
                 <Text
                     variant="labelLarge"
@@ -59,10 +52,10 @@ export const RecordCard = ({
                     {subtitle}
                 </Text>
                 <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.error }}
+                    variant="labelMedium"
+                    style={{ color: theme.colors.onSurface }}
                 >
-                    {takenText}
+                    {amount} times a day
                 </Text>
             </View>
         </TouchableOpacity>
@@ -80,7 +73,6 @@ const styles = StyleSheet.create({
         padding: 12,
         borderStyle: 'solid',
         borderWidth: 1,
-        // borderColor: 'rgba(0,0,0,0.15)',
     },
     innerStyle: {
         display: 'flex',
