@@ -15,13 +15,16 @@ export const Picker = ({
 }: PickerProps) => {
     const [showDropdown, setShowDropdown] = React.useState(false);
 
-    return <DropDown
-        value={selectedValue}
-        visible={showDropdown}
-        setValue={onValueChange}
-        list={items}
-        showDropDown={() => setShowDropdown(true)}
-        onDismiss={() => setShowDropdown(false)}
-        label={label}
-        mode={'outlined'} />;
+    return (
+        <DropDown
+            value={selectedValue}
+            visible={showDropdown}
+            setValue={onValueChange}
+            list={items}
+            showDropDown={() => setShowDropdown(true)}
+            onDismiss={() => setShowDropdown(false)}
+            label={label}
+            mode={'outlined'}
+        />
+    );
 };
