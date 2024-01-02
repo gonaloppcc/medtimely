@@ -8,7 +8,7 @@ export interface useRecordsProps extends FetcherProps {
     records: MedicationRecord[];
 }
 
-export const useRecords = (token: string, date: Date): useRecordsProps => {
+export const useRecords = (userId: string, date: Date): useRecordsProps => {
     const {
         isSuccess,
         isLoading,
@@ -17,8 +17,8 @@ export const useRecords = (token: string, date: Date): useRecordsProps => {
         error,
         refetch,
     } = useQuery({
-        queryKey: ['records', date], // No need to add the token in the query key since all requests will have the same token
-        queryFn: () => getRecords(token, date),
+        queryKey: ['records', date, userId],
+        queryFn: () => getRecords(userId, date),
     });
 
     return {

@@ -23,7 +23,7 @@ interface Values {
     dosage: string;
     form: MedicationRecordForm;
     missed: boolean;
-    time: Date;
+    scheduledTime: Date;
 }
 
 const initialValues: Values = {
@@ -32,7 +32,7 @@ const initialValues: Values = {
     dosage: '',
     form: MedicationRecordForm.TABLET,
     missed: false,
-    time: new Date(),
+    scheduledTime: new Date(),
 };
 
 const schema = Yup.object().shape({
@@ -72,7 +72,7 @@ export const CreateRecordScreen = () => {
             await createRecord(newRecord);
 
             // Pass the time as a string to the home screen
-            nav.push('Home', { day: newRecord.time.toISOString() }); // Push is needed in order to refresh the home screen state
+            nav.push('Home', { day: newRecord.scheduledTime.toISOString() }); // Push is needed in order to refresh the home screen state
         } catch (error) {
             const errorMessage =
                 (error.message as string) || 'Something went wrong';
@@ -151,6 +151,7 @@ export const CreateRecordScreen = () => {
                     <Picker
                         selectedValue={values.form}
                         onValueChange={handleChange('form')}
+                        label="Medication form"
                         items={[
                             // TODO: Make this a constant
                             { label: 'Tablet', value: 'TABLET' },
@@ -190,10 +191,10 @@ export const CreateRecordScreen = () => {
                         id="time"
                         label="Time"
                         placeholder=""
-                        value={values.time.toString()}
+                        value={values.scheduledTime.toString()}
                         onChangeText={handleChange('time')}
                     />
-                    {touched.time && errors.time && (
+                    {touched.scheduledTime && errors.scheduledTime && (
                         <ErrorMessage errorMessage={'Error in Time'} />
                     )}
                 </View>

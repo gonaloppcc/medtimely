@@ -18,7 +18,7 @@ export const medicationFormToIconName = (form: MedicationRecordForm) => {
             iconName = 'needle';
             break;
         case MedicationRecordForm.DROPS:
-            iconName = 'eyedroppper';
+            iconName = 'eyedropper';
             break;
 
         case MedicationRecordForm.LIQUID:

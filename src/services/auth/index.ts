@@ -4,8 +4,8 @@ import {
     signInWithEmailAndPassword as signInWithEmailAndPasswordFirebase,
     signOut as signOutFirebase,
 } from 'firebase/auth';
-import { auth } from '../../../firebaseConfig';
 import { User as UserFirebase } from '@firebase/auth';
+import { auth } from '../../firebase';
 
 type User = UserFirebase;
 

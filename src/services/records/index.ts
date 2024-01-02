@@ -1,16 +1,15 @@
 // noinspection SpellCheckingInspection
-import { db } from '../../../firebaseConfig';
 import {
-    getDocs,
+    addDoc,
     collection,
-    query,
-    where,
     doc,
     DocumentReference,
     DocumentSnapshot,
     getDoc,
-    addDoc,
+    getDocs,
+    query,
     Timestamp,
+    where,
 } from 'firebase/firestore';
 
 import {
@@ -19,17 +18,24 @@ import {
 } from '../../model/MedicationRecord';
 
 import dayjs from 'dayjs';
+import { db } from '../../firebase';
 
 const SMALL_STALL_TIME = 1000;
-const RECORDS_COLLECTION = 'medicationRecords';
-const records = collection(db, RECORDS_COLLECTION);
+
+const getUserRecordCollection = (userId: string) => {
+    return collection(db, `users/${userId}/records`);
+};
+
+const getUserRecordCollectionString = (userId: string) => {
+    return `users/${userId}/records`;
+};
 
 export const getRecords = async (
-    token: string,
+    userId: string,
     date: Date
 ): Promise<MedicationRecord[]> => {
     console.log(
-        `Fetching records in date=${date.toDateString()} for token=${token}`
+        `Fetching records in date=${date.toDateString()} for user with id=${userId}`
     );
 
     // date is stored as timestamp in the db
@@ -38,18 +44,14 @@ export const getRecords = async (
 
     // TODO: get only records of current user
     const q = query(
-        records,
-        //where('user', '==', token),
+        getUserRecordCollection(userId),
         where('scheduledTime', '<=', endDate),
         where('scheduledTime', '>=', startDate)
     );
     // todo: use onSnapshot
     const matchDocs = await getDocs(q);
 
-    const matchRecords: MedicationRecord[] =
-        matchDocs.docs.map(snapshotToRecord);
-    console.log(matchRecords);
-    return matchRecords;
+    return matchDocs.docs.map(snapshotToRecord);
 };
 const RECORD: MedicationRecord = {
     name: 'Fluoxetine',
@@ -60,12 +62,17 @@ const RECORD: MedicationRecord = {
     scheduledTime: new Date(),
 };
 export const getRecord = async (
-    token: string,
-    id: string
+    id: string,
+    userId: string
 ): Promise<MedicationRecord> => {
-    console.log(`Fetching record with id=${id} for token=${token}`);
+    console.log(`Fetching record with id=${id} for user with id=${userId}`);
 
-    const docRef: DocumentReference = doc(db, RECORDS_COLLECTION, id);
+    const docRef: DocumentReference = doc(
+        db,
+        getUserRecordCollectionString(userId),
+        id
+    );
+
     try {
         const docSnap: DocumentSnapshot = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -80,16 +87,17 @@ export const getRecord = async (
 };
 
 export const createRecord = async (
-    token: string,
+    userId: string,
     record: MedicationRecord
 ): Promise<string> => {
-    console.log(`Creating record=${record} for token=${token}`);
+    console.log(`Creating record=${record} for user with id=${userId}`);
 
-    const docRef = await addDoc(collection(db, RECORDS_COLLECTION), {
+    const docRef = await addDoc(getUserRecordCollection(userId), {
         ...record,
         scheduledTime: Timestamp.fromDate(record.scheduledTime),
-        user: doc(db, 'users', token),
+        user: doc(db, 'users', userId),
     });
+
     return docRef.id;
 };
 

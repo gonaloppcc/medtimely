@@ -9,6 +9,7 @@ type MedCardProps = MedicationRecord & {
     // Added any extra props here
 };
 export const RecordCard = ({
+    id,
     amount,
     dosage,
     form,
@@ -35,7 +36,12 @@ export const RecordCard = ({
     const takenText = missed ? 'Not taken' : 'Taken';
 
     const onPress = () => {
-        nav.navigate('Record', { id: '1' });
+        // id has to be defined in order to navigate to the record
+        if (id == null) {
+            return;
+        }
+
+        nav.navigate('Record', { id });
     };
 
     return (
