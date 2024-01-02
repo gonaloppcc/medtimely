@@ -13,7 +13,7 @@ import { EditRecordScreen } from '../screens/authenticated/records/EditRecordScr
 import { ProfileHeader } from '../components/ProfileHeader';
 import { CreateRecordScreen } from '../screens/authenticated/records/CreateRecordScreen';
 import { AddRecordHeader } from '../components/AddRecordHeader';
-import { GroupsScreen } from '../screens/authenticated/groups/GroupsScreen'
+import { GroupsScreen } from '../screens/authenticated/groups/GroupsScreen';
 import { AddGroupHeader } from '../components/AddGroupHeader';
 import { CreateGroupScreen } from '../screens/authenticated/groups/CreateGroupScreen';
 import { GroupScreen } from '../screens/authenticated/groups/GroupScreen';
@@ -101,16 +101,15 @@ const GroupsScreens = () => {
                     headerLeft: () => <AddGroupHeader />,
                 }}
             />
-            <Stack.Screen name="Group" component={GroupScreen}/>
+            <Stack.Screen name="Group" component={GroupScreen} />
             <Stack.Screen
                 name="CreateGroup"
                 component={CreateGroupScreen}
                 options={{}}
             />
         </Stack.Navigator>
-    )
-}
-
+    );
+};
 
 const HomeNav = () => (
     <Tab.Navigator>

@@ -7,13 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 // TODO: This is just for now, it should be replaced with data from the database
 const GROUP_INFO = {
     groupName: 'name',
-    description: 'descr'
+    description: 'descr',
 };
 
 export function GroupScreen() {
     const navigation = useNavigation();
-    const { groupName, description } =
-        GROUP_INFO;
+    const { groupName, description } = GROUP_INFO;
 
     const headerRight = () => (
         <Appbar.Action

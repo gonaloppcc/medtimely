@@ -4,11 +4,11 @@ import { GroupCard } from './GroupCard';
 import { Group } from '../model/group';
 
 interface GroupProps {
-    groups: Group[]
+    groups: Group[];
 }
 
 export const GroupCards = ({ groups }: GroupProps) => {
-    //TODO GroupCard taking info 
+    //TODO GroupCard taking info
     return (
         <ScrollView
             contentContainerStyle={styles.scrollView}

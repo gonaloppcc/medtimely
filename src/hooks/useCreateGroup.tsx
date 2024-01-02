@@ -3,7 +3,7 @@ import { Group } from '../model/group';
 import { createGroup } from '../services/groups';
 
 interface UseCreateGroupReturn {
-    createGroup: (group: Group) => Promise<string>
+    createGroup: (group: Group) => Promise<string>;
 }
 
 export const useCreateGroup = (
@@ -21,6 +21,6 @@ export const useCreateGroup = (
 
     return {
         createGroup: async (group: Group) =>
-            await createGroupMutation.mutateAsync(group)
-    }
-}
+            await createGroupMutation.mutateAsync(group),
+    };
+};

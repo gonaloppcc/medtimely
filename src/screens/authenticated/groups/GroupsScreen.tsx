@@ -7,15 +7,12 @@ import { useGroups } from '../../../hooks/useGroups';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 
 export function GroupsScreen() {
-    
-    const { isSuccess, isLoading, isError, groups } = useGroups('1'); // TODO: Replace with user's token
+    const { isSuccess, isLoading, groups } = useGroups('1'); // TODO: Replace with user's token
     return (
         <View style={styles.container}>
             <Text variant="headlineMedium">Your Groups</Text>
             {isLoading && <ProgressIndicator />}
-            {isSuccess && (
-                <GroupCards groups={groups}/>
-            )}
+            {isSuccess && <GroupCards groups={groups} />}
         </View>
     );
 }

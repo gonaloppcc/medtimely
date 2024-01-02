@@ -4,11 +4,11 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Group } from '../model/group';
 import { useNav } from '../hooks/useNav';
 
-export const GroupCard = ({groupName, description}:Group) => {
+export const GroupCard = ({ groupName, description }: Group) => {
     const theme = useTheme();
     const nav = useNav();
 
-    const backgroundColor = theme.colors.errorContainer
+    const backgroundColor = theme.colors.errorContainer;
 
     const style = {
         ...styles.container,
@@ -16,14 +16,18 @@ export const GroupCard = ({groupName, description}:Group) => {
         borderColor: theme.colors.outline,
     };
 
-        //TODO: Change this later to a dynamic id and the corret route
-        const onPress = () => {
-            nav.navigate('Group', { id: '1' });
-        };
+    //TODO: Change this later to a dynamic id and the corret route
+    const onPress = () => {
+        nav.navigate('Group', { id: '1' });
+    };
 
     return (
         <TouchableOpacity style={style} onPress={onPress}>
-            <Icon size={40} source="account-group" color={theme.colors.onSurface} />
+            <Icon
+                size={40}
+                source="account-group"
+                color={theme.colors.onSurface}
+            />
             <View style={styles.innerStyle}>
                 <Text
                     variant="labelLarge"
@@ -35,7 +39,7 @@ export const GroupCard = ({groupName, description}:Group) => {
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {"Number of elements"}
+                    {'Number of elements'}
                 </Text>
                 <Text
                     variant="labelLarge"

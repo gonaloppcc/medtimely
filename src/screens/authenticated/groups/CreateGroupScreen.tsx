@@ -6,7 +6,6 @@ import { Input } from '../../../components/Input';
 import { Button } from '../../../components/Button';
 import { useNav } from '../../../hooks/useNav';
 import { useFormik } from 'formik';
-import { useAppTheme } from '../../../theme';
 import * as Yup from 'yup';
 import { ErrorMessage } from '../../../hooks/ErrorMessage';
 import { useCreateGroup } from '../../../hooks/useCreateGroup';
@@ -18,19 +17,17 @@ interface Values {
 
 const initialValues: Values = {
     groupName: '',
-    description: ''
+    description: '',
 };
 
 const schema = Yup.object().shape({
     groupName: Yup.string().required('Required'),
-    description: Yup.string().required('Required')
+    description: Yup.string().required('Required'),
 });
 
 export const CreateGroupScreen = () => {
-    const [submitErrorMessage, setSubmitErrorMessage] =
-        React.useState<string>('');
+    const [, setSubmitErrorMessage] = React.useState<string>('');
     const nav = useNav();
-    const theme = useAppTheme();
     const { createGroup } = useCreateGroup(
         '1', // TODO: Replace with user id in the future
         () => {
@@ -52,7 +49,7 @@ export const CreateGroupScreen = () => {
 
         try {
             await createGroup(newGroup);
-            nav.push("GroupsScreen")
+            nav.push('GroupsScreen');
         } catch (error) {
             const errorMessage =
                 (error.message as string) || 'Something went wrong';
