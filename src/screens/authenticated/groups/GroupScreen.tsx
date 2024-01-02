@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useNavOptions } from '../../../hooks/useNavOptions';
 
 // TODO: This is just for now, it should be replaced with data from the database
 const GROUP_INFO = {
@@ -18,16 +19,14 @@ export function GroupScreen() {
     const headerRight = () => (
         <Appbar.Action
             icon="pencil"
-            //onPress={() => navigation.navigate('EditRecord')}
+        //onPress={() => navigation.navigate('EditRecord')}
         />
     );
 
-    React.useEffect(() => {
-        navigation.setOptions({
-            headerTitle: groupName,
-            headerRight,
-        });
-    }, [navigation, groupName]);
+    useNavOptions({
+        headerTitle: groupName,
+        headerRight,
+    });
 
     return (
         <View style={styles.container}>

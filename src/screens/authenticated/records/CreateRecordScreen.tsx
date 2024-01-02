@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useCreateRecord } from '../../../hooks/useCreateRecord';
@@ -15,6 +15,7 @@ import * as Yup from 'yup';
 import { ErrorMessage } from '../../../hooks/ErrorMessage';
 import { Switch } from '../../../components/Switch';
 import { Picker } from '../../../components/Picker';
+import { useNavOptions } from '../../../hooks/useNavOptions';
 
 interface Values {
     name: string;
@@ -58,7 +59,7 @@ export const CreateRecordScreen = () => {
         }
     );
 
-    nav.setOptions({
+    useNavOptions({
         headerTitle: 'Add Record',
     });
 
