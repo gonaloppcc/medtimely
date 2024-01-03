@@ -5,6 +5,7 @@ import {
     doc,
     DocumentReference,
     DocumentSnapshot,
+    Firestore,
     getDoc,
     getDocs,
     query,
@@ -18,11 +19,10 @@ import {
 } from '../../model/MedicationRecord';
 
 import dayjs from 'dayjs';
-import { db } from '../../firebase';
 
 const SMALL_STALL_TIME = 1000;
 
-const getUserRecordCollection = (userId: string) => {
+const getUserRecordCollection = (db: Firestore, userId: string) => {
     return collection(db, `users/${userId}/records`);
 };
 
@@ -31,6 +31,7 @@ const getUserRecordCollectionString = (userId: string) => {
 };
 
 export const getRecords = async (
+    db: Firestore,
     userId: string,
     date: Date
 ): Promise<MedicationRecord[]> => {
@@ -42,9 +43,11 @@ export const getRecords = async (
     const startDate = dayjs(date).startOf('day').toDate();
     const endDate = dayjs(date).endOf('day').toDate();
 
+    const userRecordCollection = getUserRecordCollection(db, userId);
+
     // TODO: get only records of current user
     const q = query(
-        getUserRecordCollection(userId),
+        userRecordCollection,
         where('scheduledTime', '<=', endDate),
         where('scheduledTime', '>=', startDate)
     );
@@ -62,6 +65,7 @@ const RECORD: MedicationRecord = {
     scheduledTime: new Date(),
 };
 export const getRecord = async (
+    db: Firestore,
     id: string,
     userId: string
 ): Promise<MedicationRecord> => {
@@ -78,7 +82,9 @@ export const getRecord = async (
         if (docSnap.exists()) {
             return snapshotToRecord(docSnap);
         } else {
-            throw new Error(`No record with id=${id} exists`);
+            const err = new Error(`No record with id=${id} exists`);
+            console.error(err);
+            throw err;
         }
     } catch (e) {
         console.log(e);
@@ -87,16 +93,18 @@ export const getRecord = async (
 };
 
 export const createRecord = async (
+    db: Firestore,
     userId: string,
     record: MedicationRecord
 ): Promise<string> => {
     console.log(`Creating record=${record} for user with id=${userId}`);
 
+    const userRecordCollection = getUserRecordCollection(db, userId);
+
     try {
-        const docRef = await addDoc(getUserRecordCollection(userId), {
+        const docRef = await addDoc(userRecordCollection, {
             ...record,
             scheduledTime: Timestamp.fromDate(record.scheduledTime),
-            user: doc(db, 'users', userId),
         });
 
         console.log(`Created record with id=${docRef.id}`);

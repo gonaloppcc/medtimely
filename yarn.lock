@@ -5915,11 +5915,6 @@ firebase@^10.7.1:
     "@firebase/storage-compat" "0.3.3"
     "@firebase/util" "1.9.3"
 
-firelordjs@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/firelordjs/-/firelordjs-2.7.1.tgz#8090445d9c483a906ba0c1cfbac0d367ed4d18ac"
-  integrity sha512-oOyhDSFvhHU6F9e34Jj6ZOOSeRwc7dYAouPWhRzYzatYN609PzLgpXCKQoCL2tozrZSCfdJj0GxW/A5C/KmZTA==
-
 flat-cache@^3.0.4:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-3.2.0.tgz#2c0c2d5040c99b1632771a9d105725c0115363ee"
