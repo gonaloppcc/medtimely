@@ -20,6 +20,7 @@ import {
 } from '../../model/MedicationRecord';
 
 import dayjs from 'dayjs';
+import { ProjectError } from '../error';
 
 const SMALL_STALL_TIME = 1000;
 
@@ -83,13 +84,20 @@ export const getRecord = async (
         if (docSnap.exists()) {
             return snapshotToRecord(docSnap);
         } else {
-            const err = new Error(`No record with id=${id} exists`);
-            console.error(err);
+            throw new ProjectError(
+                'GETTING_RECORD_ERROR',
+                `No record with id=${id} exists`
+            );
+        }
+    } catch (err) {
+        if (err instanceof ProjectError) {
+            // Throw error if it has been defined here
             throw err;
         }
-    } catch (e) {
-        console.error('Error getting document: ', e);
-        throw new Error(
+        console.error('Error getting document: ', err);
+
+        throw new ProjectError(
+            'GETTING_RECORD_ERROR',
             `Error getting document on path=${getUserRecordCollectionString(
                 userId
             )}/${id}`
@@ -102,7 +110,9 @@ export const createRecord = async (
     userId: string,
     record: MedicationRecord
 ): Promise<string> => {
-    console.log(`Creating record=${record} for user with id=${userId}`);
+    console.log(
+        `Creating record=${JSON.stringify(record)} for user with id=${userId}`
+    );
 
     const userRecordCollection = getUserRecordCollection(db, userId);
 
@@ -115,9 +125,11 @@ export const createRecord = async (
         console.log(`Created record with id=${docRef.id}`);
 
         return docRef.id;
-    } catch (e) {
-        console.error('Error adding document: ', e);
-        throw new Error(
+        // @ts-expect-error TODO: fix this error
+    } catch (err: FirestoreError) {
+        console.error('Error adding document: ', err.message);
+        throw new ProjectError(
+            'ADDING_RECORD_ERROR',
             `Error adding document on path=${getUserRecordCollectionString(
                 userId
             )} with data=${JSON.stringify(record)}`
