@@ -148,10 +148,10 @@ export const deleteRecord = async (
     db: Firestore,
     userId: string,
     recordId: string
-),: Promise<void> => {
+): Promise<void> => {
     console.log(
         `Deleting record with id=${recordId} for user with id=${userId}`
- ,   );
+    );
 
     const userRecordCollection = getUserRecordCollection(db, userId);
 
@@ -162,10 +162,10 @@ export const deleteRecord = async (
         throw new Error(
             `Error deleting document on path=${getUserRecordCollectionString(
                 userId
- ,           )}/${recordId}`
- ,       );
+            )}/${recordId}`
+        );
     }
-}
+};
 
 const snapshotToRecord = (doc: DocumentSnapshot): MedicationRecord => {
     if (doc.exists()) {
