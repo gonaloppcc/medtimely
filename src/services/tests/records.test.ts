@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, expect, test } from '@jest/globals';
+import { afterAll, expect, test } from '@jest/globals';
 import { createRecord, deleteRecord, getRecord } from '../records';
 import {
     MedicationRecord,
