@@ -1,5 +1,10 @@
 import { afterAll, expect, test } from '@jest/globals';
-import { createRecord, deleteRecord, getRecord } from '../records';
+import {
+    createRecord,
+    deleteRecord,
+    getRecord,
+    updateRecord,
+} from '../records';
 import {
     MedicationRecord,
     MedicationRecordForm,
@@ -8,35 +13,35 @@ import { firebaseConfig } from '../../../firebaseConfig';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, terminate } from 'firebase/firestore';
 
-const TIMEOUT = 1000;
 const USER_ID = 'test';
 
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-test(
-    'createRecord&getRecord: should create a record and retrieve it',
-    async () => {
-        const RECORD: MedicationRecord = {
-            name: 'Fluoxetine',
-            dosage: '400mg',
-            form: MedicationRecordForm.TABLET,
-            amount: 3,
-            missed: true,
-            scheduledTime: new Date(),
-        };
+afterAll(async () => {
+    await terminate(db);
+    console.log('Database connection terminated');
+});
 
-        const recordId = await createRecord(db, USER_ID, RECORD);
+test('createRecord&getRecord: should create a record and retrieve it', async () => {
+    const RECORD: MedicationRecord = {
+        name: 'Fluoxetine',
+        dosage: '400mg',
+        form: MedicationRecordForm.TABLET,
+        amount: 3,
+        missed: true,
+        scheduledTime: new Date(),
+    };
 
-        const recordRetrieved = await getRecord(db, recordId, USER_ID);
+    const recordId = await createRecord(db, USER_ID, RECORD);
 
-        RECORD.id = recordId; // add the id to the record to compare
+    const recordRetrieved = await getRecord(db, recordId, USER_ID);
 
-        expect(recordRetrieved).toEqual(RECORD);
-    },
-    TIMEOUT
-);
+    RECORD.id = recordId; // add the id to the record to compare
+
+    expect(recordRetrieved).toEqual(RECORD);
+});
 
 test('deleteRecord: should delete a record', async () => {
     const RECORD: MedicationRecord = {
@@ -60,7 +65,32 @@ test('deleteRecord: should delete a record', async () => {
     }
 });
 
-afterAll(async () => {
-    await terminate(db);
-    console.log('Database connection terminated');
+test('updateRecord: should update a record', async () => {
+    const RECORD: MedicationRecord = {
+        name: 'Fluoxetine',
+        dosage: '400mg',
+        form: MedicationRecordForm.TABLET,
+        amount: 3,
+        missed: true,
+        scheduledTime: new Date(),
+    };
+
+    const recordId = await createRecord(db, USER_ID, RECORD);
+
+    const UPDATED_RECORD: MedicationRecord = {
+        name: 'Fluoxetine',
+        dosage: '400mg',
+        form: MedicationRecordForm.TABLET,
+        amount: 3,
+        missed: false,
+        scheduledTime: new Date(),
+    };
+
+    await updateRecord(db, USER_ID, recordId, UPDATED_RECORD);
+
+    const recordRetrieved = await getRecord(db, recordId, USER_ID);
+
+    UPDATED_RECORD.id = recordId; // add the id to the record to compare
+
+    expect(recordRetrieved).toEqual(UPDATED_RECORD);
 });

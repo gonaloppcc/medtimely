@@ -12,9 +12,11 @@ import { useAuthentication } from '../../../hooks/useAuthentication';
 
 export const EditRecordScreen = () => {
     const uid = useAuthentication()?.uid || '';
-    const { isLoading, isSuccess, record } = useRecord('1', uid); // TODO: Replace the token and id with the real ones
+    const recordId = '1'; // TODO: Replace the id with the real one
+    const { isLoading, isSuccess, record } = useRecord(recordId, uid);
     const { updateRecord } = useUpdateRecord(
-        '1',
+        uid,
+        recordId,
         () => {
             console.log('updated');
         },

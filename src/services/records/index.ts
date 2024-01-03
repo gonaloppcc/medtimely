@@ -11,18 +11,14 @@ import {
     getDocs,
     query,
     Timestamp,
+    updateDoc,
     where,
 } from 'firebase/firestore';
 
-import {
-    MedicationRecord,
-    MedicationRecordForm,
-} from '../../model/MedicationRecord';
+import { MedicationRecord } from '../../model/MedicationRecord';
 
 import dayjs from 'dayjs';
 import { ProjectError } from '../error';
-
-const SMALL_STALL_TIME = 1000;
 
 const getUserRecordCollection = (db: Firestore, userId: string) => {
     return collection(db, `users/${userId}/records`);
@@ -58,14 +54,7 @@ export const getRecords = async (
 
     return matchDocs.docs.map(snapshotToRecord);
 };
-const RECORD: MedicationRecord = {
-    name: 'Fluoxetine',
-    dosage: '400mg',
-    form: MedicationRecordForm.TABLET,
-    amount: 3,
-    missed: true,
-    scheduledTime: new Date(),
-};
+
 export const getRecord = async (
     db: Firestore,
     id: string,
@@ -79,28 +68,26 @@ export const getRecord = async (
         id
     );
 
-    try {
-        const docSnap: DocumentSnapshot = await getDoc(docRef);
-        if (docSnap.exists()) {
-            return snapshotToRecord(docSnap);
-        } else {
-            throw new ProjectError(
-                'GETTING_RECORD_ERROR',
-                `No record with id=${id} exists`
-            );
-        }
-    } catch (err) {
-        if (err instanceof ProjectError) {
-            // Throw error if it has been defined here
-            throw err;
-        }
-        console.error('Error getting document: ', err);
+    let docSnap: DocumentSnapshot;
 
+    try {
+        docSnap = await getDoc(docRef);
+    } catch (err) {
+        console.error('Error getting document: ', err);
         throw new ProjectError(
             'GETTING_RECORD_ERROR',
             `Error getting document on path=${getUserRecordCollectionString(
                 userId
             )}/${id}`
+        );
+    }
+
+    if (docSnap.exists()) {
+        return snapshotToRecord(docSnap);
+    } else {
+        throw new ProjectError(
+            'INVALID_RECORD_ID_ERROR',
+            `No record with id=${id} exists`
         );
     }
 };
@@ -138,22 +125,31 @@ export const createRecord = async (
 };
 
 export const updateRecord = async (
-    token: string,
+    db: Firestore,
+    userId: string,
+    recordId: string,
     record: MedicationRecord
-): Promise<MedicationRecord> => {
-    console.log(`Updating record=${record} for token=${token}`);
+): Promise<void> => {
+    console.log(`Updating record=${record} for token=${userId}`);
 
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            RECORD.name = record.name;
-            RECORD.dosage = record.dosage;
-            RECORD.form = record.form;
-            RECORD.amount = record.amount;
-            RECORD.missed = record.missed;
+    const userRecordCollection = getUserRecordCollection(db, userId);
 
-            resolve(RECORD);
-        }, SMALL_STALL_TIME);
-    });
+    const docRef = doc(userRecordCollection, recordId);
+
+    try {
+        await updateDoc(docRef, {
+            ...record,
+            scheduledTime: Timestamp.fromDate(record.scheduledTime),
+        });
+    } catch (e) {
+        console.error('Error updating document: ', e);
+        throw new ProjectError(
+            'UPDATING_RECORD_ERROR',
+            `Error updating document on path=${getUserRecordCollectionString(
+                userId
+            )}/${recordId} with data=${JSON.stringify(record)}`
+        );
+    }
 };
 
 export const deleteRecord = async (

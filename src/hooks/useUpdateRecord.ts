@@ -1,13 +1,15 @@
 import { MedicationRecord } from '../model/MedicationRecord';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateRecord } from '../services/records';
+import { db } from '../firebase';
 
 interface UseUpdateRecordReturn {
     updateRecord: (record: MedicationRecord) => void;
 }
 
 export const useUpdateRecord = (
-    token: string,
+    userId: string,
+    recordId: string,
     onSuccess: () => void,
     onError: (error: Error) => void
 ): UseUpdateRecordReturn => {
@@ -15,10 +17,10 @@ export const useUpdateRecord = (
 
     const updateRecordMutation = useMutation({
         mutationFn: async (record: MedicationRecord) => {
-            return await updateRecord(token, record);
+            await updateRecord(db, userId, recordId, record);
         },
-        onSuccess: (data, variables) => {
-            queryClient.setQueryData(['record', '1'], variables); // TODO: Replace the hardcoded id with the record id
+        onSuccess: (_, variables) => {
+            queryClient.setQueryData(['record', recordId], variables);
             onSuccess();
         },
         onError,
