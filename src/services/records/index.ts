@@ -2,6 +2,7 @@
 import {
     addDoc,
     collection,
+    deleteDoc,
     doc,
     DocumentReference,
     DocumentSnapshot,
@@ -45,7 +46,7 @@ export const getRecords = async (
 
     const userRecordCollection = getUserRecordCollection(db, userId);
 
-    // TODO: get only records of current user
+    // TODO: Catch any possible errors here
     const q = query(
         userRecordCollection,
         where('scheduledTime', '<=', endDate),
@@ -87,8 +88,12 @@ export const getRecord = async (
             throw err;
         }
     } catch (e) {
-        console.log(e);
-        throw e;
+        console.error('Error getting document: ', e);
+        throw new Error(
+            `Error getting document on path=${getUserRecordCollectionString(
+                userId
+            )}/${id}`
+        );
     }
 };
 
@@ -112,7 +117,11 @@ export const createRecord = async (
         return docRef.id;
     } catch (e) {
         console.error('Error adding document: ', e);
-        throw e;
+        throw new Error(
+            `Error adding document on path=${getUserRecordCollectionString(
+                userId
+            )} with data=${JSON.stringify(record)}`
+        );
     }
 };
 
@@ -134,6 +143,29 @@ export const updateRecord = async (
         }, SMALL_STALL_TIME);
     });
 };
+
+export const deleteRecord = async (
+    db: Firestore,
+    userId: string,
+    recordId: string
+),: Promise<void> => {
+    console.log(
+        `Deleting record with id=${recordId} for user with id=${userId}`
+ ,   );
+
+    const userRecordCollection = getUserRecordCollection(db, userId);
+
+    try {
+        await deleteDoc(doc(userRecordCollection, recordId));
+    } catch (e) {
+        console.error('Error deleting document: ', e);
+        throw new Error(
+            `Error deleting document on path=${getUserRecordCollectionString(
+                userId
+ ,           )}/${recordId}`
+ ,       );
+    }
+}
 
 const snapshotToRecord = (doc: DocumentSnapshot): MedicationRecord => {
     if (doc.exists()) {
