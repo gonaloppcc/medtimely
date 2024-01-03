@@ -1,9 +1,16 @@
-import { addDoc, collection, Timestamp, writeBatch } from 'firebase/firestore';
+// noinspection SpellCheckingInspection
+
+import { getFirestore, writeBatch } from 'firebase/firestore';
 import {
     MedicationRecord,
     MedicationRecordForm,
 } from '../src/model/MedicationRecord';
-import { db } from '../src/firebase';
+import { initializeApp } from 'firebase/app';
+import { createRecord } from '../src/services/records';
+import { firebaseConfig } from '../firebaseConfig';
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 if (process.argv.length !== 3) {
     // 3 because the first argument is node, the second is the script name
@@ -401,26 +408,6 @@ const RECORDS: MedicationRecord[] = [
     },
 ];
 
-const getUserRecordCollection = (userId: string) => {
-    return collection(db, `users/${userId}/records`);
-};
-
-const populateUserRecords = async (
-    userId: string,
-    record: MedicationRecord
-): Promise<string> => {
-    console.log(`Creating record=${record} for userId=${userId}`);
-
-    const userRecordsCollection = getUserRecordCollection(userId);
-
-    const docRef = await addDoc(userRecordsCollection, {
-        ...record,
-        scheduledTime: Timestamp.fromDate(record.scheduledTime),
-    });
-
-    return docRef.id;
-};
-
 console.log(`Creating ${RECORDS.length} records for userId=${userId}`);
 
 (async () => {
@@ -434,7 +421,7 @@ console.log(`Creating ${RECORDS.length} records for userId=${userId}`);
                 index * INTERVAL
             );
 
-            return await populateUserRecords(userId, record).then((id) => {
+            return await createRecord(db, userId, record).then((id) => {
                 console.log(`Created record with id=${id}`);
             });
         })

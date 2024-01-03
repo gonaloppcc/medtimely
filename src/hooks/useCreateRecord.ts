@@ -1,6 +1,7 @@
 import { MedicationRecord } from '../model/MedicationRecord';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createRecord } from '../services/records';
+import { db } from '../firebase';
 
 interface UseCreateRecordReturn {
     createRecord: (record: MedicationRecord) => Promise<string>;
@@ -14,7 +15,7 @@ export const useCreateRecord = (
     const queryClient = useQueryClient();
     const createRecordMutation = useMutation({
         mutationFn: async (record: MedicationRecord) => {
-            return await createRecord(userId, record);
+            return await createRecord(db, userId, record);
         },
         onSuccess: async (_, variables) => {
             await queryClient.invalidateQueries({

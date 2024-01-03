@@ -2,9 +2,11 @@
 import {
     addDoc,
     collection,
+    deleteDoc,
     doc,
     DocumentReference,
     DocumentSnapshot,
+    Firestore,
     getDoc,
     getDocs,
     query,
@@ -18,11 +20,11 @@ import {
 } from '../../model/MedicationRecord';
 
 import dayjs from 'dayjs';
-import { db } from '../../firebase';
+import { ProjectError } from '../error';
 
 const SMALL_STALL_TIME = 1000;
 
-const getUserRecordCollection = (userId: string) => {
+const getUserRecordCollection = (db: Firestore, userId: string) => {
     return collection(db, `users/${userId}/records`);
 };
 
@@ -31,6 +33,7 @@ const getUserRecordCollectionString = (userId: string) => {
 };
 
 export const getRecords = async (
+    db: Firestore,
     userId: string,
     date: Date
 ): Promise<MedicationRecord[]> => {
@@ -42,9 +45,11 @@ export const getRecords = async (
     const startDate = dayjs(date).startOf('day').toDate();
     const endDate = dayjs(date).endOf('day').toDate();
 
-    // TODO: get only records of current user
+    const userRecordCollection = getUserRecordCollection(db, userId);
+
+    // TODO: Catch any possible errors here
     const q = query(
-        getUserRecordCollection(userId),
+        userRecordCollection,
         where('scheduledTime', '<=', endDate),
         where('scheduledTime', '>=', startDate)
     );
@@ -62,6 +67,7 @@ const RECORD: MedicationRecord = {
     scheduledTime: new Date(),
 };
 export const getRecord = async (
+    db: Firestore,
     id: string,
     userId: string
 ): Promise<MedicationRecord> => {
@@ -78,33 +84,56 @@ export const getRecord = async (
         if (docSnap.exists()) {
             return snapshotToRecord(docSnap);
         } else {
-            throw new Error(`No record with id=${id} exists`);
+            throw new ProjectError(
+                'GETTING_RECORD_ERROR',
+                `No record with id=${id} exists`
+            );
         }
-    } catch (e) {
-        console.log(e);
-        throw e;
+    } catch (err) {
+        if (err instanceof ProjectError) {
+            // Throw error if it has been defined here
+            throw err;
+        }
+        console.error('Error getting document: ', err);
+
+        throw new ProjectError(
+            'GETTING_RECORD_ERROR',
+            `Error getting document on path=${getUserRecordCollectionString(
+                userId
+            )}/${id}`
+        );
     }
 };
 
 export const createRecord = async (
+    db: Firestore,
     userId: string,
     record: MedicationRecord
 ): Promise<string> => {
-    console.log(`Creating record=${record} for user with id=${userId}`);
+    console.log(
+        `Creating record=${JSON.stringify(record)} for user with id=${userId}`
+    );
+
+    const userRecordCollection = getUserRecordCollection(db, userId);
 
     try {
-        const docRef = await addDoc(getUserRecordCollection(userId), {
+        const docRef = await addDoc(userRecordCollection, {
             ...record,
             scheduledTime: Timestamp.fromDate(record.scheduledTime),
-            user: doc(db, 'users', userId),
         });
 
         console.log(`Created record with id=${docRef.id}`);
 
         return docRef.id;
-    } catch (e) {
-        console.error('Error adding document: ', e);
-        throw e;
+        // @ts-expect-error TODO: fix this error
+    } catch (err: FirestoreError) {
+        console.error('Error adding document: ', err.message);
+        throw new ProjectError(
+            'ADDING_RECORD_ERROR',
+            `Error adding document on path=${getUserRecordCollectionString(
+                userId
+            )} with data=${JSON.stringify(record)}`
+        );
     }
 };
 
@@ -125,6 +154,29 @@ export const updateRecord = async (
             resolve(RECORD);
         }, SMALL_STALL_TIME);
     });
+};
+
+export const deleteRecord = async (
+    db: Firestore,
+    userId: string,
+    recordId: string
+): Promise<void> => {
+    console.log(
+        `Deleting record with id=${recordId} for user with id=${userId}`
+    );
+
+    const userRecordCollection = getUserRecordCollection(db, userId);
+
+    try {
+        await deleteDoc(doc(userRecordCollection, recordId));
+    } catch (e) {
+        console.error('Error deleting document: ', e);
+        throw new Error(
+            `Error deleting document on path=${getUserRecordCollectionString(
+                userId
+            )}/${recordId}`
+        );
+    }
 };
 
 const snapshotToRecord = (doc: DocumentSnapshot): MedicationRecord => {

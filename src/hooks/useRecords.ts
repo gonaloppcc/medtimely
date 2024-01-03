@@ -3,6 +3,7 @@ import { MedicationRecord } from '../model/MedicationRecord';
 import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
 import { getRecords } from '../services/records';
+import { db } from '../firebase';
 
 export interface useRecordsProps extends FetcherProps {
     records: MedicationRecord[];
@@ -18,7 +19,7 @@ export const useRecords = (userId: string, date: Date): useRecordsProps => {
         refetch,
     } = useQuery({
         queryKey: ['records', date, userId],
-        queryFn: () => getRecords(userId, date),
+        queryFn: () => getRecords(db, userId, date),
     });
 
     return {
