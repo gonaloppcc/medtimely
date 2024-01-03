@@ -3,12 +3,12 @@ import { useState } from 'react';
 
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { MedicationRecordForm } from '../../model/MedicationRecord';
-import { MedicationFormFilterButtons } from '../../components/MedicationFormFilterButtons';
-import { useMedications } from '../../hooks/useMedications';
-import { MedicineCards } from '../../components/MedicineCards';
-import { ProgressIndicator } from '../../components/ProgressIndicator';
-import { useNavOptions } from '../../hooks/useNavOptions';
+import { MedicationRecordForm } from '../../../model/MedicationRecord';
+import { MedicationFormFilterButtons } from '../../../components/MedicationFormFilterButtons';
+import { useMedications } from '../../../hooks/useMedications';
+import { MedicineCards } from '../../../components/MedicineCards';
+import { ProgressIndicator } from '../../../components/ProgressIndicator';
+import { useNavOptions } from '../../../hooks/useNavOptions';
 
 export function MedicationsScreen() {
     const [selectForm, setSelectForm] = useState<MedicationRecordForm | ''>('');
@@ -37,7 +37,6 @@ export function MedicationsScreen() {
 
     return (
         <View style={styles.container}>
-            <Text>Medications Screen</Text>
             <MedicationFormFilterButtons
                 forms={medicationForms}
                 onValueChange={onSelectFilter}

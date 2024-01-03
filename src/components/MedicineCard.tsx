@@ -32,7 +32,7 @@ export const MedicationCard = ({
     //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
         subtitle;
-        nav.navigate('Record', { id: '1' });
+        nav.navigate('Medication', { id: '1' });
     };
 
     return (

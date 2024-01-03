@@ -4,7 +4,7 @@ import { LoginScreen } from '../screens/LoginScreen';
 import { HomeScreen } from '../screens/authenticated/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RecordScreen } from '../screens/authenticated/records/RecordScreen';
-import { MedicationsScreen } from '../screens/authenticated/MedicationsScreen';
+import { MedicationsScreen } from '../screens/authenticated/medications/MedicationsScreen';
 import { RecordsScreen } from '../screens/authenticated/records/RecordsScreen';
 import { SettingsScreen } from '../screens/authenticated/SettingsScreen';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
@@ -17,6 +17,7 @@ import { GroupsScreen } from '../screens/authenticated/groups/GroupsScreen';
 import { AddGroupHeader } from '../components/AddGroupHeader';
 import { CreateGroupScreen } from '../screens/authenticated/groups/CreateGroupScreen';
 import { GroupScreen } from '../screens/authenticated/groups/GroupScreen';
+import { MedicationScreen } from '../screens/authenticated/medications/MedicationScreen';
 
 export type RootStackParamList = {
     // Unauthenticated screens
@@ -29,7 +30,10 @@ export type RootStackParamList = {
     Home: {
         day?: string; // Day string since Date is not serializable
     };
+
     Medications: undefined;
+    Medication: { id: string };
+
     Records: undefined;
     Settings: undefined;
 
@@ -111,6 +115,27 @@ const GroupsScreens = () => {
     );
 };
 
+const MedicationsScreens = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Medications"
+                component={MedicationsScreen}
+                options={{
+                    headerRight: () => <ProfileHeader />,
+                }}
+            />
+            <Stack.Screen
+                name="Medication"
+                component={MedicationScreen}
+                options={{
+                    headerRight: () => <ProfileHeader />,
+                }}
+            />
+        </Stack.Navigator>
+    );
+};
+
 const HomeNav = () => (
     <Tab.Navigator>
         <Tab.Screen
@@ -124,7 +149,7 @@ const HomeNav = () => (
         />
         <Tab.Screen
             name="Medications"
-            component={MedicationsScreen}
+            component={MedicationsScreens}
             options={{
                 tabBarIcon: ({ color }) => (
                     <Icon source="pill" color={color} size={24} />

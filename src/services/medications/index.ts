@@ -180,3 +180,19 @@ export const getMedications = async (token: string): Promise<Medication[]> => {
         }, 1000);
     });
 };
+
+export const getMedication = async (
+    userId: string,
+    id: string
+): Promise<Medication> => {
+    console.log(`Fetching medication with id=${id} for user with id=${userId}`);
+
+    //TODO: change this
+    const ID = 1;
+
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(MEDICATIONS[ID]);
+        }, 1000);
+    });
+};
