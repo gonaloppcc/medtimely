@@ -13,9 +13,7 @@
             "resizeMode": "contain",
             "backgroundColor": "#c31a38"
         },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
+        "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
             "googleServicesFile": "./GoogleService-Info.plist",

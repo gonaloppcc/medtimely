@@ -18,7 +18,7 @@ export const GroupCard = ({ groupName, description }: Group) => {
 
     //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
-        router.push({ pathname: "/(home)/groups/[id]", params: { id: '1' } });
+        router.push({ pathname: '/(home)/groups/[id]', params: { id: '1' } });
     };
 
     return (
