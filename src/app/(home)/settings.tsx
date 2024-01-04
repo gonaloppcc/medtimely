@@ -1,12 +1,15 @@
 import * as React from 'react';
 
-import { Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
+import { signOut } from '../../services/auth';
 
 export default function SettingsScreen() {
     return (
         <View style={styles.container}>
             <Text>Settings Screen</Text>
+
+            <Button onPress={() => { signOut() }} mode='contained'>Logout</Button>
         </View>
     );
 }
