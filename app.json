@@ -3,6 +3,7 @@
         "name": "MedTimely",
         "slug": "medtimely",
         "version": "1.0.0",
+        "scheme": "medtimely",
         "orientation": "portrait",
         "owner": "medtimely",
         "icon": "./assets/icon.png",
@@ -12,7 +13,9 @@
             "resizeMode": "contain",
             "backgroundColor": "#c31a38"
         },
-        "assetBundlePatterns": ["**/*"],
+        "assetBundlePatterns": [
+            "**/*"
+        ],
         "ios": {
             "supportsTablet": true,
             "googleServicesFile": "./GoogleService-Info.plist",

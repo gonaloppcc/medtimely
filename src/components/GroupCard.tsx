@@ -2,11 +2,11 @@ import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Group } from '../model/group';
-import { useNav } from '../hooks/useNav';
+import { useRouter } from 'expo-router';
 
 export const GroupCard = ({ groupName, description }: Group) => {
     const theme = useTheme();
-    const nav = useNav();
+    const router = useRouter();
 
     const backgroundColor = theme.colors.errorContainer;
 
@@ -18,7 +18,7 @@ export const GroupCard = ({ groupName, description }: Group) => {
 
     //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
-        nav.navigate('Group', { id: '1' });
+        router.push({ pathname: "/(home)/groups/[id]", params: { id: '1' } });
     };
 
     return (
