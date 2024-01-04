@@ -11,7 +11,14 @@ export default function SettingsScreen() {
         <View style={styles.container}>
             <Text>Settings Screen</Text>
 
-            <Button onPress={() => { signOut() }} mode='contained'>Logout</Button>
+            <Button
+                onPress={() => {
+                    signOut();
+                }}
+                mode="contained"
+            >
+                Logout
+            </Button>
         </View>
     );
 }
