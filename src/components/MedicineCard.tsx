@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useNav } from '../hooks/useNav';
+import { useRouter } from 'expo-router';
 import { Medicine } from '../model/Medicine';
 import { MedicationIcon } from './MedicationIcon';
 
@@ -15,7 +15,7 @@ export const MedicationCard = ({
     name,
 }: MedCardProps) => {
     const theme = useTheme();
-    const nav = useNav();
+    const router = useRouter();
 
     const title = name;
 
@@ -31,8 +31,7 @@ export const MedicationCard = ({
 
     //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
-        subtitle;
-        nav.navigate('Medication', { id: '1' });
+        router.push({ pathname: '/medications/[id]', params: { id: '1' } });
     };
 
     return (

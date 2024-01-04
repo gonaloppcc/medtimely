@@ -6,7 +6,7 @@ import { GroupCards } from '../../../components/GroupCards';
 import { useGroups } from '../../../hooks/useGroups';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 
-export function GroupsScreen() {
+export default function GroupsScreen() {
     const { isSuccess, isLoading, groups } = useGroups('1'); // TODO: Replace with user's token
     return (
         <View style={styles.container}>

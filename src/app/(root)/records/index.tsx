@@ -1,12 +1,16 @@
 import * as React from 'react';
 
-import { Text } from 'react-native-paper';
+import { FAB, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
+import { Link } from 'expo-router';
 
-export function RecordsScreen() {
+export default function RecordsScreen() {
     return (
         <View style={styles.container}>
             <Text>Records Screen</Text>
+            <Link asChild href="/records/new">
+                <FAB icon="plus" style={styles.fab} />
+            </Link>
         </View>
     );
 }
@@ -18,5 +22,11 @@ const styles = StyleSheet.create({
         height: '100%',
         display: 'flex',
         gap: 32,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
     },
 });

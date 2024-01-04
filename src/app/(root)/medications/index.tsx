@@ -8,9 +8,8 @@ import { MedicationFormFilterButtons } from '../../../components/MedicationFormF
 import { useMedications } from '../../../hooks/useMedications';
 import { MedicineCards } from '../../../components/MedicineCards';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
-import { useNavOptions } from '../../../hooks/useNavOptions';
 
-export function MedicationsScreen() {
+export default function MedicationsScreen() {
     const [selectForm, setSelectForm] = useState<MedicationRecordForm | ''>('');
     const { isSuccess, isLoading, isError, medications } = useMedications('1'); // TODO: Replace with user's token
 
@@ -22,10 +21,6 @@ export function MedicationsScreen() {
         selectForm === ''
             ? medications
             : medications.filter((med) => med.form === selectForm);
-
-    useNavOptions({
-        headerTitle: 'Medications',
-    });
 
     const onSelectFilter = (newValue: '' | MedicationRecordForm) => {
         if (selectForm !== newValue) {

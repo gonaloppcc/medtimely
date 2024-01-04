@@ -2,7 +2,7 @@ import { User } from '@firebase/auth';
 import React from 'react';
 import { onAuthStateChanged } from '../services/auth';
 
-const AuthenticatedUserContext = React.createContext<User | null>(null);
+const AuthenticatedUserContext = React.createContext<{ user: User | null, isLoading: boolean }>({ isLoading: true, user: null });
 
 const AuthenticationProvider = ({
     children,
@@ -10,9 +10,11 @@ const AuthenticationProvider = ({
     children: React.ReactNode;
 }) => {
     const [user, setUser] = React.useState<User | null>(null);
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
     React.useEffect(() => {
         return onAuthStateChanged((newUser) => {
+            setIsLoading(false);
             // User just logged out
             if (!newUser) {
                 setUser(null);
@@ -24,7 +26,7 @@ const AuthenticationProvider = ({
     }, []);
 
     return (
-        <AuthenticatedUserContext.Provider value={user}>
+        <AuthenticatedUserContext.Provider value={{ user, isLoading }}>
             {children}
         </AuthenticatedUserContext.Provider>
     );

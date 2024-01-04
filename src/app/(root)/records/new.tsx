@@ -45,12 +45,12 @@ const schema = Yup.object().shape({
     time: Yup.string().required('Required'),
 });
 
-export const CreateRecordScreen = () => {
+export default function CreateRecordScreen() {
     const [submitErrorMessage, setSubmitErrorMessage] =
         React.useState<string>('');
     const nav = useNav();
     const theme = useAppTheme();
-    const uid = useAuthentication()?.uid || '';
+    const uid = useAuthentication().user?.uid || '';
     const { createRecord } = useCreateRecord(
         uid,
         (newRecord) => {
@@ -224,7 +224,7 @@ export const CreateRecordScreen = () => {
             </Button>
         </ScrollView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     form: {

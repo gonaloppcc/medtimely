@@ -1,9 +1,9 @@
 import { StackNavigationOptions } from '@react-navigation/stack';
-import { useNav } from './useNav';
+import { useNavigation } from 'expo-router';
 import { useEffect } from 'react';
 
 export const useNavOptions = (options: Partial<StackNavigationOptions>) => {
-    const nav = useNav();
+    const nav = useNavigation();
     useEffect(() => {
         nav.setOptions(options);
     }, [nav, options]);

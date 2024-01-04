@@ -10,7 +10,7 @@ const GROUP_INFO = {
     description: 'descr',
 };
 
-export function GroupScreen() {
+export default function GroupScreen({ id }) {
     const { groupName, description } = GROUP_INFO;
 
     const headerRight = () => (

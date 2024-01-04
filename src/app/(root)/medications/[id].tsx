@@ -13,16 +13,13 @@ import { useAppTheme } from '../../../theme';
 import { useRecords } from '../../../hooks/useRecords';
 import { RecordCards } from '../../../components/RecordCards';
 
-export function MedicationScreen() {
-    const nav = useNavigation();
-    const route = useRoute();
+export default function MedicationScreen({ id }) {
     const theme = useAppTheme();
+    const { user } = useAuthentication();
 
-    // @ts-expect-error TODO: Fix this if possible. This is a mistype in the screens options types
-    const medicationId = route.params!.id as string;
-    const uid = useAuthentication()?.uid || '';
+    const uid = user?.uid || '';
     const { isSuccess, isLoading, isError, medication } = useMedication(
-        medicationId,
+        id,
         uid
     );
 
@@ -41,7 +38,6 @@ export function MedicationScreen() {
     });
 
     const initialSelectedDay = new Date();
-    const user = useAuthentication();
 
     //TODO: Change this to receive the last 10 records of that medicine.
     // Receiving an array with this {day, record}

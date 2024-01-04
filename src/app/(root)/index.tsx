@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuthentication';
@@ -13,8 +12,8 @@ import { useRoute } from '../../hooks/useRoute';
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
-export function HomeScreen() {
-    const user = useAuthentication();
+export default function HomeScreen() {
+    const { user } = useAuthentication();
     const { params } = useRoute<'Home'>();
     const initialSelectedDay = new Date(
         params?.day ?? new Date().toISOString()

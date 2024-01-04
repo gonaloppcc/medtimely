@@ -6,7 +6,7 @@ import { useNav } from '../hooks/useNav';
 
 export const ProfileHeader = () => {
     const nav = useNav();
-    const user = useAuthentication();
+    const { user } = useAuthentication();
     if (user) {
         const onProfilePress = async () => {
             await signOut();

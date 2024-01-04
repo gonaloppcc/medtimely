@@ -1,22 +1,21 @@
 import React from 'react';
 import { View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
-import { useRecord } from '../../../hooks/useRecord';
-import { RecordCard } from '../../../components/RecordCard';
-import { useUpdateRecord } from '../../../hooks/useUpdateRecord';
+import { useRecord } from '../../../../hooks/useRecord';
+import { RecordCard } from '../../../../components/RecordCard';
+import { useUpdateRecord } from '../../../../hooks/useUpdateRecord';
 import {
     MedicationRecord,
     MedicationRecordForm,
-} from '../../../model/MedicationRecord';
-import { useAuthentication } from '../../../hooks/useAuthentication';
+} from '../../../../model/MedicationRecord';
+import { useAuthentication } from '../../../../hooks/useAuthentication';
 
-export const EditRecordScreen = () => {
-    const uid = useAuthentication()?.uid || '';
-    const recordId = '1'; // TODO: Replace the id with the real one
-    const { isLoading, isSuccess, record } = useRecord(recordId, uid);
+export const EditRecordScreen = ({ id }) => {
+    const uid = useAuthentication().user?.uid || '';
+    const { isLoading, isSuccess, record } = useRecord(id, uid);
     const { updateRecord } = useUpdateRecord(
         uid,
-        recordId,
+        id,
         () => {
             console.log('updated');
         },
