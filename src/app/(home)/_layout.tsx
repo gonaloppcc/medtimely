@@ -60,6 +60,7 @@ export default function HomeLayout() {
       name="medications"
       options={{
         title: "Medications",
+        headerShown: false,
         tabBarIcon: ({ color }) => (
           <Icon source="pill" color={color} size={24} />
         ),
@@ -70,6 +71,7 @@ export default function HomeLayout() {
       name="records"
       options={{
         title: "Records",
+        headerShown: false,
         tabBarIcon: ({ color }) => (
           <Icon source="account-circle" color={color} size={24} />
         ),
@@ -80,6 +82,7 @@ export default function HomeLayout() {
       name="groups"
       options={{
         title: "Groups",
+        headerShown: false,
         tabBarIcon: ({ color }) => (
           <Icon source="account-circle" color={color} size={24} />
         ),
