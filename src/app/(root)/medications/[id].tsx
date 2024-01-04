@@ -14,10 +14,10 @@ import { useRecords } from '../../../hooks/useRecords';
 import { RecordCards } from '../../../components/RecordCards';
 
 export default function MedicationScreen({ id }) {
-    const route = useRoute();
     const theme = useAppTheme();
+    const { user } = useAuthentication();
 
-    const uid = useAuthentication()?.uid || '';
+    const uid = user?.uid || '';
     const { isSuccess, isLoading, isError, medication } = useMedication(
         id,
         uid
@@ -38,7 +38,6 @@ export default function MedicationScreen({ id }) {
     });
 
     const initialSelectedDay = new Date();
-    const user = useAuthentication();
 
     //TODO: Change this to receive the last 10 records of that medicine.
     // Receiving an array with this {day, record}

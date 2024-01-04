@@ -4,9 +4,9 @@ import { BottomNavigation, Icon } from 'react-native-paper';
 import { useAuthentication } from '../../hooks/useAuthentication';
 
 export default function HomeLayout() {
-  const user = useAuthentication();
+  const { user, isLoading } = useAuthentication();
 
-  if (!user) {
+  if (!user && !isLoading) {
     return <Redirect href="/auth/signup" />;
   }
 

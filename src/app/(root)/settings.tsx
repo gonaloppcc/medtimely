@@ -3,8 +3,10 @@ import * as React from 'react';
 import { Button, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { signOut } from '../../services/auth';
+import { useAuthentication } from '../../hooks/useAuthentication';
 
 export default function SettingsScreen() {
+    const { user, isLoading } = useAuthentication();
     return (
         <View style={styles.container}>
             <Text>Settings Screen</Text>

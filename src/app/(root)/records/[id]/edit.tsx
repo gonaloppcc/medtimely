@@ -11,7 +11,7 @@ import {
 import { useAuthentication } from '../../../../hooks/useAuthentication';
 
 export const EditRecordScreen = ({ id }) => {
-    const uid = useAuthentication()?.uid || '';
+    const uid = useAuthentication().user?.uid || '';
     const { isLoading, isSuccess, record } = useRecord(id, uid);
     const { updateRecord } = useUpdateRecord(
         uid,

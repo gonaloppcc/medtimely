@@ -8,7 +8,7 @@ export default function RecordsScreen() {
     return (
         <View style={styles.container}>
             <Text>Records Screen</Text>
-            <Link asChild href="/(home)/records/new">
+            <Link asChild href="/records/new">
                 <FAB icon="plus" style={styles.fab} />
             </Link>
         </View>

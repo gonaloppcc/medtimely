@@ -6,13 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 import { useNavOptions } from '../../../../hooks/useNavOptions';
 import { useRecord } from '../../../../hooks/useRecord';
 import { useAuthentication } from '../../../../hooks/useAuthentication';
-import { useRoute } from '../../../../hooks/useRoute';
 import { ProgressIndicator } from '../../../../components/ProgressIndicator';
 
 export default function RecordScreen({ id }) {
     const nav = useNavigation();
 
-    const uid = useAuthentication()?.uid || '';
+    const uid = useAuthentication().user?.uid || '';
     const { isSuccess, isLoading, isError, record } = useRecord(id, uid);
 
     const headerRight = () => (

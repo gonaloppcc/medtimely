@@ -50,7 +50,7 @@ export default function CreateRecordScreen() {
         React.useState<string>('');
     const nav = useNav();
     const theme = useAppTheme();
-    const uid = useAuthentication()?.uid || '';
+    const uid = useAuthentication().user?.uid || '';
     const { createRecord } = useCreateRecord(
         uid,
         (newRecord) => {

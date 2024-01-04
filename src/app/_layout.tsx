@@ -10,6 +10,7 @@ import deepmerge from 'ts-deepmerge';
 
 import { CombinedDarkTheme, CombinedDefaultTheme, themeFonts } from '../theme';
 import { PaperProvider } from 'react-native-paper';
+import { useAuthentication } from '../hooks/useAuthentication';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,12 +21,13 @@ export default function RootLayout() {
     const [fontsLoaded, fontError] = useFonts({
         'Roboto Serif': require('../../assets/fonts/RobotoSerif.ttf'),
     });
+    const authIsLoading = useAuthentication().isLoading;
 
     useCallback(() => {
-        if (fontsLoaded || fontError) {
+        if ((fontsLoaded || fontError) && !authIsLoading) {
             SplashScreen.hideAsync();
         }
-    }, [fontsLoaded, fontError]);
+    }, [fontsLoaded, fontError, authIsLoading]);
 
     if (!fontsLoaded && !fontError) return null;
     const inUseTheme =

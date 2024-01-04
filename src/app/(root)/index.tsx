@@ -13,7 +13,7 @@ import { useRoute } from '../../hooks/useRoute';
 const startDay = new Date();
 
 export default function HomeScreen() {
-    const user = useAuthentication();
+    const { user } = useAuthentication();
     const { params } = useRoute<'Home'>();
     const initialSelectedDay = new Date(
         params?.day ?? new Date().toISOString()
