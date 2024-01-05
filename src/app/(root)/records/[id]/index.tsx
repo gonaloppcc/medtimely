@@ -36,7 +36,7 @@ export default function RecordScreen({ id }) {
                     <Text variant="headlineMedium">{record!.name}</Text>
                     <Text variant="labelMedium">{record!.dosage}</Text>
                     <Text variant="labelMedium">{record!.form}</Text>
-                    <Text variant="labelMedium">{record!.amount}</Text>
+                    <Text variant="labelMedium">{record!.units}</Text>
                     <Text variant="labelMedium">
                         {record!.scheduledTime.toDateString()}
                     </Text>

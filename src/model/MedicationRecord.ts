@@ -3,7 +3,7 @@ export interface MedicationRecord {
     name: string;
     dosage: string;
     form: MedicationRecordForm;
-    amount?: number;
+    units?: number;
     missed?: boolean;
     scheduledTime: Date;
 }

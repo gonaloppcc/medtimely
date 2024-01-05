@@ -10,7 +10,7 @@ type MedCardProps = MedicationRecord & {
 };
 export const RecordCard = ({
     id,
-    amount,
+    units,
     dosage,
     form,
     missed,
@@ -19,7 +19,7 @@ export const RecordCard = ({
     const theme = useTheme();
     const nav = useNav();
 
-    const title = amount == null || amount == 1 ? name : `${name} (x${amount})`;
+    const title = units == null || units == 1 ? name : `${name} (x${units})`;
 
     const backgroundColor = missed
         ? theme.colors.errorContainer

@@ -29,7 +29,7 @@ test('createRecord&getRecord: should create a record and retrieve it', async () 
         name: 'Fluoxetine',
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
-        amount: 3,
+        units: 3,
         missed: true,
         scheduledTime: new Date(),
     };
@@ -48,7 +48,7 @@ test('deleteRecord: should delete a record', async () => {
         name: 'Fluoxetine',
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
-        amount: 3,
+        units: 3,
         missed: true,
         scheduledTime: new Date(),
     };
@@ -70,7 +70,7 @@ test('updateRecord: should update a record', async () => {
         name: 'Fluoxetine',
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
-        amount: 3,
+        units: 3,
         missed: true,
         scheduledTime: new Date(),
     };
@@ -81,7 +81,7 @@ test('updateRecord: should update a record', async () => {
         name: 'Fluoxetine',
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
-        amount: 3,
+        units: 3,
         missed: false,
         scheduledTime: new Date(),
     };

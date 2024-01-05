@@ -27,7 +27,7 @@ export const EditRecordScreen = ({ id }) => {
     const onPressHandler = () => {
         const newRecord: MedicationRecord = {
             name: record?.name == 'Paracetamol' ? 'Ibuprofen' : 'Paracetamol',
-            amount: 100,
+            units: 100,
             dosage: '100mg',
             form: MedicationRecordForm.TABLET,
             missed: false,

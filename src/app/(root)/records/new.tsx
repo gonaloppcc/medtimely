@@ -29,7 +29,7 @@ interface Values {
 
 const initialValues: Values = {
     name: '',
-    amount: 1,
+    units: 1,
     dosage: '',
     form: MedicationRecordForm.TABLET,
     missed: false,

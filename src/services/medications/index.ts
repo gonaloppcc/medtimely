@@ -1,176 +1,140 @@
 import { Medication } from '../../model/medication';
 import { MedicationRecordForm } from '../../model/MedicationRecord';
+import { addDoc, collection, Firestore } from 'firebase/firestore';
+import { ProjectError } from '../error';
 
 const MEDICATIONS: Medication[] = [
     {
-        name: 'Paracetamol',
-        amount: 1,
-        dosage: '500mg',
+        name: 'Brufenon',
+        activeSubstance: 'Ibuprofen + Paracetamol',
+        dosage: '200 mg + 500 mg',
         form: MedicationRecordForm.TABLET,
-        time: '12:00',
+        administration: 'Oral use',
+        isGeneric: true,
+        presentations: [
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: 4 * 12, // 4 years
+                    temperature: null,
+                    conditions: null,
+                },
+                pricing: {
+                    units: 20,
+                },
+                safetyFeatures: false,
+            },
+        ],
     },
     {
-        name: 'Vitamin C',
-        amount: 2,
-        dosage: '100mg',
-        form: MedicationRecordForm.INJECTION,
-        time: '13:00',
-    },
-    {
-        name: 'Brufen',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.LIQUID,
-        time: '17:00',
-    },
-    {
-        name: 'Cough Syrup',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.CAPSULE,
-        time: '17:00',
-    },
-    {
-        name: 'Dextromethorphan',
-        amount: 3,
-        dosage: '200mg',
+        name: 'Vipidia',
+        activeSubstance: 'alogliptin',
         form: MedicationRecordForm.TABLET,
-        time: '08:00',
+        dosage: '12.5 mg',
+        aimTitular: 'Takeda Pharma A/S',
+        comercialization: true,
+        isGeneric: false,
+        administration: 'Oral use',
+        presentations: [
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: 4 * 12, // 4 years
+                    temperature: null,
+                    conditions: null,
+                },
+                pricing: {
+                    units: 14,
+                    pvp: 9.97,
+                    maxPrice: 10.44,
+                },
+                safetyFeatures: true,
+            },
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: 4 * 12, // 4 years
+                    temperature: null,
+                    conditions: null,
+                },
+                pricing: {
+                    units: 28,
+                    pvp: 19.84,
+                    maxPrice: 19.84,
+                },
+                safetyFeatures: true,
+            },
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: 4 * 12, // 4 years
+                    temperature: null,
+                    conditions: null,
+                },
+                pricing: {
+                    units: 56,
+                    isNotMarketed: true,
+                },
+                safetyFeatures: true,
+            },
+        ],
     },
     {
-        name: 'Erythromycin',
-        amount: 23,
-        dosage: '600mg',
-        form: MedicationRecordForm.INJECTION,
-        time: '12:00',
-    },
-    {
-        name: 'Folic Acid',
-        amount: 4,
-        dosage: '500mg',
-        form: MedicationRecordForm.LIQUID,
-        time: '17:00',
-    },
-    {
-        name: 'Guaifenesin',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.CAPSULE,
-        time: '17:00',
-    },
-    {
-        name: 'Hydrocodone',
-        amount: 1,
-        dosage: '50mg',
+        name: 'Vipidia',
+        activeSubstance: 'alogliptin',
         form: MedicationRecordForm.TABLET,
-        time: '08:00',
-    },
-    {
-        name: 'Ibuprofen',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.INJECTION,
-        time: '12:00',
-    },
-    {
-        name: 'Loratadine',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.LIQUID,
-        time: '17:00',
-    },
-    {
-        name: 'Metformin',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.CAPSULE,
-        time: '17:00',
-    },
-    {
-        name: 'Naproxen',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.TABLET,
-        time: '08:00',
-    },
-    {
-        name: 'Omeprazole',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.INJECTION,
-        time: '12:00',
-    },
-    {
-        name: 'Pantoprazole',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.LIQUID,
-        time: '17:00',
-    },
-    {
-        name: 'Quetiapine',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.CAPSULE,
-        time: '17:00',
-    },
-    {
-        name: 'Ranitidine',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.TABLET,
-        time: '08:00',
-    },
-    {
-        name: 'Sertraline',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.INJECTION,
-        time: '12:00',
-    },
-    {
-        name: 'Tramadol',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.LIQUID,
-        time: '17:00',
-    },
-    {
-        name: 'Vitamin B12',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.CAPSULE,
-        time: '17:00',
-    },
-    {
-        name: 'Vitamin D',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.TABLET,
-        time: '08:00',
-    },
-    {
-        name: 'Warfarin',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.INJECTION,
-        time: '12:00',
-    },
-    {
-        name: 'Xanax',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.LIQUID,
-        time: '17:00',
-    },
-    {
-        name: 'Zolpidem',
-        amount: 1,
-        dosage: '50mg',
-        form: MedicationRecordForm.CAPSULE,
-        time: '17:00',
+        dosage: '25 mg',
+        aimTitular: 'Takeda Pharma A/S',
+        comercialization: true,
+        isGeneric: false,
+        administration: 'Oral use',
+        presentations: [
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: 4 * 12, // 4 years
+                    temperature: null,
+                    conditions: null,
+                },
+                pricing: {
+                    units: 14,
+                    pvp: 9.97,
+                    maxPrice: 10.44,
+                },
+                safetyFeatures: true,
+            },
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: 4 * 12, // 4 years
+                    temperature: null,
+                    conditions: null,
+                },
+                pricing: {
+                    units: 28,
+                    pvp: 19.84,
+                    maxPrice: 19.84,
+                },
+                safetyFeatures: true,
+            },
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: 4 * 12, // 4 years
+                    temperature: null,
+                    conditions: null,
+                },
+                pricing: {
+                    units: 56,
+                    isNotMarketed: true,
+                },
+                safetyFeatures: true,
+            },
+        ],
     },
 ];
+
+const MEDICATIONS_COLLECTION_NAME = 'medications';
 
 export const getMedications = async (token: string): Promise<Medication[]> => {
     console.log(`getting medications with token ${token}`);
@@ -195,4 +159,29 @@ export const getMedication = async (
             resolve(MEDICATIONS[ID]);
         }, 1000);
     });
+};
+
+export const createMedication = async (
+    db: Firestore,
+    medication: Medication
+): Promise<string> => {
+    console.log(`Creating medication with name=${medication.name}`);
+
+    const medicationsCollection = collection(db, MEDICATIONS_COLLECTION_NAME);
+
+    try {
+        const docRef = await addDoc(medicationsCollection, medication);
+
+        console.log(`Created medication with id=${docRef.id}`);
+
+        return docRef.id;
+    } catch (err) {
+        console.error('Error creating document: ', err);
+        throw new ProjectError(
+            'CREATING_MEDICATION_ERROR',
+            `Error creating document on path=${MEDICATIONS_COLLECTION_NAME} with data=${JSON.stringify(
+                medication
+            )}`
+        );
+    }
 };

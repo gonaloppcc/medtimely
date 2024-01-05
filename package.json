@@ -19,6 +19,7 @@
         "lint:fix": "eslint --fix --ext .tsx --ext .ts src/**/*",
         "cmd:populate-user-records": "tsx cmd/populate-user-records.ts",
         "cmd:delete-record": "tsx cmd/delete-record.ts",
+        "cmd:populate-medications": "tsx cmd/populate-medications.ts",
         "test": "jest"
     },
     "dependencies": {
