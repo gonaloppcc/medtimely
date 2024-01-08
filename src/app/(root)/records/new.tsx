@@ -8,7 +8,6 @@ import {
 } from '../../../model/MedicationRecord';
 import { Input } from '../../../components/Input';
 import { Button } from '../../../components/Button';
-import { useNav } from '../../../hooks/useNav';
 import { useFormik } from 'formik';
 import { useAppTheme } from '../../../theme';
 import * as Yup from 'yup';
@@ -17,6 +16,7 @@ import { Switch } from '../../../components/Switch';
 import { Picker } from '../../../components/Picker';
 import { useNavOptions } from '../../../hooks/useNavOptions';
 import { useAuthentication } from '../../../hooks/useAuthentication';
+import { router } from 'expo-router';
 
 interface Values {
     name: string;
@@ -48,7 +48,6 @@ const schema = Yup.object().shape({
 export default function CreateRecordScreen() {
     const [submitErrorMessage, setSubmitErrorMessage] =
         React.useState<string>('');
-    const nav = useNav();
     const theme = useAppTheme();
     const uid = useAuthentication().user?.uid || '';
     const { createRecord } = useCreateRecord(
@@ -56,9 +55,7 @@ export default function CreateRecordScreen() {
         (newRecord) => {
             // Pass the time as a string to the home screen
             try {
-                nav.push('Home', {
-                    day: newRecord.scheduledTime.toISOString(),
-                }); // Push is needed in order to refresh the home screen state
+                router.push(`Home ${newRecord.scheduledTime.toISOString()}`); // Push is needed in order to refresh the home screen state
 
                 console.log('updated');
             } catch (error) {

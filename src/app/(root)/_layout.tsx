@@ -1,3 +1,4 @@
+import React from 'react';
 import { CommonActions } from '@react-navigation/native';
 import { Tabs, Redirect } from 'expo-router';
 import { BottomNavigation, Icon } from 'react-native-paper';

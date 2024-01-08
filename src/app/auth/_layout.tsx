@@ -1,3 +1,4 @@
+import React from 'react';
 import { Stack, Redirect } from 'expo-router';
 import { useAuthentication } from '../../hooks/useAuthentication';
 

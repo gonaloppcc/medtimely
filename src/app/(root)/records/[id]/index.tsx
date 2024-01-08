@@ -7,8 +7,10 @@ import { useNavOptions } from '../../../../hooks/useNavOptions';
 import { useRecord } from '../../../../hooks/useRecord';
 import { useAuthentication } from '../../../../hooks/useAuthentication';
 import { ProgressIndicator } from '../../../../components/ProgressIndicator';
+import { useLocalSearchParams } from 'expo-router';
 
-export default function RecordScreen({ id }) {
+export default function RecordScreen() {
+    const id = (useLocalSearchParams().id as string) || '';
     const nav = useNavigation();
 
     const uid = useAuthentication().user?.uid || '';

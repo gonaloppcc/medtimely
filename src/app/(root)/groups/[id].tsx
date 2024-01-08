@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useNavOptions } from '../../../hooks/useNavOptions';
+import { useLocalSearchParams } from 'expo-router';
 
 // TODO: This is just for now, it should be replaced with data from the database
 const GROUP_INFO = {
@@ -10,7 +11,8 @@ const GROUP_INFO = {
     description: 'descr',
 };
 
-export default function GroupScreen({ id }) {
+export default function GroupScreen() {
+    const id = useLocalSearchParams().id || '';
     const { groupName, description } = GROUP_INFO;
 
     const headerRight = () => (
@@ -27,6 +29,7 @@ export default function GroupScreen({ id }) {
 
     return (
         <View style={styles.container}>
+            <Text variant="headlineLarge">Group id {id}</Text>
             <Text variant="headlineMedium">{groupName}</Text>
             <Text variant="labelMedium">{description}</Text>
         </View>

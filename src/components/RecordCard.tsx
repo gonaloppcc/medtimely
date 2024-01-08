@@ -2,8 +2,8 @@ import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MedicationRecord } from '../model/MedicationRecord';
-import { useNav } from '../hooks/useNav';
 import { medicationFormToIconName } from '../model/Medicine';
+import { router } from 'expo-router';
 
 type MedCardProps = MedicationRecord & {
     // Added any extra props here
@@ -17,7 +17,6 @@ export const RecordCard = ({
     name,
 }: MedCardProps) => {
     const theme = useTheme();
-    const nav = useNav();
 
     const title = amount == null || amount == 1 ? name : `${name} (x${amount})`;
 
@@ -41,7 +40,7 @@ export const RecordCard = ({
             return;
         }
 
-        nav.navigate('Record', { id });
+        router.push(`Record/${id}`);
     };
 
     return (

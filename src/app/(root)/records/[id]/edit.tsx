@@ -9,8 +9,10 @@ import {
     MedicationRecordForm,
 } from '../../../../model/MedicationRecord';
 import { useAuthentication } from '../../../../hooks/useAuthentication';
+import { useLocalSearchParams } from 'expo-router';
 
-export const EditRecordScreen = ({ id }) => {
+export const EditRecordScreen = () => {
+    const id = (useLocalSearchParams().id as string) || '';
     const uid = useAuthentication().user?.uid || '';
     const { isLoading, isSuccess, record } = useRecord(id, uid);
     const { updateRecord } = useUpdateRecord(

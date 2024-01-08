@@ -2,18 +2,18 @@ import * as React from 'react';
 
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useNavOptions } from '../../../hooks/useNavOptions';
 import { useAuthentication } from '../../../hooks/useAuthentication';
-import { useRoute } from '../../../hooks/useRoute';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 import { useMedication } from '../../../hooks/useMedication';
 import { MedicationIcon } from '../../../components/MedicationIcon';
 import { useAppTheme } from '../../../theme';
 import { useRecords } from '../../../hooks/useRecords';
 import { RecordCards } from '../../../components/RecordCards';
+import { useLocalSearchParams } from 'expo-router';
 
-export default function MedicationScreen({ id }) {
+export default function MedicationScreen() {
+    const id = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
     const theme = useAppTheme();
     const { user } = useAuthentication();
 
@@ -70,7 +70,6 @@ export default function MedicationScreen({ id }) {
                     <View style={styles.textContainer}>
                         <Text variant="headlineLarge">Programas</Text>
                         <Text variant="labelMedium">
-                            {medication.amount}{' '}
                             {medication.form.toLocaleLowerCase()} every day
                         </Text>
                         <Text variant="labelMedium">{medication.dosage} </Text>
