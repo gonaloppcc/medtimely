@@ -10,17 +10,18 @@ import { MedicationIcon } from '../../../components/MedicationIcon';
 import { useAppTheme } from '../../../theme';
 import { useRecords } from '../../../hooks/useRecords';
 import { RecordCards } from '../../../components/RecordCards';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
+import { ROUTE } from '../../../model/routes';
 
 export default function MedicationScreen() {
-    const id = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
+    const medicationID = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
     const theme = useAppTheme();
     const { user } = useAuthentication();
 
     const uid = user?.uid || '';
     const { isSuccess, isLoading, isError, medication } = useMedication(
-        id,
-        uid
+        uid,
+        medicationID
     );
 
     //TODO: add this screen
@@ -51,6 +52,10 @@ export default function MedicationScreen() {
         user?.uid ?? '', // TODO: Replace with user's token in the future
         initialSelectedDay
     );
+
+    const onPressRecord = (id: string) => {
+        router.push({ pathname: ROUTE.RECORDS.BY_ID, params: { id } });
+    };
 
     return (
         <View style={styles.container}>
@@ -93,6 +98,7 @@ export default function MedicationScreen() {
                                 isRefreshing={isLoading}
                                 onRefresh={refetchRecords}
                                 records={records}
+                                onPressRecord={onPressRecord}
                             />
                         )}
                     </View>

@@ -7,12 +7,14 @@ interface MedCardsProps {
     records: MedicationRecord[];
     isRefreshing: boolean;
     onRefresh?: () => void;
+    onPressRecord: (id: string) => void;
 }
 
 export const RecordCards = ({
     records,
     isRefreshing,
     onRefresh,
+    onPressRecord,
 }: MedCardsProps) => {
     return (
         <ScrollView
@@ -26,7 +28,13 @@ export const RecordCards = ({
             alwaysBounceVertical={false}
         >
             {records.map((record, index) => {
-                return <RecordCard key={index} {...record} />;
+                return (
+                    <RecordCard
+                        key={index}
+                        {...record}
+                        onPress={onPressRecord}
+                    />
+                );
             })}
         </ScrollView>
     );

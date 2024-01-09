@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Medicine } from '../model/Medicine';
+import { PersonalMedication } from '../model/Medicine';
 import { MedicationIcon } from './MedicationIcon';
 
-type MedCardProps = Medicine & {
+type MedCardProps = PersonalMedication & {
+    onPressMedication: (id: string) => void;
     // Added any extra props here
 };
 export const MedicationCard = ({
@@ -13,9 +13,10 @@ export const MedicationCard = ({
     dosage,
     form,
     name,
+    id,
+    onPressMedication,
 }: MedCardProps) => {
     const theme = useTheme();
-    const router = useRouter();
 
     const title = name;
 
@@ -29,9 +30,8 @@ export const MedicationCard = ({
 
     const subtitle = `${form}, ${dosage}`;
 
-    //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
-        router.push({ pathname: '/medications/[id]', params: { id: '1' } });
+        onPressMedication(id);
     };
 
     return (

@@ -7,7 +7,8 @@ import { WeekDayPicker } from '../../components/WeekDayPicker';
 import { RecordCards } from '../../components/RecordCards';
 import { useRecords } from '../../hooks/useRecords';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
+import { ROUTE } from '../../model/routes';
 
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
@@ -29,6 +30,10 @@ export default function HomeScreen() {
         setSelectedDay(day);
     };
 
+    const onPressRecord = (id: string) => {
+        router.push({ pathname: ROUTE.RECORDS.BY_ID, params: { id } });
+    };
+
     return (
         <View style={styles.container}>
             <Text variant="headlineMedium">Welcome back, {userName}</Text>
@@ -44,6 +49,7 @@ export default function HomeScreen() {
                     isRefreshing={isLoading}
                     onRefresh={refetch}
                     records={records}
+                    onPressRecord={onPressRecord}
                 />
             )}
         </View>

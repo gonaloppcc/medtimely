@@ -1,10 +1,12 @@
 import { MedicationRecordForm } from './MedicationRecord';
 
-export interface Medicine {
+export interface PersonalMedication {
+    id: string;
     name: string;
     dosage: string;
     form: MedicationRecordForm;
     amount?: number;
+    time?: string;
 }
 
 //FIXME: Check the MedicationRecordForm and decide which onew we will use
