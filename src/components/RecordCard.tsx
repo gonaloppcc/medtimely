@@ -3,10 +3,10 @@ import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MedicationRecord } from '../model/MedicationRecord';
 import { medicationFormToIconName } from '../model/Medicine';
-import { router } from 'expo-router';
 
 type MedCardProps = MedicationRecord & {
     // Added any extra props here
+    onPress: (id: string) => void;
 };
 export const RecordCard = ({
     id,
@@ -15,6 +15,7 @@ export const RecordCard = ({
     form,
     missed,
     name,
+    onPress,
 }: MedCardProps) => {
     const theme = useTheme();
 
@@ -34,17 +35,18 @@ export const RecordCard = ({
 
     const takenText = missed ? 'Not taken' : 'Taken';
 
-    const onPress = () => {
+    const onPressRecord = () => {
+        //FIXME: the id cannot be null
         // id has to be defined in order to navigate to the record
         if (id == null) {
             return;
         }
 
-        router.push(`Record/${id}`);
+        onPress(id);
     };
 
     return (
-        <TouchableOpacity onPress={onPress} style={style}>
+        <TouchableOpacity onPress={onPressRecord} style={style}>
             <Icon
                 size={40}
                 source={medicationFormToIconName(form)}
