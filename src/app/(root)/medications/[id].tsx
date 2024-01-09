@@ -13,14 +13,14 @@ import { RecordCards } from '../../../components/RecordCards';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function MedicationScreen() {
-    const id = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
+    const medicationID = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
     const theme = useAppTheme();
     const { user } = useAuthentication();
 
     const uid = user?.uid || '';
     const { isSuccess, isLoading, isError, medication } = useMedication(
-        id,
-        uid
+        uid,
+        medicationID
     );
 
     //TODO: add this screen

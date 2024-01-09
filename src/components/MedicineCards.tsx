@@ -1,19 +1,29 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { Medicine } from '../model/Medicine';
+import { PersonalMedication } from '../model/Medicine';
 import { MedicationCard } from './MedicineCard';
 
 interface MedCardsProps {
-    medicines: Medicine[];
+    medicines: PersonalMedication[];
+    onPressMedication: (id: string) => void;
 }
-export const MedicineCards = ({ medicines }: MedCardsProps) => {
+export const MedicineCards = ({
+    medicines,
+    onPressMedication,
+}: MedCardsProps) => {
     return (
         <ScrollView
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >
             {medicines.map((medicine, index) => {
-                return <MedicationCard key={index} {...medicine} />;
+                return (
+                    <MedicationCard
+                        key={index}
+                        {...medicine}
+                        onPressMedication={onPressMedication}
+                    />
+                );
             })}
         </ScrollView>
     );

@@ -1,7 +1,7 @@
-import { Medication } from '../../model/medication';
 import { MedicationRecordForm } from '../../model/MedicationRecord';
+import { PersonalMedication } from '../../model/Medicine';
 
-const MEDICATIONS: Medication[] = [
+const MEDICATIONS: PersonalMedication[] = [
     {
         name: 'Paracetamol',
         amount: 1,
@@ -170,9 +170,11 @@ const MEDICATIONS: Medication[] = [
         form: MedicationRecordForm.CAPSULE,
         time: '17:00',
     },
-];
+].map((medication, index) => ({ ...medication, id: String(index) }));
 
-export const getMedications = async (token: string): Promise<Medication[]> => {
+export const getMedications = async (
+    token: string
+): Promise<PersonalMedication[]> => {
     console.log(`getting medications with token ${token}`);
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -183,16 +185,15 @@ export const getMedications = async (token: string): Promise<Medication[]> => {
 
 export const getMedication = async (
     userId: string,
-    id: string
-): Promise<Medication> => {
-    console.log(`Fetching medication with id=${id} for user with id=${userId}`);
-
-    //TODO: change this
-    const ID = 1;
+    medicationID: string
+): Promise<PersonalMedication> => {
+    console.log(
+        `Fetching medication with id=${medicationID} for user with id=${userId}`
+    );
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(MEDICATIONS[ID]);
+            resolve(MEDICATIONS[medicationID]);
         }, 1000);
     });
 };

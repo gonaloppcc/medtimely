@@ -1,11 +1,11 @@
 import { AxiosError } from 'axios';
 import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
-import { Medication } from '../model/medication';
 import { getMedications } from '../services/medications';
+import { PersonalMedication } from '../model/Medicine';
 
 export interface useMedicationsProps extends FetcherProps {
-    medications: Medication[];
+    medications: PersonalMedication[];
 }
 
 export const useMedications = (token: string): useMedicationsProps => {
@@ -25,7 +25,7 @@ export const useMedications = (token: string): useMedicationsProps => {
         isSuccess,
         isLoading,
         isError,
-        medications: (medications || []) as unknown as Medication[],
+        medications: (medications || []) as unknown as PersonalMedication[],
         error: error as AxiosError,
         refetch,
     };
