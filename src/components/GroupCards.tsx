@@ -5,9 +5,10 @@ import { Group } from '../model/group';
 
 interface GroupProps {
     groups: Group[];
+    onPressGroup: (id: string) => void;
 }
 
-export const GroupCards = ({ groups }: GroupProps) => {
+export const GroupCards = ({ groups, onPressGroup }: GroupProps) => {
     //TODO GroupCard taking info
     return (
         <ScrollView
@@ -15,7 +16,9 @@ export const GroupCards = ({ groups }: GroupProps) => {
             alwaysBounceVertical={false}
         >
             {groups.map((group, index) => {
-                return <GroupCard key={index} {...group} />;
+                return (
+                    <GroupCard key={index} {...group} onPress={onPressGroup} />
+                );
             })}
         </ScrollView>
     );

@@ -2,11 +2,18 @@ import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Group } from '../model/group';
-import { useRouter } from 'expo-router';
 
-export const GroupCard = ({ groupName, description }: Group) => {
+export interface GroupCardProps extends Group {
+    onPress: (id: string) => void;
+}
+
+export const GroupCard = ({
+    groupName,
+    description,
+    id,
+    onPress,
+}: GroupCardProps) => {
     const theme = useTheme();
-    const router = useRouter();
 
     const backgroundColor = theme.colors.errorContainer;
 
@@ -16,13 +23,13 @@ export const GroupCard = ({ groupName, description }: Group) => {
         borderColor: theme.colors.outline,
     };
 
-    //TODO: Change this later to a dynamic id and the corret route
-    const onPress = () => {
-        router.push({ pathname: '/groups/[id]', params: { id: '1' } });
+    const onPressGroup = () => {
+        onPress(id);
+        // router.push({ pathname: '/groups/[id]', params: { id: '1' } });
     };
 
     return (
-        <TouchableOpacity style={style} onPress={onPress}>
+        <TouchableOpacity style={style} onPress={onPressGroup}>
             <Icon
                 size={40}
                 source="account-group"
