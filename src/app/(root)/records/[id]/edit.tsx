@@ -11,7 +11,7 @@ import {
 import { useAuthentication } from '../../../../hooks/useAuthentication';
 import { useLocalSearchParams } from 'expo-router';
 
-export const EditRecordScreen = () => {
+export default function EditRecordScreen() {
     const id = (useLocalSearchParams().id as string) || '';
     const uid = useAuthentication().user?.uid || '';
     const { isLoading, isSuccess, record } = useRecord(id, uid);
@@ -46,7 +46,10 @@ export const EditRecordScreen = () => {
             {/* Replace this with a different record view */}
             {
                 isSuccess && (
-                    <RecordCard {...(record as MedicationRecord)}></RecordCard>
+                    <RecordCard
+                        {...(record as MedicationRecord)}
+                        onPress={() => {}}
+                    ></RecordCard>
                 ) /* Since isSuccess is true we can be sure that the record is not null */
             }
 
@@ -55,4 +58,4 @@ export const EditRecordScreen = () => {
             <Button onPress={onPressHandler}>Click me!</Button>
         </View>
     );
-};
+}

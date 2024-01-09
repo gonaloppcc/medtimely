@@ -33,7 +33,6 @@ export default function MedicationsScreen() {
     };
 
     const onPressMedication = (id: string) => {
-        console.log(id);
         router.push({ pathname: ROUTE.MEDICATIONS.BY_ID, params: { id } });
     };
 

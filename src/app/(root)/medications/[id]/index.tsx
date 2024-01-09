@@ -2,16 +2,16 @@ import * as React from 'react';
 
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useNavOptions } from '../../../hooks/useNavOptions';
-import { useAuthentication } from '../../../hooks/useAuthentication';
-import { ProgressIndicator } from '../../../components/ProgressIndicator';
-import { useMedication } from '../../../hooks/useMedication';
-import { MedicationIcon } from '../../../components/MedicationIcon';
-import { useAppTheme } from '../../../theme';
-import { useRecords } from '../../../hooks/useRecords';
-import { RecordCards } from '../../../components/RecordCards';
+import { useNavOptions } from '../../../../hooks/useNavOptions';
+import { useAuthentication } from '../../../../hooks/useAuthentication';
+import { ProgressIndicator } from '../../../../components/ProgressIndicator';
+import { useMedication } from '../../../../hooks/useMedication';
+import { MedicationIcon } from '../../../../components/MedicationIcon';
+import { useAppTheme } from '../../../../theme';
+import { useRecords } from '../../../../hooks/useRecords';
+import { RecordCards } from '../../../../components/RecordCards';
 import { router, useLocalSearchParams } from 'expo-router';
-import { ROUTE } from '../../../model/routes';
+import { ROUTE } from '../../../../model/routes';
 
 export default function MedicationScreen() {
     const medicationID = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
@@ -24,12 +24,15 @@ export default function MedicationScreen() {
         medicationID
     );
 
-    //TODO: add this screen
     const headerRight = () => (
         <Appbar.Action
             icon="pencil"
-            // @ts-expect-error TODO: Fix this if possible
-            onPress={() => nav.navigate('EditMedication')}
+            onPress={() =>
+                router.push({
+                    pathname: ROUTE.MEDICATIONS.EDIT,
+                    params: { id: medicationID },
+                })
+            }
         />
     );
 

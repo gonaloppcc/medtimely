@@ -2,12 +2,14 @@ type Routes = {
     BASE_NAME: string;
     HOME: string;
     BY_ID?: string;
+    EDIT?: string;
 };
 
 const createRoutes = (BASE_NAME: string): Routes => ({
     BASE_NAME,
     HOME: `/${BASE_NAME}`,
     BY_ID: `/${BASE_NAME}/[id]`,
+    EDIT: `/${BASE_NAME}/[id]/edit`,
 });
 
 const GROUPS_ROUTES = createRoutes('groups');
