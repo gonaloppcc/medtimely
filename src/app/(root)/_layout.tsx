@@ -107,6 +107,16 @@ export default function HomeLayout() {
             />
 
             <Tabs.Screen
+                name={ROUTE.STOCK.BASE_NAME}
+                options={{
+                    title: 'Stock',
+                    tabBarIcon: ({ color }) => (
+                        <Icon source="archive" color={color} size={24} />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
                 name={ROUTE.SETTINGS.BASE_NAME}
                 options={{
                     title: 'Settings',

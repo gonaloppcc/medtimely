@@ -20,7 +20,7 @@ export const useMedication = (
         error,
         refetch,
     } = useQuery({
-        queryKey: ['record', medicationId],
+        queryKey: ['medication', medicationId],
         queryFn: () => getMedication(medicationId, userId),
     });
 

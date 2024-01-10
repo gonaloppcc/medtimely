@@ -42,9 +42,15 @@ const SETTINGS_ROUTES: Routes = {
     HOME: '/settings',
 };
 
+const STOCK_ROUTES: Routes = {
+    BASE_NAME: 'stock',
+    HOME: '/stock',
+};
+
 export const ROUTE = {
     GROUPS: GROUPS_ROUTES,
     MEDICATIONS: MEDICATIONS_ROUTES,
     RECORDS: RECORDS_ROUTES,
     SETTINGS: SETTINGS_ROUTES,
+    STOCK: STOCK_ROUTES,
 };
