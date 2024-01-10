@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MedicationRecord } from '../model/medicationRecord';
-import { useNav } from '../hooks/useNav';
 import { MedicationIcon } from './MedicationIcon';
 
 type MedCardProps = MedicationRecord & {

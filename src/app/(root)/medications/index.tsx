@@ -49,7 +49,8 @@ export default function MedicationsScreen() {
             {isLoading && <ProgressIndicator />}
             {isSuccess && (
                 <>
-                    <MedicationCards medications={medicationsFiltered}
+                    <MedicationCards
+                        medications={medicationsFiltered}
                         onPressMedication={onPressMedication}
                     />
                 </>

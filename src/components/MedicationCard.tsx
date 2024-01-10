@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useRouter } from 'expo-router';
 import { MedicationIcon } from './MedicationIcon';
 import { Medication } from '../model/medication';
 
@@ -20,7 +19,7 @@ export const MedicationCard = ({
     isGeneric,
     administration,
     presentations,
-    onPressMedication
+    onPressMedication,
 }: MedicationCardProps) => {
     const theme = useTheme();
 

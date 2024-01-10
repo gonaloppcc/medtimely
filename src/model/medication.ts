@@ -2,7 +2,7 @@ import { MedicationRecordForm } from './medicationRecord';
 
 // https://extranet.infarmed.pt/INFOMED-fo/pesquisa-avancada.xhtml
 export interface Medication {
-    id?: string; // Código do Medicamento
+    id: string; // Código do Medicamento
     name: string; // Nome do Medicamento
     activeSubstance: string; // Substância Ativa/DCI
     form: MedicationRecordForm; // Forma Farmacêutica
