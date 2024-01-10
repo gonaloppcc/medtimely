@@ -5,6 +5,7 @@ import { ProjectError } from '../error';
 
 const MEDICATIONS: Medication[] = [
     {
+        id: '1',
         name: 'Brufenon',
         activeSubstance: 'Ibuprofen + Paracetamol',
         dosage: '200 mg + 500 mg',
@@ -27,6 +28,7 @@ const MEDICATIONS: Medication[] = [
         ],
     },
     {
+        id: '2',
         name: 'Vipidia',
         activeSubstance: 'alogliptin',
         form: MedicationRecordForm.TABLET,
@@ -80,6 +82,7 @@ const MEDICATIONS: Medication[] = [
         ],
     },
     {
+        id: '3',
         name: 'Vipidia',
         activeSubstance: 'alogliptin',
         form: MedicationRecordForm.TABLET,
@@ -132,13 +135,11 @@ const MEDICATIONS: Medication[] = [
             },
         ],
     },
-].map((medication, index) => ({ ...medication, id: String(index) }));
+];
 
 const MEDICATIONS_COLLECTION_NAME = 'medications';
 
-export const getMedications = async (
-    token: string
-): Promise<PersonalMedication[]> => {
+export const getMedications = async (token: string): Promise<Medication[]> => {
     console.log(`getting medications with token ${token}`);
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -150,7 +151,7 @@ export const getMedications = async (
 export const getMedication = async (
     userId: string,
     medicationID: string
-): Promise<PersonalMedication> => {
+): Promise<Medication> => {
     console.log(
         `Fetching medication with id=${medicationID} for user with id=${userId}`
     );

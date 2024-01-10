@@ -16,6 +16,7 @@ if (process.argv.length !== 2) {
 
 const medications: Medication[] = [
     {
+        id: '1',
         name: 'Vipidia',
         activeSubstance: 'alogliptin',
         form: MedicationRecordForm.TABLET,

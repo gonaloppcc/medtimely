@@ -44,7 +44,7 @@ const SETTINGS_ROUTES: Routes = {
 
 const STOCK_ROUTES: Routes = {
     BASE_NAME: 'stock',
-    HOME: '/stock',
+    HOME: '/ownedMedication',
 };
 
 export const ROUTE = {

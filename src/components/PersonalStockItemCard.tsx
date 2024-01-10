@@ -2,23 +2,23 @@ import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MedicationIcon } from './MedicationIcon';
-import { PersonalStockItem } from '../model/stock';
+import { OwnedMedication } from '../model/ownedMedication';
 
-type PersonalStockItemCardProps = PersonalStockItem & {
+type PersonalStockItemCardProps = OwnedMedication & {
     onPressStock: (id: string) => void;
     // Added any extra props here
 };
 export const PersonalStockItemCard = ({
     medicationId,
-    medicationName,
+    name,
     form,
-    amountLeft,
+    amountLeft: units,
     daysToRunOf,
     onPressStock,
 }: PersonalStockItemCardProps) => {
     const theme = useTheme();
 
-    const title = medicationName;
+    const title = name;
 
     const backgroundColor = theme.colors.surface;
 
@@ -28,7 +28,7 @@ export const PersonalStockItemCard = ({
         borderColor: theme.colors.outline,
     };
 
-    const subtitle = `${form}, ${amountLeft} left`;
+    const subtitle = `${form}, ${units} left`;
 
     const onPress = () => {
         onPressStock(medicationId);

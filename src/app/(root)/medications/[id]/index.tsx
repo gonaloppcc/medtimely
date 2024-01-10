@@ -85,7 +85,7 @@ export default function MedicationScreen() {
 
                     <View style={styles.textContainer}>
                         <Text variant="headlineLarge">Stock</Text>
-                        {/* Add stock info */}
+                        {/* Add ownedMedication info */}
                     </View>
 
                     <View style={styles.textContainer}>

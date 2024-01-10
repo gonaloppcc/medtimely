@@ -5,8 +5,7 @@ import { ActivityIndicator, Button } from 'react-native-paper';
 import { useLocalSearchParams } from 'expo-router';
 import { useMedication } from '../../../../hooks/useMedication';
 import { useAuthentication } from '../../../../hooks/useAuthentication';
-import { MedicationCard } from '../../../../components/MedicineCard';
-import { PersonalMedication } from '../../../../model/Medicine';
+import { MedicationCard } from '../../../../components/MedicationCard';
 
 export default function EditMedicationRecord() {
     const id = (useLocalSearchParams().id as string) || '';
@@ -22,9 +21,9 @@ export default function EditMedicationRecord() {
             {isLoading && <ActivityIndicator />}
 
             {/* Replace this with a different medication view */}
-            {isSuccess && (
+            {isSuccess && medication !== null && (
                 <MedicationCard
-                    {...(medication as PersonalMedication)}
+                    {...medication}
                     id="1"
                     onPressMedication={() => {}}
                 />

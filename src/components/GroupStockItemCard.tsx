@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MedicationIcon } from './MedicationIcon';
-import { GroupStockItem } from '../model/stock';
 
 type GroupStockItemCardProps = GroupStockItem & {
     onPressStock: (id: string) => void;

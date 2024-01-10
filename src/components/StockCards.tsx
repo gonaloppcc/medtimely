@@ -1,32 +1,31 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import {
-    GroupStockItem,
-    PersonalStockItem,
-    isGroupStockItem,
-} from '../model/stock';
 import { PersonalStockItemCard } from './PersonalStockItemCard';
 import { GroupStockItemCard } from './GroupStockItemCard';
+import { OwnedMedication } from '../model/ownedMedication';
 
-interface StockCardsProps {
-    stock: (PersonalStockItem | GroupStockItem)[];
-    onPressStock: (id: string) => void;
+interface OwnedMedicationCardsProps {
+    ownedMedications: OwnedMedication[];
+    onPressOwnedMedication: (id: string) => void;
 }
 
-export const StockCards = ({ stock, onPressStock }: StockCardsProps) => {
+export const StockCards = ({
+    ownedMedications,
+    onPressOwnedMedication,
+}: OwnedMedicationCardsProps) => {
     return (
         <ScrollView
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >
-            {stock.map((med, index) => {
-                const isGroupStock = isGroupStockItem(med);
+            {ownedMedications.map((med, index) => {
+                const isGroupStock = true; //isGroupStockItem(med); FIXME: Finish migrating this
                 return (
                     <>
                         {!isGroupStock && (
                             <PersonalStockItemCard
                                 {...med}
-                                onPressStock={onPressStock}
+                                onPressStock={onPressOwnedMedication}
                                 key={index}
                             />
                         )}
@@ -34,7 +33,7 @@ export const StockCards = ({ stock, onPressStock }: StockCardsProps) => {
                         {isGroupStock && (
                             <GroupStockItemCard
                                 {...med}
-                                onPressStock={onPressStock}
+                                onPressStock={onPressOwnedMedication}
                                 key={index}
                             />
                         )}

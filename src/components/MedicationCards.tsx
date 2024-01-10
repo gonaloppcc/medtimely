@@ -5,16 +5,30 @@ import { Medication } from '../model/medication';
 
 interface MedicationCardsProps {
     medications: Medication[];
+    onPressMedication: (id: string) => void;
 }
 
-export const MedicationCards = ({ medications }: MedicationCardsProps) => {
+export const MedicationCards = ({
+    medications,
+    onPressMedication,
+}: MedicationCardsProps) => {
     return (
         <ScrollView
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >
             {medications.map((medication, index) => {
-                return <MedicationCard key={index} {...medication} />;
+                const onPressMedicationHandler = () => {
+                    onPressMedication(medication.id);
+                };
+
+                return (
+                    <MedicationCard
+                        key={index}
+                        {...medication}
+                        onPressMedication={onPressMedicationHandler}
+                    />
+                );
             })}
         </ScrollView>
     );
