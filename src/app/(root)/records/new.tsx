@@ -13,7 +13,7 @@ import { useAppTheme } from '../../../theme';
 import * as Yup from 'yup';
 import { ErrorMessage } from '../../../hooks/ErrorMessage';
 import { Switch } from '../../../components/Switch';
-import { Picker } from '../../../components/Picker';
+import { ItemPickerProp, Picker } from '../../../components/Picker';
 import { useNavOptions } from '../../../hooks/useNavOptions';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { router } from 'expo-router';
@@ -69,6 +69,18 @@ export default function CreateRecordScreen() {
             console.log('error');
         }
     );
+
+    const medicalForms = Object.keys(MedicationRecordForm).filter((item) => {
+        return isNaN(Number(item));
+    });
+    const medicalFormsItems: ItemPickerProp[] = [];
+    medicalForms.map((form) =>
+        medicalFormsItems.push({
+            value: form,
+            label: form.charAt(0).toUpperCase() + form.slice(1).toLowerCase(),
+        })
+    );
+    medicalFormsItems.push({ value: 'OTHER', label: 'Other' });
 
     useNavOptions({
         headerTitle: 'Add Record',
@@ -159,17 +171,7 @@ export default function CreateRecordScreen() {
                         selectedValue={values.form}
                         onValueChange={handleChange('form')}
                         label="Medication form"
-                        items={[
-                            // TODO: Make this a constant
-                            { label: 'Tablet', value: 'TABLET' },
-                            { label: 'Capsule', value: 'CAPSULE' },
-                            { label: 'Liquid', value: 'LIQUID' },
-                            { label: 'Injection', value: 'INJECTION' },
-                            { label: 'Inhaler', value: 'INHALER' },
-                            { label: 'Patch', value: 'PATCH' },
-                            { label: 'Suppository', value: 'SUPPOSITORY' },
-                            { label: 'Other', value: 'OTHER' },
-                        ]}
+                        items={medicalFormsItems}
                     />
                     {touched.form && errors.form && (
                         <ErrorMessage errorMessage={errors.form} />
