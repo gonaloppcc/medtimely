@@ -2,14 +2,15 @@ import * as React from 'react';
 
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useNavOptions } from '../../../../hooks/useNavOptions';
 import { useRecord } from '../../../../hooks/useRecord';
 import { useAuthentication } from '../../../../hooks/useAuthentication';
 import { ProgressIndicator } from '../../../../components/ProgressIndicator';
+import { router, useLocalSearchParams } from 'expo-router';
+import { ROUTE } from '../../../../model/routes';
 
-export default function RecordScreen({ id }) {
-    const nav = useNavigation();
+export default function RecordScreen() {
+    const id = (useLocalSearchParams().id as string) || '';
 
     const uid = useAuthentication().user?.uid || '';
     const { isSuccess, isLoading, isError, record } = useRecord(id, uid);
@@ -17,8 +18,9 @@ export default function RecordScreen({ id }) {
     const headerRight = () => (
         <Appbar.Action
             icon="pencil"
-            // @ts-expect-error TODO: Fix this if possible
-            onPress={() => nav.navigate('EditRecord')}
+            onPress={() =>
+                router.push({ pathname: ROUTE.RECORDS.EDIT, params: { id } })
+            }
         />
     );
 

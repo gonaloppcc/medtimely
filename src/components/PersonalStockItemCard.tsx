@@ -1,21 +1,26 @@
 import React from 'react';
-import { Icon, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Group } from '../model/group';
+import { MedicationIcon } from './MedicationIcon';
+import { PersonalStockItem } from '../model/stock';
 
-export interface GroupCardProps extends Group {
-    onPress: (id: string) => void;
-}
-
-export const GroupCard = ({
-    groupName,
-    description,
-    id,
-    onPress,
-}: GroupCardProps) => {
+type PersonalStockItemCardProps = PersonalStockItem & {
+    onPressStock: (id: string) => void;
+    // Added any extra props here
+};
+export const PersonalStockItemCard = ({
+    medicationId,
+    medicationName,
+    form,
+    amountLeft,
+    daysToRunOf,
+    onPressStock,
+}: PersonalStockItemCardProps) => {
     const theme = useTheme();
 
-    const backgroundColor = theme.colors.errorContainer;
+    const title = medicationName;
+
+    const backgroundColor = theme.colors.surface;
 
     const style = {
         ...styles.container,
@@ -23,36 +28,33 @@ export const GroupCard = ({
         borderColor: theme.colors.outline,
     };
 
-    const onPressGroup = () => {
-        onPress(id);
-        // router.push({ pathname: '/groups/[id]', params: { id: '1' } });
+    const subtitle = `${form}, ${amountLeft} left`;
+
+    const onPress = () => {
+        onPressStock(medicationId);
     };
 
     return (
-        <TouchableOpacity style={style} onPress={onPressGroup}>
-            <Icon
-                size={40}
-                source="account-group"
-                color={theme.colors.onSurface}
-            />
+        <TouchableOpacity onPress={onPress} style={style}>
+            <MedicationIcon form={form} />
             <View style={styles.innerStyle}>
                 <Text
                     variant="labelLarge"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {groupName}
+                    {title}
                 </Text>
                 <Text
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {'Number of elements'}
+                    {subtitle}
                 </Text>
                 <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.error }}
+                    variant="labelMedium"
+                    style={{ color: theme.colors.onSurface }}
                 >
-                    {description}
+                    {daysToRunOf} days to run out
                 </Text>
             </View>
         </TouchableOpacity>
@@ -70,7 +72,6 @@ const styles = StyleSheet.create({
         padding: 12,
         borderStyle: 'solid',
         borderWidth: 1,
-        // borderColor: 'rgba(0,0,0,0.15)',
     },
     innerStyle: {
         display: 'flex',

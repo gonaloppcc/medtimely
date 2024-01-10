@@ -1,7 +1,9 @@
+import React from 'react';
 import { CommonActions } from '@react-navigation/native';
 import { Tabs, Redirect } from 'expo-router';
 import { BottomNavigation, Icon } from 'react-native-paper';
 import { useAuthentication } from '../../hooks/useAuthentication';
+import { ROUTE } from '../../model/routes';
 
 export default function HomeLayout() {
     const { user, isLoading } = useAuthentication();
@@ -72,7 +74,7 @@ export default function HomeLayout() {
             />
 
             <Tabs.Screen
-                name="medications"
+                name={ROUTE.MEDICATIONS.BASE_NAME}
                 options={{
                     title: 'Medications',
                     headerShown: false,
@@ -83,7 +85,7 @@ export default function HomeLayout() {
             />
 
             <Tabs.Screen
-                name="records"
+                name={ROUTE.RECORDS.BASE_NAME}
                 options={{
                     title: 'Records',
                     headerShown: false,
@@ -94,7 +96,7 @@ export default function HomeLayout() {
             />
 
             <Tabs.Screen
-                name="groups"
+                name={ROUTE.GROUPS.BASE_NAME}
                 options={{
                     title: 'Groups',
                     headerShown: false,
@@ -105,7 +107,17 @@ export default function HomeLayout() {
             />
 
             <Tabs.Screen
-                name="settings"
+                name={ROUTE.STOCK.BASE_NAME}
+                options={{
+                    title: 'Stock',
+                    tabBarIcon: ({ color }) => (
+                        <Icon source="archive" color={color} size={24} />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
+                name={ROUTE.SETTINGS.BASE_NAME}
                 options={{
                     title: 'Settings',
                     tabBarIcon: ({ color }) => (

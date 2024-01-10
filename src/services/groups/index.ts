@@ -17,7 +17,7 @@ const GROUPS: Group[] = [
         groupName: 'group 4',
         description: 'description 4',
     },
-];
+].map((group, index) => ({ ...group, id: String(index) }));
 
 const SMALL_STALL_TIME = 1000;
 const STALL_TIME = 4000;

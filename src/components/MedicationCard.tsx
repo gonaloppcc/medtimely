@@ -6,9 +6,11 @@ import { MedicationIcon } from './MedicationIcon';
 import { Medication } from '../model/medication';
 
 type MedicationCardProps = Medication & {
-    // Added any extra props here
+    onPressMedication: (id: string) => void;
+    // Add any extra props here
 };
 export const MedicationCard = ({
+    id,
     name,
     activeSubstance,
     form,
@@ -18,9 +20,9 @@ export const MedicationCard = ({
     isGeneric,
     administration,
     presentations,
+    onPressMedication
 }: MedicationCardProps) => {
     const theme = useTheme();
-    const router = useRouter();
 
     const title = name;
 
@@ -34,9 +36,8 @@ export const MedicationCard = ({
 
     const subtitle = `${form}, ${dosage}`;
 
-    //TODO: Change this later to a dynamic id and the corret route
     const onPress = () => {
-        router.push({ pathname: '/medications/[id]', params: { id: '1' } });
+        onPressMedication(id);
     };
 
     // FIXME: Improve the UI of this component

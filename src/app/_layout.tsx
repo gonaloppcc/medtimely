@@ -1,3 +1,4 @@
+import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Slot } from 'expo-router';
 import { AuthenticationProvider } from '../providers/AuthProvider';
@@ -12,6 +13,7 @@ import { CombinedDarkTheme, CombinedDefaultTheme, themeFonts } from '../theme';
 import { PaperProvider } from 'react-native-paper';
 import { useAuthentication } from '../hooks/useAuthentication';
 
+// noinspection JSIgnoredPromiseFromCall
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();

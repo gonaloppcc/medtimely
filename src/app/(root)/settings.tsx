@@ -3,20 +3,16 @@ import * as React from 'react';
 import { Button, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { signOut } from '../../services/auth';
-import { useAuthentication } from '../../hooks/useAuthentication';
 
 export default function SettingsScreen() {
-    const { user, isLoading } = useAuthentication();
+    const onPressHandler = async () => {
+        await signOut();
+    };
     return (
         <View style={styles.container}>
             <Text>Settings Screen</Text>
 
-            <Button
-                onPress={() => {
-                    signOut();
-                }}
-                mode="contained"
-            >
+            <Button onPress={onPressHandler} mode="contained">
                 Logout
             </Button>
         </View>

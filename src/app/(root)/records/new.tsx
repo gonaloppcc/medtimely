@@ -8,15 +8,15 @@ import {
 } from '../../../model/medicationRecord';
 import { Input } from '../../../components/Input';
 import { Button } from '../../../components/Button';
-import { useNav } from '../../../hooks/useNav';
 import { useFormik } from 'formik';
 import { useAppTheme } from '../../../theme';
 import * as Yup from 'yup';
 import { ErrorMessage } from '../../../hooks/ErrorMessage';
 import { Switch } from '../../../components/Switch';
-import { Picker } from '../../../components/Picker';
+import { ItemPickerProp, Picker } from '../../../components/Picker';
 import { useNavOptions } from '../../../hooks/useNavOptions';
 import { useAuthentication } from '../../../hooks/useAuthentication';
+import { router } from 'expo-router';
 
 interface Values {
     name: string;
@@ -48,7 +48,6 @@ const schema = Yup.object().shape({
 export default function CreateRecordScreen() {
     const [submitErrorMessage, setSubmitErrorMessage] =
         React.useState<string>('');
-    const nav = useNav();
     const theme = useAppTheme();
     const uid = useAuthentication().user?.uid || '';
     const { createRecord } = useCreateRecord(
@@ -56,9 +55,7 @@ export default function CreateRecordScreen() {
         (newRecord) => {
             // Pass the time as a string to the home screen
             try {
-                nav.push('Home', {
-                    day: newRecord.scheduledTime.toISOString(),
-                }); // Push is needed in order to refresh the home screen state
+                router.push(`Home ${newRecord.scheduledTime.toISOString()}`); // Push is needed in order to refresh the home screen state
 
                 console.log('updated');
             } catch (error) {
@@ -72,6 +69,18 @@ export default function CreateRecordScreen() {
             console.log('error');
         }
     );
+
+    const medicalForms = Object.keys(MedicationRecordForm).filter((item) => {
+        return isNaN(Number(item));
+    });
+    const medicalFormsItems: ItemPickerProp[] = [];
+    medicalForms.map((form) =>
+        medicalFormsItems.push({
+            value: form,
+            label: form.charAt(0).toUpperCase() + form.slice(1).toLowerCase(),
+        })
+    );
+    medicalFormsItems.push({ value: 'OTHER', label: 'Other' });
 
     useNavOptions({
         headerTitle: 'Add Record',
@@ -162,17 +171,7 @@ export default function CreateRecordScreen() {
                         selectedValue={values.form}
                         onValueChange={handleChange('form')}
                         label="Medication form"
-                        items={[
-                            // TODO: Make this a constant
-                            { label: 'Tablet', value: 'TABLET' },
-                            { label: 'Capsule', value: 'CAPSULE' },
-                            { label: 'Liquid', value: 'LIQUID' },
-                            { label: 'Injection', value: 'INJECTION' },
-                            { label: 'Inhaler', value: 'INHALER' },
-                            { label: 'Patch', value: 'PATCH' },
-                            { label: 'Suppository', value: 'SUPPOSITORY' },
-                            { label: 'Other', value: 'OTHER' },
-                        ]}
+                        items={medicalFormsItems}
                     />
                     {touched.form && errors.form && (
                         <ErrorMessage errorMessage={errors.form} />

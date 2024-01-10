@@ -8,7 +8,6 @@ import { View } from 'react-native';
 import { formStyle } from './signin';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { NativeStackScreenProps } from 'react-native-screens/native-stack';
 
 const signupValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),

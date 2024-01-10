@@ -2,31 +2,37 @@ import * as React from 'react';
 
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useNavOptions } from '../../../hooks/useNavOptions';
-import { useAuthentication } from '../../../hooks/useAuthentication';
-import { ProgressIndicator } from '../../../components/ProgressIndicator';
-import { useMedication } from '../../../hooks/useMedication';
-import { MedicationIcon } from '../../../components/MedicationIcon';
-import { useAppTheme } from '../../../theme';
-import { useRecords } from '../../../hooks/useRecords';
-import { RecordCards } from '../../../components/RecordCards';
+import { useNavOptions } from '../../../../hooks/useNavOptions';
+import { useAuthentication } from '../../../../hooks/useAuthentication';
+import { ProgressIndicator } from '../../../../components/ProgressIndicator';
+import { useMedication } from '../../../../hooks/useMedication';
+import { MedicationIcon } from '../../../../components/MedicationIcon';
+import { useAppTheme } from '../../../../theme';
+import { useRecords } from '../../../../hooks/useRecords';
+import { RecordCards } from '../../../../components/RecordCards';
+import { router, useLocalSearchParams } from 'expo-router';
+import { ROUTE } from '../../../../model/routes';
 
-export default function MedicationScreen({ id }) {
+export default function MedicationScreen() {
+    const medicationID = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
     const theme = useAppTheme();
     const { user } = useAuthentication();
 
     const uid = user?.uid || '';
     const { isSuccess, isLoading, isError, medication } = useMedication(
-        id,
-        uid
+        uid,
+        medicationID
     );
 
-    //TODO: add this screen
     const headerRight = () => (
         <Appbar.Action
             icon="pencil"
-            // @ts-expect-error TODO: Fix this if possible
-            onPress={() => nav.navigate('EditMedication')}
+            onPress={() =>
+                router.push({
+                    pathname: ROUTE.MEDICATIONS.EDIT,
+                    params: { id: medicationID },
+                })
+            }
         />
     );
 
@@ -50,6 +56,10 @@ export default function MedicationScreen({ id }) {
         initialSelectedDay
     );
 
+    const onPressRecord = (id: string) => {
+        router.push({ pathname: ROUTE.RECORDS.BY_ID, params: { id } });
+    };
+
     return (
         <View style={styles.container}>
             {isLoading && <ProgressIndicator />}
@@ -68,7 +78,6 @@ export default function MedicationScreen({ id }) {
                     <View style={styles.textContainer}>
                         <Text variant="headlineLarge">Programas</Text>
                         <Text variant="labelMedium">
-                            {medication.amount}{' '}
                             {medication.form.toLocaleLowerCase()} every day
                         </Text>
                         <Text variant="labelMedium">{medication.dosage} </Text>
@@ -92,6 +101,7 @@ export default function MedicationScreen({ id }) {
                                 isRefreshing={isLoading}
                                 onRefresh={refetchRecords}
                                 records={records}
+                                onPressRecord={onPressRecord}
                             />
                         )}
                     </View>

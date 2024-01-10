@@ -8,6 +8,8 @@ import { MedicationFormFilterButtons } from '../../../components/MedicationFormF
 import { useMedications } from '../../../hooks/useMedications';
 import { MedicationCards } from '../../../components/MedicationCards';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
+import { router } from 'expo-router';
+import { ROUTE } from '../../../model/routes';
 
 export default function MedicationsScreen() {
     const [selectForm, setSelectForm] = useState<MedicationRecordForm | ''>('');
@@ -30,6 +32,10 @@ export default function MedicationsScreen() {
         }
     };
 
+    const onPressMedication = (id: string) => {
+        router.push({ pathname: ROUTE.MEDICATIONS.BY_ID, params: { id } });
+    };
+
     return (
         <View style={styles.container}>
             <MedicationFormFilterButtons
@@ -43,7 +49,9 @@ export default function MedicationsScreen() {
             {isLoading && <ProgressIndicator />}
             {isSuccess && (
                 <>
-                    <MedicationCards medications={medicationsFiltered} />
+                    <MedicationCards medications={medicationsFiltered}
+                        onPressMedication={onPressMedication}
+                    />
                 </>
             )}
         </View>

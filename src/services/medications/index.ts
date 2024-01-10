@@ -132,11 +132,13 @@ const MEDICATIONS: Medication[] = [
             },
         ],
     },
-];
+].map((medication, index) => ({ ...medication, id: String(index) }));
 
 const MEDICATIONS_COLLECTION_NAME = 'medications';
 
-export const getMedications = async (token: string): Promise<Medication[]> => {
+export const getMedications = async (
+    token: string
+): Promise<PersonalMedication[]> => {
     console.log(`getting medications with token ${token}`);
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -147,16 +149,15 @@ export const getMedications = async (token: string): Promise<Medication[]> => {
 
 export const getMedication = async (
     userId: string,
-    id: string
-): Promise<Medication> => {
-    console.log(`Fetching medication with id=${id} for user with id=${userId}`);
-
-    //TODO: change this
-    const ID = 1;
+    medicationID: string
+): Promise<PersonalMedication> => {
+    console.log(
+        `Fetching medication with id=${medicationID} for user with id=${userId}`
+    );
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(MEDICATIONS[ID]);
+            resolve(MEDICATIONS[medicationID]);
         }, 1000);
     });
 };

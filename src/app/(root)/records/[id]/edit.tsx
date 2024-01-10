@@ -9,8 +9,10 @@ import {
     MedicationRecordForm,
 } from '../../../../model/medicationRecord';
 import { useAuthentication } from '../../../../hooks/useAuthentication';
+import { useLocalSearchParams } from 'expo-router';
 
-export const EditRecordScreen = ({ id }) => {
+export default function EditRecordScreen() {
+    const id = (useLocalSearchParams().id as string) || '';
     const uid = useAuthentication().user?.uid || '';
     const { isLoading, isSuccess, record } = useRecord(id, uid);
     const { updateRecord } = useUpdateRecord(
@@ -44,7 +46,10 @@ export const EditRecordScreen = ({ id }) => {
             {/* Replace this with a different record view */}
             {
                 isSuccess && (
-                    <RecordCard {...(record as MedicationRecord)}></RecordCard>
+                    <RecordCard
+                        {...(record as MedicationRecord)}
+                        onPress={() => {}}
+                    ></RecordCard>
                 ) /* Since isSuccess is true we can be sure that the record is not null */
             }
 
@@ -53,4 +58,4 @@ export const EditRecordScreen = ({ id }) => {
             <Button onPress={onPressHandler}>Click me!</Button>
         </View>
     );
-};
+}
