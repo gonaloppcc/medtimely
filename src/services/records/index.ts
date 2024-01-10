@@ -15,7 +15,7 @@ import {
     where,
 } from 'firebase/firestore';
 
-import { MedicationRecord } from '../../model/MedicationRecord';
+import { MedicationRecord } from '../../model/medicationRecord';
 
 import dayjs from 'dayjs';
 import { ProjectError } from '../error';

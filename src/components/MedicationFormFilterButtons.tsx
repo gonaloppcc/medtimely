@@ -1,9 +1,9 @@
 import React from 'react';
-import { MedicationRecordForm } from '../model/MedicationRecord';
+import { MedicationRecordForm } from '../model/medicationRecord';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { SegmentedButtons } from 'react-native-paper';
-import { medicationFormToIconName } from '../model/Medicine';
 import { useAppTheme } from '../theme';
+import { medicationFormToIconName } from '../model/medication';
 
 const ROUNDNESS = 0.8;
 

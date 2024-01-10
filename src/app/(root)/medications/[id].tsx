@@ -2,10 +2,8 @@ import * as React from 'react';
 
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useNavOptions } from '../../../hooks/useNavOptions';
 import { useAuthentication } from '../../../hooks/useAuthentication';
-import { useRoute } from '../../../hooks/useRoute';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 import { useMedication } from '../../../hooks/useMedication';
 import { MedicationIcon } from '../../../components/MedicationIcon';

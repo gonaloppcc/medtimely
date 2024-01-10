@@ -3,10 +3,10 @@ import { useState } from 'react';
 
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { MedicationRecordForm } from '../../../model/MedicationRecord';
+import { MedicationRecordForm } from '../../../model/medicationRecord';
 import { MedicationFormFilterButtons } from '../../../components/MedicationFormFilterButtons';
 import { useMedications } from '../../../hooks/useMedications';
-import { MedicineCards } from '../../../components/MedicineCards';
+import { MedicationCards } from '../../../components/MedicationCards';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 
 export default function MedicationsScreen() {
@@ -43,7 +43,7 @@ export default function MedicationsScreen() {
             {isLoading && <ProgressIndicator />}
             {isSuccess && (
                 <>
-                    <MedicineCards medicines={medicationsFiltered} />
+                    <MedicationCards medications={medicationsFiltered} />
                 </>
             )}
         </View>

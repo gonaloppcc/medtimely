@@ -5,7 +5,7 @@ import { useCreateRecord } from '../../../hooks/useCreateRecord';
 import {
     MedicationRecord,
     MedicationRecordForm,
-} from '../../../model/MedicationRecord';
+} from '../../../model/medicationRecord';
 import { Input } from '../../../components/Input';
 import { Button } from '../../../components/Button';
 import { useNav } from '../../../hooks/useNav';
@@ -29,7 +29,7 @@ interface Values {
 
 const initialValues: Values = {
     name: '',
-    units: 1,
+    amount: 1,
     dosage: '',
     form: MedicationRecordForm.TABLET,
     missed: false,

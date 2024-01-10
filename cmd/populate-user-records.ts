@@ -4,7 +4,7 @@ import { getFirestore, writeBatch } from 'firebase/firestore';
 import {
     MedicationRecord,
     MedicationRecordForm,
-} from '../src/model/MedicationRecord';
+} from '../src/model/medicationRecord';
 import { initializeApp } from 'firebase/app';
 import { createRecord } from '../src/services/records';
 import { firebaseConfig } from '../firebaseConfig';

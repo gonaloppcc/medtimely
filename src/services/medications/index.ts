@@ -1,5 +1,5 @@
 import { Medication } from '../../model/medication';
-import { MedicationRecordForm } from '../../model/MedicationRecord';
+import { MedicationRecordForm } from '../../model/medicationRecord';
 import { addDoc, collection, Firestore } from 'firebase/firestore';
 import { ProjectError } from '../error';
 

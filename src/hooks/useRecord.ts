@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { MedicationRecord } from '../model/MedicationRecord';
+import { MedicationRecord } from '../model/medicationRecord';
 import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
 import { getRecord } from '../services/records';

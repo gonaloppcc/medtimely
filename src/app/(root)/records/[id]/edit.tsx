@@ -7,7 +7,7 @@ import { useUpdateRecord } from '../../../../hooks/useUpdateRecord';
 import {
     MedicationRecord,
     MedicationRecordForm,
-} from '../../../../model/MedicationRecord';
+} from '../../../../model/medicationRecord';
 import { useAuthentication } from '../../../../hooks/useAuthentication';
 
 export const EditRecordScreen = ({ id }) => {

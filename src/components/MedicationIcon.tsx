@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, useTheme } from 'react-native-paper';
-import { medicationFormToIconName } from '../model/Medicine';
-import { MedicationRecordForm } from '../model/MedicationRecord';
+import { MedicationRecordForm } from '../model/medicationRecord';
+import { medicationFormToIconName } from '../model/medication';
 
 export interface MedIconProps {
     form: MedicationRecordForm;

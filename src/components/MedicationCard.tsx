@@ -2,18 +2,23 @@ import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Medicine } from '../model/Medicine';
 import { MedicationIcon } from './MedicationIcon';
+import { Medication } from '../model/medication';
 
-type MedCardProps = Medicine & {
+type MedicationCardProps = Medication & {
     // Added any extra props here
 };
 export const MedicationCard = ({
-    amount,
-    dosage,
-    form,
     name,
-}: MedCardProps) => {
+    activeSubstance,
+    form,
+    dosage,
+    aimTitular,
+    comercialization,
+    isGeneric,
+    administration,
+    presentations,
+}: MedicationCardProps) => {
     const theme = useTheme();
     const router = useRouter();
 
@@ -33,6 +38,8 @@ export const MedicationCard = ({
     const onPress = () => {
         router.push({ pathname: '/medications/[id]', params: { id: '1' } });
     };
+
+    // FIXME: Improve the UI of this component
 
     return (
         <TouchableOpacity onPress={onPress} style={style}>
@@ -54,7 +61,37 @@ export const MedicationCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {amount} times a day
+                    {activeSubstance}
+                </Text>
+                <Text
+                    variant="labelMedium"
+                    style={{ color: theme.colors.onSurface }}
+                >
+                    {aimTitular}
+                </Text>
+                <Text
+                    variant="labelMedium"
+                    style={{ color: theme.colors.onSurface }}
+                >
+                    {comercialization}
+                </Text>
+                <Text
+                    variant="labelMedium"
+                    style={{ color: theme.colors.onSurface }}
+                >
+                    {isGeneric}
+                </Text>
+                <Text
+                    variant="labelMedium"
+                    style={{ color: theme.colors.onSurface }}
+                >
+                    {administration}
+                </Text>
+                <Text
+                    variant="labelMedium"
+                    style={{ color: theme.colors.onSurface }}
+                >
+                    {presentations.length} presentations
                 </Text>
             </View>
         </TouchableOpacity>

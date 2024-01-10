@@ -1,9 +1,10 @@
-import { MedicationRecordForm } from './MedicationRecord';
+import { MedicationRecordForm } from './medicationRecord';
 
 // https://extranet.infarmed.pt/INFOMED-fo/pesquisa-avancada.xhtml
 export interface Medication {
+    id?: string; // Código do Medicamento
     name: string; // Nome do Medicamento
-    activeSubstance?: string; // Substância Ativa/DCI
+    activeSubstance: string; // Substância Ativa/DCI
     form: MedicationRecordForm; // Forma Farmacêutica
     dosage: string; // Dosagem
     aimTitular?: string; // Titular de AIM
@@ -18,6 +19,8 @@ export interface Medication {
     */
 
     presentations: MedicationPresentation[];
+
+    // TODO: Add scanning codes here
 }
 
 export interface MedicationPresentation {
@@ -41,3 +44,27 @@ export interface MedicationStorageConditions {
 }
 
 export type MedicationPresentationType = 'Unopened' | 'Opened';
+
+//FIXME: Check the MedicationRecordForm and decide which onew we will use
+// see list https://callstack.github.io/react-native-paper/docs/guides/icons/
+export const medicationFormToIconName = (form: MedicationRecordForm) => {
+    let iconName = 'pill';
+    switch (form) {
+        case MedicationRecordForm.CAPSULE:
+            break;
+        case MedicationRecordForm.INJECTION:
+            iconName = 'needle';
+            break;
+        case MedicationRecordForm.DROPS:
+            iconName = 'eyedropper';
+            break;
+
+        case MedicationRecordForm.LIQUID:
+            iconName = 'bottle-tonic-plus';
+            break;
+        default:
+            break;
+    }
+
+    return iconName;
+};

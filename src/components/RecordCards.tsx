@@ -1,5 +1,5 @@
 import React from 'react';
-import { MedicationRecord } from '../model/MedicationRecord';
+import { MedicationRecord } from '../model/medicationRecord';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { RecordCard } from './RecordCard';
 

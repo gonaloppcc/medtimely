@@ -8,7 +8,7 @@ import {
 import {
     MedicationRecord,
     MedicationRecordForm,
-} from '../../model/MedicationRecord';
+} from '../../model/medicationRecord';
 import { firebaseConfig } from '../../../firebaseConfig';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, terminate } from 'firebase/firestore';

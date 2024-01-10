@@ -1,9 +1,9 @@
 import React from 'react';
-import { Icon, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { MedicationRecord } from '../model/MedicationRecord';
+import { MedicationRecord } from '../model/medicationRecord';
 import { useNav } from '../hooks/useNav';
-import { medicationFormToIconName } from '../model/Medicine';
+import { MedicationIcon } from './MedicationIcon';
 
 type MedCardProps = MedicationRecord & {
     // Added any extra props here
@@ -46,11 +46,7 @@ export const RecordCard = ({
 
     return (
         <TouchableOpacity onPress={onPress} style={style}>
-            <Icon
-                size={40}
-                source={medicationFormToIconName(form)}
-                color={theme.colors.onSurface}
-            />
+            <MedicationIcon form={form} />
             <View style={styles.innerStyle}>
                 <Text
                     variant="labelLarge"

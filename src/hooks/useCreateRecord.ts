@@ -1,4 +1,4 @@
-import { MedicationRecord } from '../model/MedicationRecord';
+import { MedicationRecord } from '../model/medicationRecord';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createRecord } from '../services/records';
 import { db } from '../firebase';
