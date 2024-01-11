@@ -1,6 +1,14 @@
 import { Medication } from '../../model/medication';
 import { MedicationRecordForm } from '../../model/medicationRecord';
-import { addDoc, collection, Firestore } from 'firebase/firestore';
+import {
+    addDoc,
+    collection,
+    doc,
+    DocumentReference,
+    DocumentSnapshot,
+    Firestore,
+    getDoc,
+} from 'firebase/firestore';
 import { ProjectError } from '../error';
 
 const MEDICATIONS: Medication[] = [
@@ -148,19 +156,54 @@ export const getMedications = async (token: string): Promise<Medication[]> => {
     });
 };
 
-export const getMedication = async (
-    userId: string,
-    medicationID: string
-): Promise<Medication> => {
+export const getMedicationsByFilter = async (
+    db: Firestore,
+    name: string,
+    activeSubstance: string,
+    form: MedicationRecordForm,
+    administration: string
+): Promise<Medication[]> => {
     console.log(
-        `Fetching medication with id=${medicationID} for user with id=${userId}`
+        `getting medications filtered by name=${name}, activeSubstance=${activeSubstance}, form=${form}, administration=${administration}`
     );
+
+    // TODO: Implement this
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(MEDICATIONS[medicationID]);
+            resolve(MEDICATIONS);
         }, 1000);
     });
+};
+
+export const getMedication = async (
+    db: Firestore,
+    id: string
+): Promise<Medication> => {
+    console.log(`Fetching medication with id=${id}`);
+
+    const docRef: DocumentReference = doc(db, MEDICATIONS_COLLECTION_NAME, id);
+
+    let docSnap: DocumentSnapshot;
+
+    try {
+        docSnap = await getDoc(docRef);
+    } catch (err) {
+        console.error('Error getting document: ', err);
+        throw new ProjectError(
+            'GETTING_MEDICATION_ERROR',
+            `Error getting document on path=${MEDICATIONS_COLLECTION_NAME}/${id}`
+        );
+    }
+
+    if (docSnap.exists()) {
+        return docSnap.data() as Medication;
+    } else {
+        throw new ProjectError(
+            'INVALID_MEDICATION_ID_ERROR',
+            `No medication with id=${id} exists`
+        );
+    }
 };
 
 export const createMedication = async (

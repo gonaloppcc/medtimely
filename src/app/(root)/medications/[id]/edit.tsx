@@ -4,13 +4,11 @@ import { View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import { useLocalSearchParams } from 'expo-router';
 import { useMedication } from '../../../../hooks/useMedication';
-import { useAuthentication } from '../../../../hooks/useAuthentication';
 import { MedicationCard } from '../../../../components/MedicationCard';
 
 export default function EditMedicationRecord() {
     const id = (useLocalSearchParams().id as string) || '';
-    const uid = useAuthentication().user?.uid || '';
-    const { isLoading, isSuccess, medication } = useMedication(id, uid);
+    const { isLoading, isSuccess, medication } = useMedication(id);
 
     const onPressHandler = () => {};
 

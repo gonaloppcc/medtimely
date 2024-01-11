@@ -12,8 +12,7 @@ export const PersonalStockItemCard = ({
     medicationId,
     name,
     form,
-    amountLeft: units,
-    daysToRunOf,
+    stock,
     onPressStock,
 }: PersonalStockItemCardProps) => {
     const theme = useTheme();
@@ -28,7 +27,7 @@ export const PersonalStockItemCard = ({
         borderColor: theme.colors.outline,
     };
 
-    const subtitle = `${form}, ${units} left`;
+    const subtitle = `${form}, ${stock} left`;
 
     const onPress = () => {
         onPressStock(medicationId);
@@ -54,7 +53,7 @@ export const PersonalStockItemCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {daysToRunOf} days to run out
+                    {0 /* FIXME: Finish migrating this */} days to run out
                 </Text>
             </View>
         </TouchableOpacity>

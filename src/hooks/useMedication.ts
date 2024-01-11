@@ -3,15 +3,13 @@ import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
 import { Medication } from '../model/medication';
 import { getMedication } from '../services/medications';
+import { db } from '../firebase';
 
 export interface useMedicationsProps extends FetcherProps {
     medication: Medication | null;
 }
 
-export const useMedication = (
-    medicationId: string,
-    userId: string
-): useMedicationsProps => {
+export const useMedication = (medicationId: string): useMedicationsProps => {
     const {
         isSuccess,
         isLoading,
@@ -21,7 +19,7 @@ export const useMedication = (
         refetch,
     } = useQuery({
         queryKey: ['medication', medicationId],
-        queryFn: () => getMedication(medicationId, userId),
+        queryFn: () => getMedication(db, medicationId),
     });
 
     return {

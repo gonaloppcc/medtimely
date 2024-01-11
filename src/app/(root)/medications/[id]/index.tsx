@@ -18,11 +18,8 @@ export default function MedicationScreen() {
     const theme = useAppTheme();
     const { user } = useAuthentication();
 
-    const uid = user?.uid || '';
-    const { isSuccess, isLoading, isError, medication } = useMedication(
-        uid,
-        medicationID
-    );
+    const { isSuccess, isLoading, isError, medication } =
+        useMedication(medicationID);
 
     const headerRight = () => (
         <Appbar.Action

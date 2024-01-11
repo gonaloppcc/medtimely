@@ -5,8 +5,11 @@ type ErrorName =
     | 'GETTING_RECORD_ERROR'
     | 'UPDATING_RECORD_ERROR'
     | 'INVALID_RECORD_ID_ERROR'
+
     // Medication errors
-    | 'CREATING_MEDICATION_ERROR';
+    | 'CREATING_MEDICATION_ERROR'
+    | 'GETTING_MEDICATION_ERROR'
+    | 'INVALID_MEDICATION_ID_ERROR';
 
 export class ProjectError extends Error {
     name: ErrorName;
