@@ -17,8 +17,10 @@ import { ItemPickerProp, Picker } from '../../../components/Picker';
 import { useNavOptions } from '../../../hooks/useNavOptions';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { router } from 'expo-router';
+import { MedicationsDropdown } from '../../../components/MedicationsDropdown';
 
 interface Values {
+    medicationId: string;
     name: string;
     amount: number;
     dosage: string;
@@ -28,6 +30,7 @@ interface Values {
 }
 
 const initialValues: Values = {
+    medicationId: '',
     name: '',
     amount: 1,
     dosage: '',
@@ -37,6 +40,7 @@ const initialValues: Values = {
 };
 
 const schema = Yup.object().shape({
+    medicationId: Yup.string().required('Required'),
     name: Yup.string().required('Required'),
     amount: Yup.number().required('Required'),
     dosage: Yup.string().required('Required'),
@@ -119,6 +123,16 @@ export default function CreateRecordScreen() {
         <ScrollView contentContainerStyle={styles.form}>
             {/* TODO: Add a form to create the record */}
             <View style={styles.inputContainer}>
+                <View style={styles.field}>
+                    <Text>Medication</Text>
+                    <MedicationsDropdown
+                        value={values.medicationId}
+                        setValue={handleChange('medicationId')}
+                    />
+                    {touched.medicationId && errors.medicationId && (
+                        <ErrorMessage errorMessage={errors.medicationId} />
+                    )}
+                </View>
                 <View style={styles.field}>
                     <Text>Medication Name</Text>
                     <Input
