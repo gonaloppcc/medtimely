@@ -32,20 +32,13 @@ export const getUserGroups = async (
 
     const groupsData = await Promise.all(
         groupRefs.map(async (groupRef) => {
-            //const groupDocRef: DocumentReference = doc(
-            //    db,
-            //    GROUPS_COLLECTION_NAME,
-            //    groupId
-            //);
             const groupDocSnapshot: DocumentSnapshot = await getDoc(groupRef);
             if (!groupDocSnapshot.exists()) {
                 throw new Error(`Group with id=${groupRef.id} does not exist`);
             }
 
             const userRefInGroup = groupDocSnapshot.data()?.users || [];
-            console.log(userRefInGroup);
-            const usersData: User[] = await getUsersInGroup(db, userRefInGroup);
-            console.log(usersData);
+            const usersData: User[] = await getUsersInGroup(userRefInGroup);
 
             return {
                 id: groupDocSnapshot.id,
@@ -54,21 +47,14 @@ export const getUserGroups = async (
             } as Group;
         })
     );
-    console.log(groupsData);
     return groupsData;
 };
 
 const getUsersInGroup = async (
-    db: Firestore,
     userRefs: DocumentReference[]
 ): Promise<User[]> => {
     return Promise.all(
         userRefs.map(async (userRef) => {
-            //const userDocRef: DocumentReference = doc(
-            //    db,
-            //    USERS_COLLECTION_NAME,
-            //    userId
-            //);
             const userDocSnapshot: DocumentSnapshot = await getDoc(userRef);
             if (!userDocSnapshot.exists()) {
                 throw new Error(`User with id=${userRef.id} does not exist`);
