@@ -9,7 +9,7 @@ import {
 import { Firestore } from 'firebase/firestore';
 
 const USERS_COLLECTION_NAME = 'users';
-const GROUPS_COLLECTION_NAME = 'groups';
+//const GROUPS_COLLECTION_NAME = 'groups';
 
 export const getUserGroups = async (
     db: Firestore,
