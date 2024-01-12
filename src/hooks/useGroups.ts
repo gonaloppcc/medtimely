@@ -2,13 +2,14 @@ import { AxiosError } from 'axios';
 import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
 import { Group } from '../model/group';
-import { getGroups } from '../services/groups';
+import { getUserGroups } from '../services/groups';
+import { db } from '../firebase';
 
 export interface useGroupsProps extends FetcherProps {
     groups: Group[];
 }
 
-export const useGroups = (token: string): useGroupsProps => {
+export const useGroups = (userId: string): useGroupsProps => {
     const {
         isSuccess,
         isLoading,
@@ -18,7 +19,7 @@ export const useGroups = (token: string): useGroupsProps => {
         refetch,
     } = useQuery({
         queryKey: ['groups'], // No need to add the token in the query key since all requests will have the same token
-        queryFn: () => getGroups(token),
+        queryFn: () => getUserGroups(db, userId),
     });
 
     return {

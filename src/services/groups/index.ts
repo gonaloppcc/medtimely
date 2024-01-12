@@ -1,48 +1,69 @@
 import { Group } from '../../model/group';
+import { User } from '../../model/user';
+import {
+    DocumentReference,
+    DocumentSnapshot,
+    doc,
+    getDoc,
+} from 'firebase/firestore';
+import { Firestore } from 'firebase/firestore';
 
-const GROUPS: Group[] = [
-    {
-        groupName: 'group 1',
-        description: 'description 1',
-    },
-    {
-        groupName: 'group 2',
-        description: 'description 2',
-    },
-    {
-        groupName: 'group 3',
-        description: 'description 3',
-    },
-    {
-        groupName: 'group 4',
-        description: 'description 4',
-    },
-].map((group, index) => ({ ...group, id: String(index) }));
+const USERS_COLLECTION_NAME = 'users';
+const GROUPS_COLLECTION_NAME = 'groups';
 
-const SMALL_STALL_TIME = 1000;
-const STALL_TIME = 4000;
+export const getUserGroups = async (
+    db: Firestore,
+    userId: string
+): Promise<Group[]> => {
+    console.log(`Fetching groups for userId=${userId}`);
 
-export const getGroups = async (token: string): Promise<Group[]> => {
-    console.log(`Fetching groups for token=${token}`);
+    const userDocRef: DocumentReference = doc(
+        db,
+        USERS_COLLECTION_NAME,
+        userId
+    );
+    const userDocSnapshot: DocumentSnapshot = await getDoc(userDocRef);
 
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(GROUPS);
-        }, STALL_TIME);
-    });
+    if (!userDocSnapshot.exists()) {
+        throw new Error(`User with id=${userId} does not exist`);
+    }
+
+    const groupRefs: DocumentReference[] = userDocSnapshot.data()?.groups || [];
+
+    const groupsData = await Promise.all(
+        groupRefs.map(async (groupRef) => {
+            const groupDocSnapshot: DocumentSnapshot = await getDoc(groupRef);
+            if (!groupDocSnapshot.exists()) {
+                throw new Error(`Group with id=${groupRef.id} does not exist`);
+            }
+
+            const userRefInGroup = groupDocSnapshot.data()?.users || [];
+            const usersData: User[] = await getUsersInGroup(userRefInGroup);
+
+            return {
+                id: groupDocSnapshot.id,
+                ...groupDocSnapshot.data(),
+                users: usersData,
+            } as Group;
+        })
+    );
+    return groupsData;
 };
 
-export const createGroup = async (
-    token: string,
-    group: Group
-): Promise<string> => {
-    console.log(`Creating group for token=${token}`);
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            GROUPS.push(group);
-
-            resolve('CreatedID');
-        }, SMALL_STALL_TIME);
-    });
+const getUsersInGroup = async (
+    userRefs: DocumentReference[]
+): Promise<User[]> => {
+    return Promise.all(
+        userRefs.map(async (userRef) => {
+            const userDocSnapshot: DocumentSnapshot = await getDoc(userRef);
+            if (!userDocSnapshot.exists()) {
+                throw new Error(`User with id=${userRef.id} does not exist`);
+            }
+            // FIXME
+            return {
+                id: userDocSnapshot.id,
+                ...userDocSnapshot.data(),
+            } as User;
+        })
+    );
 };
