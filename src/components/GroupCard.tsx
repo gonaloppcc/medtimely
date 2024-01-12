@@ -8,7 +8,7 @@ export interface GroupCardProps extends Group {
 }
 
 export const GroupCard = ({
-    groupName,
+    name,
     description,
     id,
     onPress,
@@ -40,7 +40,7 @@ export const GroupCard = ({
                     variant="labelLarge"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {groupName}
+                    {name}
                 </Text>
                 <Text
                     variant="labelMedium"

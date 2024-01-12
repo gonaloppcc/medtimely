@@ -7,9 +7,11 @@ import { useGroups } from '../../../hooks/useGroups';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 import { router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
+import { useAuthentication } from '../../../hooks/useAuthentication';
 
 export default function GroupsScreen() {
-    const { isSuccess, isLoading, groups } = useGroups('1'); // TODO: Replace with user's token
+    const { user } = useAuthentication();
+    const { isSuccess, isLoading, groups } = useGroups(user?.uid ?? ''); // TODO: Replace with user's token
 
     const onPressGroup = (id: string) => {
         router.push({ pathname: ROUTE.GROUPS.BY_ID, params: { id } });
