@@ -5,7 +5,7 @@ export const OWNED_MEDICATION: OwnedMedication = {
     activeSubstance: '',
     administration: '',
     aimTitular: '',
-    comercialization: false,
+    commercialisation: false,
     dosage: '',
     form: MedicationRecordForm.AEROSOL,
     id: '',

@@ -42,7 +42,7 @@ const MEDICATIONS: Medication[] = [
         form: MedicationRecordForm.TABLET,
         dosage: '12.5 mg',
         aimTitular: 'Takeda Pharma A/S',
-        comercialization: true,
+        commercialisation: true,
         isGeneric: false,
         administration: 'Oral use',
         presentations: [
@@ -96,7 +96,7 @@ const MEDICATIONS: Medication[] = [
         form: MedicationRecordForm.TABLET,
         dosage: '25 mg',
         aimTitular: 'Takeda Pharma A/S',
-        comercialization: true,
+        commercialisation: true,
         isGeneric: false,
         administration: 'Oral use',
         presentations: [
