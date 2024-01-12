@@ -1,4 +1,4 @@
-import {Medication} from './medication';
+import { Medication } from './medication';
 
 export interface OwnedMedication extends Medication {
     id: string;
