@@ -1,3 +1,5 @@
+// noinspection SpellCheckingInspection,JSNonASCIINames,NonAsciiCharacters
+
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../firebaseConfig';
 import { getFirestore, terminate, writeBatch } from 'firebase/firestore';
@@ -12,7 +14,12 @@ const db = getFirestore(app);
 
 const MEDICATIONS_FILE_PATH = './data/lista_infomed.csv';
 
-// noinspection SpellCheckingInspection,JSNonASCIINames,NonAsciiCharacters
+const randomNumber = (min: number, max: number): number =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
+
+const randomChoice = <T>(choices: T[]): T =>
+    choices[randomNumber(0, choices.length - 1)];
+
 interface InfarmedMedication {
     ' Substância Ativa/DCI': string;
     'Nome do Medicamento': string;
@@ -24,11 +31,33 @@ interface InfarmedMedication {
     Comercialização: string;
 }
 
-// noinspection SpellCheckingInspection,JSNonASCIINames,NonAsciiCharacters
+const randomShelfLife = (): number => randomChoice([0.5, 1, 2, 3, 4]) * 12; // 12 months in a year
+
+const randomTemperature = (): number | null =>
+    randomChoice([2, 8, 15, 25, 30, 40, null]);
+
+const randomPrice1 = (): number =>
+    randomNumber(1, 10) + randomNumber(0, 99) / 100;
+
+const randomPrice2 = (): number =>
+    randomNumber(10, 50) + randomNumber(0, 99) / 100;
+
+const randomMaxPrice = (pvp: number): number => pvp + randomNumber(0, 99) / 100;
+
+const randomUnits1 = (): number => randomChoice([10, 14, 18]);
+
+const randomUnits2 = (): number => randomChoice([28, 30, 56, 60]);
+
+const randomUnits3 = (): number => randomChoice([56, 60, 90, 100, 120]);
+
 const parseInfarmedMedicationToMedication = (
     infarmedMedication: InfarmedMedication
 ): Medication => {
-    // noinspection SpellCheckingInspection,JSNonASCIINames,NonAsciiCharacters
+    const pvp1 = randomPrice1();
+    const maxPrice1 = randomMaxPrice(pvp1);
+    const pvp2 = randomPrice2();
+    const maxPrice2 = randomMaxPrice(pvp2);
+
     return {
         id: '',
         name: infarmedMedication['Nome do Medicamento'],
@@ -39,7 +68,50 @@ const parseInfarmedMedicationToMedication = (
         commercialisation: infarmedMedication.Comercialização === 'Sim',
         isGeneric: infarmedMedication.Genérico === 'Sim',
         administration: 'Oral use',
-        presentations: [],
+        presentations: [
+            // Presentations are not in the CSV file, therefore will be randomly generated
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: randomShelfLife(),
+                    temperature: randomTemperature(),
+                    conditions: null,
+                },
+                pricing: {
+                    units: randomUnits1(),
+                    pvp: pvp1,
+                    maxPrice: maxPrice1,
+                },
+                safetyFeatures: true,
+            },
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: randomShelfLife(),
+                    temperature: randomTemperature(),
+                    conditions: null,
+                },
+                pricing: {
+                    units: randomUnits2(),
+                    pvp: pvp2,
+                    maxPrice: maxPrice2,
+                },
+                safetyFeatures: true,
+            },
+            {
+                storageConditions: {
+                    presentationType: 'Unopened',
+                    shelfLife: randomShelfLife(),
+                    temperature: randomTemperature(),
+                    conditions: null,
+                },
+                pricing: {
+                    units: randomUnits3(),
+                    isNotMarketed: true,
+                },
+                safetyFeatures: true,
+            },
+        ],
     };
 };
 
@@ -52,12 +124,8 @@ const readMedications = (): Promise<Medication[]> =>
         createReadStream(MEDICATIONS_FILE_PATH, { end: 100000 })
             .pipe(parse())
             .on('data', (infarmedMedication) => {
-                console.log('Read medication: ', infarmedMedication);
-
                 const medication =
                     parseInfarmedMedicationToMedication(infarmedMedication);
-
-                console.log('Parsed medication: ', medication);
 
                 medications.push(medication);
             })
@@ -66,12 +134,17 @@ const readMedications = (): Promise<Medication[]> =>
             });
     });
 
-(async () => {
+if (process.argv.length !== 2) {
+    // 2 arguments: node, path where script is running. No additional arguments
+    console.log('Usage: yarn cmd:populate-medications');
+    process.exit(1);
+}
+
+(async (): Promise<number> => {
     const batch = writeBatch(db);
 
     const medications = await readMedications();
     console.log(`Read ${medications.length} medications from file`);
-    console.log('Medication 1: ', medications[0]);
 
     await Promise.all(
         medications.map(async (medication) => {
@@ -80,9 +153,11 @@ const readMedications = (): Promise<Medication[]> =>
     );
 
     await batch.commit();
+
+    return medications.length;
 })()
-    .then(() => {
-        console.log(`All done!`);
+    .then((len: number) => {
+        console.log(`All done ${len} medications created`);
         process.exit(0);
     })
     .catch((e) => {
@@ -93,89 +168,3 @@ const readMedications = (): Promise<Medication[]> =>
         console.log('Terminating connection to Firestore');
         await terminate(db);
     });
-
-/*
-if (process.argv.length !== 2) {
-    // 2 arguments: node, path where script is running. No additional arguments
-    console.log('Usage: yarn cmd:populate-medications');
-    process.exit(1);
-}
-
-const medications: Medication[] = [
-    {
-        id: '1',
-        name: 'Vipidia',
-        activeSubstance: 'alogliptin',
-        form: MedicationRecordForm.TABLET,
-        dosage: '12.5 mg',
-        aimTitular: 'Takeda Pharma A/S',
-        commercialisation: true,
-        isGeneric: false,
-        administration: 'Oral use',
-        presentations: [
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 14,
-                    pvp: 9.97,
-                    maxPrice: 10.44,
-                },
-                safetyFeatures: true,
-            },
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 28,
-                    pvp: 19.84,
-                    maxPrice: 19.84,
-                },
-                safetyFeatures: true,
-            },
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 56,
-                    isNotMarketed: true,
-                },
-                safetyFeatures: true,
-            },
-        ],
-    },
-];
-
-(async () => {
-    const batch = writeBatch(db);
-
-    await Promise.all(
-        medications.map(async (medication) => {
-            return await createMedication(db, medication);
-        })
-    );
-
-    await batch.commit();
-})()
-    .then(() => {
-        console.log(`All done!`);
-        process.exit(0);
-    })
-    .catch((e) => {
-        console.error(e);
-        process.exit(1);
-    });
-
- */

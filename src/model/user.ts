@@ -9,3 +9,5 @@ export interface User {
     medications: Medication[];
     groups: string[];
 }
+
+export type UserData = Omit<User, 'id'>;

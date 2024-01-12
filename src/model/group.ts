@@ -11,3 +11,5 @@ export interface Group {
     treatmentPermissions: Permissions;
     hasSharedStock: boolean;
 }
+
+export type GroupData = Omit<Group, 'id'>;

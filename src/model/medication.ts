@@ -23,6 +23,8 @@ export interface Medication {
     // TODO: Add scanning codes here
 }
 
+export type MedicationData = Omit<Medication, 'id'>;
+
 export interface MedicationPresentation {
     storageConditions: MedicationStorageConditions;
     pricing: MedicationPricing;
