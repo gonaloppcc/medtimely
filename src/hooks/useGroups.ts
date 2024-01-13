@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Group } from '../model/group';
 import { getUserGroups } from '../services/groups';
 import { db } from '../firebase';
-
 export interface useGroupsProps extends FetcherProps {
     groups: Group[];
 }
@@ -21,6 +20,7 @@ export const useGroups = (userId: string): useGroupsProps => {
         queryKey: ['groups'], // No need to add the token in the query key since all requests will have the same token
         queryFn: () => getUserGroups(db, userId),
     });
+
 
     return {
         isSuccess,
