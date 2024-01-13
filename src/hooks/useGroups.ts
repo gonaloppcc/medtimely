@@ -21,6 +21,8 @@ export const useGroups = (token: string): useGroupsProps => {
         queryFn: () => getGroups(token),
     });
 
+    console.log()
+
     return {
         isSuccess,
         isLoading,

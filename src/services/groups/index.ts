@@ -1,4 +1,5 @@
 import { Group } from '../../model/group';
+<<<<<<< Updated upstream
 
 const GROUPS: Group[] = [
     {
@@ -32,6 +33,95 @@ export const getGroups = async (
 
     return new Promise((resolve) => {
         setTimeout(() => {
+=======
+import { User } from '../../model/user';
+import {
+    DocumentReference,
+    DocumentSnapshot,
+    doc,
+    getDoc,
+} from 'firebase/firestore';
+import { Firestore } from 'firebase/firestore';
+import { MedicationRecordForm } from '../../model/medicationRecord';
+
+
+
+const USERS_COLLECTION_NAME = 'users';
+//const GROUPS_COLLECTION_NAME = 'groups';
+
+export const getUserGroups = async (
+    db: Firestore,
+    userId: string
+): Promise<Group[]> => {
+    console.log(`Fetching groups for userId=${userId}`);
+
+    console.log("Hello");
+
+    const userDocRef: DocumentReference = doc(
+        db,
+        USERS_COLLECTION_NAME,
+        userId
+    );
+    
+    console.log("Hello2");
+    const userDocSnapshot: DocumentSnapshot = await getDoc(userDocRef);
+    
+    console.log("Hello3");
+
+    // if (!userDocSnapshot.exists()) {
+    //     throw new Error(`User with id=${userId} does not exist`);
+    //}
+    
+    console.log("Hello4");
+
+    const groupRefs: DocumentReference[] = userDocSnapshot.data()?.groups || [];
+    console.log("hello")
+    const groupsData = await Promise.all(
+        groupRefs.map(async (groupRef) => {
+            const groupDocSnapshot: DocumentSnapshot = await getDoc(groupRef);
+            if (!groupDocSnapshot.exists()) {
+                throw new Error(`Group with id=${groupRef.id} does not exist`);
+            }
+            const userRefInGroup = groupDocSnapshot.data()?.users || [];
+            const usersData: User[] = await getUsersInGroup(userRefInGroup);
+
+            return {
+                id: groupDocSnapshot.id,
+                ...groupDocSnapshot.data(),
+                users: usersData,
+            } as Group;
+        })
+    );
+    console.log("Hello");
+    groupsData.push( {
+        id: "testId",
+        name: "testName",
+        description: "testDescription",
+        users: [{
+            id:"testUserId",
+            firstname:"testFs",
+            lastname: "testLs",
+            records: [{
+                id: "testRecordId",
+                name: "testRecord",
+                dosage: "testDosage",
+                form: MedicationRecordForm.CAPSULE,
+                units: 10,
+                missed: true,
+                scheduledTime: new Date(2024, 0, 13, 12, 30, 0)
+            }],
+            medications: [],
+            groups: []
+        }],
+        sharedMeds: ["med1", "med2", "med3"],
+        treatmentPermissions: 'view',
+        hasSharedStock: true,
+
+    })
+    console.log(groupsData);
+    return groupsData;
+};
+>>>>>>> Stashed changes
 
             resolve(GROUPS)
         }, STALL_TIME)
