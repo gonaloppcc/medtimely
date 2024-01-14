@@ -9,11 +9,31 @@ import { useRecords } from '../../hooks/useRecords';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../model/routes';
+import * as Notifications from 'expo-notifications';
+import {
+    setNotificationNavigator,
+    sendNotification,
+  } from "../../services/reminders";
 
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
 export default function HomeScreen() {
+
+    console.log("HomeScreen");
+    sendNotification(
+        `Hello! It's time to take your medication!`,
+        'Please take your medication now!!!'
+    );
+
     const { user } = useAuthentication();
     const day =
         (useLocalSearchParams().day as string) || new Date().toISOString();
