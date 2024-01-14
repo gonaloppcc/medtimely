@@ -1,4 +1,3 @@
-import { Text } from 'react-native-paper';
 import { useAuthentication } from '../hooks/useAuthentication';
 import DropDown from 'react-native-paper-dropdown';
 import React from 'react';
@@ -9,7 +8,7 @@ export function MedicationsDropdown({
     setValue,
     value,
 }: {
-    setValue: (_: string) => any;
+    setValue: (_: string) => void;
     value: string;
 }) {
     const uid = useAuthentication().user?.uid || '';
