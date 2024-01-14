@@ -98,9 +98,9 @@ export const getUserOwnedMedications = async (
     db: Firestore,
     uid: string,
     maxNumber: number = 10
-):, Promise<OwnedMedication[]> => {
+): Promise<OwnedMedication[]> => {
     console.log(
-        `Fetching stock for user with id=${uid} with maxNumber=${maxNumber}`,
+        `Fetching stock for user with id=${uid} with maxNumber=${maxNumber}`
     );
 
     const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
@@ -121,31 +121,31 @@ export const getUserOwnedMedications = async (
                 // Fetch the medication document data too and merge it with the owned medication
                 const medication = await getMedication(
                     db,
-                    ownedMedication.medicationId,
+                    ownedMedication.medicationId
                 );
 
                 return {
                     ...medication,
                     ...ownedMedication,
                 };
-            }),
+            })
         );
     } catch (err) {
         console.error('Error performing firebase query: ', err);
         throw new ProjectError(
             'GETTING_OWNED_MEDICATIONS_ERROR',
-            `Error getting document on path=${OWNED_MEDICATIONS_COLLECTION}`,
+            `Error getting document on path=${OWNED_MEDICATIONS_COLLECTION}`
         );
     }
-}
+};
 
 export const getUserGroupOwnedMedications = async (
     db: Firestore,
     uid: string,
-    groupId: string,
+    groupId: string
 ): Promise<OwnedMedication[]> => {
     console.log(
-        `Fetching stock for user with id=${uid} and groupId=${groupId}`,
+        `Fetching stock for user with id=${uid} and groupId=${groupId}`
     );
 
     // TODO: Implement this
@@ -162,10 +162,10 @@ export const createOwnedMedication = async (
     uid: string,
     medicationId: string,
     medicationForm: MedicationRecordForm,
-    stock: number,
+    stock: number
 ): Promise<string> => {
     console.log(
-        `creating owned medication for user with id=${uid} for medicationId=${medicationId} with stock=${stock}`,
+        `creating owned medication for user with id=${uid} for medicationId=${medicationId} with stock=${stock}`
     );
 
     const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
@@ -184,7 +184,7 @@ export const createOwnedMedication = async (
         console.error('Error creating document: ', err);
         throw new ProjectError(
             'CREATING_OWNED_MEDICATION_ERROR',
-            `Error creating document on path=${OWNED_MEDICATIONS_COLLECTION}`,
+            `Error creating document on path=${OWNED_MEDICATIONS_COLLECTION}`
         );
     }
 };
@@ -192,12 +192,12 @@ export const createOwnedMedication = async (
 export const updateOwnedMedication = async (
     db: Firestore,
     uid: string,
-    ownedMedication: OwnedMedicationData,
+    ownedMedication: OwnedMedicationData
 ): Promise<OwnedMedication> => {
     console.log(
         `Updating owned medication for user with id=${uid} with data=${JSON.stringify(
-            ownedMedication,
-        )}`,
+            ownedMedication
+        )}`
     );
 
     // TODO: Implement this
@@ -212,17 +212,17 @@ export const updateOwnedMedication = async (
 export const deleteOwnedMedication = async (
     db: Firestore,
     uid: string,
-    ownedMedicationId: string,
+    ownedMedicationId: string
 ): Promise<void> => {
     console.log(
-        `Deleting owned medication for user with id=${uid} and ownedMedicationId=${ownedMedicationId}`,
+        `Deleting owned medication for user with id=${uid} and ownedMedicationId=${ownedMedicationId}`
     );
 
     const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
 
     const ownedMedicationDoc = doc(
         ownedMedicationCollection,
-        ownedMedicationId,
+        ownedMedicationId
     );
 
     try {
@@ -231,7 +231,7 @@ export const deleteOwnedMedication = async (
         console.error('Error deleting document: ', err);
         throw new ProjectError(
             'DELETING_OWNED_MEDICATION_ERROR',
-            `Error deleting document on path=${OWNED_MEDICATIONS_COLLECTION}`,
+            `Error deleting document on path=${OWNED_MEDICATIONS_COLLECTION}`
         );
     }
 };
