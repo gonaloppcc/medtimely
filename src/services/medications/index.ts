@@ -1,4 +1,4 @@
-import { Medication } from '../../model/medication';
+import { Medication, MedicationData } from '../../model/medication';
 import { MedicationRecordForm } from '../../model/medicationRecord';
 import {
     addDoc,
@@ -222,7 +222,11 @@ export const getMedication = async (
     }
 
     if (docSnap.exists()) {
-        return docSnap.data() as Medication;
+        const medication: Medication = docSnap.data() as Medication;
+
+        medication.id = docSnap.id;
+
+        return medication;
     } else {
         throw new ProjectError(
             'INVALID_MEDICATION_ID_ERROR',
@@ -233,7 +237,7 @@ export const getMedication = async (
 
 export const createMedication = async (
     db: Firestore,
-    medication: Medication
+    medication: MedicationData
 ): Promise<string> => {
     console.log(`Creating medication with name=${medication.name}`);
 

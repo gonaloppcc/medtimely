@@ -3,6 +3,7 @@ import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
 import { getUserOwnedMedications } from '../services/ownedMedication';
 import { OwnedMedication } from '../model/ownedMedication';
+import { db } from '../firebase';
 
 export interface useOwnedMedicationsProps extends FetcherProps {
     ownedMedications: OwnedMedication[];
@@ -20,7 +21,7 @@ export const useOwnedMedications = (
         refetch,
     } = useQuery({
         queryKey: ['ownedMedication', userId],
-        queryFn: () => getUserOwnedMedications(userId),
+        queryFn: () => getUserOwnedMedications(db, userId),
     });
 
     return {
