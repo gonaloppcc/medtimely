@@ -3,11 +3,13 @@ import * as React from 'react';
 import * as Yup from 'yup';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import { useFormik } from 'formik';
-import { createUserWithEmailAndPassword } from '../../services/auth';
+import { createUserWithEmailAndPassword, createUserDoc } from '../../services/auth';
 import { View } from 'react-native';
 import { formStyle } from './signin';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { getFirestore } from 'firebase/firestore';
+import {db} from '../../firebase';
 
 const signupValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
@@ -20,12 +22,16 @@ const signupValidationSchema = Yup.object().shape({
 });
 
 interface Values {
+    firstname: string;
+    lastname: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
 const initialValues: Values = {
+    firstname: '',
+    lastname: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -33,6 +39,8 @@ const initialValues: Values = {
 
 export default function SignUpScreen() {
     const insets = useSafeAreaInsets();
+    const lastNameTextInput = React.useRef(null);
+    const emailTextInput = React.useRef(null);
     const passwordTextInput = React.useRef(null);
     const confirmPasswordTextInput = React.useRef(null);
     const [submitErrorMessage, setSubmitErrorMessage] =
@@ -54,10 +62,16 @@ export default function SignUpScreen() {
         validationSchema: signupValidationSchema,
         async onSubmit(values: Values) {
             try {
-                await createUserWithEmailAndPassword(
+                const User = await createUserWithEmailAndPassword(
                     values.email,
                     values.password
                 );
+                await createUserDoc(
+                    db,
+                    User.uid,
+                    values.firstname,
+                    values.lastname
+                )
             } catch (error) {
                 const errorMessage =
                     (error.message as string) || 'Something went wrong';
@@ -85,7 +99,42 @@ export default function SignUpScreen() {
                 <View style={formStyle.formStyle}>
                     <Text variant="titleLarge">Sign up</Text>
                     <TextInput
+                        id='firstname'
+                        placeholder="First Name"
+                        autoCapitalize="none"
+                        textContentType="name"
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onChangeText={handleChange('firstname')}
+                        value={values.firstname}
+                        onSubmitEditing={() => {
+                            // @ts-expect-error Needed to focus on next input
+                            // noinspection JSUnresolvedReference
+                            lastNameTextInput.current.focus();
+                        }}
+                        blurOnSubmit={false}
+                    />
+                    <TextInput
+                        id='lastname'
+                        ref={lastNameTextInput}
+                        placeholder="Last Name"
+                        autoCapitalize="none"
+                        textContentType="name"
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onChangeText={handleChange('lastname')}
+                        value={values.lastname}
+                        onSubmitEditing={() => {
+                            // @ts-expect-error Needed to focus on next input
+                            // noinspection JSUnresolvedReference
+                            emailTextInput.current.focus();
+                        }}
+                        blurOnSubmit={false}
+                    />
+
+                    <TextInput
                         id="email"
+                        ref={emailTextInput}
                         placeholder="Email"
                         autoCapitalize="none"
                         textContentType="emailAddress"
