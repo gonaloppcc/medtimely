@@ -1,6 +1,6 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Slot } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 import { AuthenticationProvider } from '../providers/AuthProvider';
 import { useFonts } from 'expo-font';
 import { useCallback } from 'react';
@@ -41,7 +41,20 @@ export default function RootLayout() {
             <AuthenticationProvider>
                 <PaperProvider theme={theme}>
                     <ThemeProvider value={theme}>
-                        <Slot />
+                        <Stack>
+                            <Stack.Screen
+                                name="(root)"
+                                options={{ headerShown: false }}
+                            />
+                            <Stack.Screen
+                                name="auth"
+                                options={{ headerShown: false }}
+                            />
+                            <Stack.Screen
+                                name="settings"
+                                options={{ headerTitle: 'Settings' }}
+                            />
+                        </Stack>
                     </ThemeProvider>
                 </PaperProvider>
             </AuthenticationProvider>
