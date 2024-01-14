@@ -62,7 +62,7 @@ const parseInfarmedMedicationToMedication = (
         id: '',
         name: infarmedMedication['Nome do Medicamento'],
         activeSubstance: infarmedMedication['﻿Substância Ativa/DCI'],
-        form: MedicationRecordForm.TABLET,
+        form: MedicationRecordForm.TABLET, // TODO: Add mo
         dosage: infarmedMedication.Dosagem,
         aimTitular: infarmedMedication['Titular de AIM'],
         commercialisation: infarmedMedication.Comercialização === 'Sim',
