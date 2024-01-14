@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Text } from 'react-native-paper';
+import { Avatar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { WeekDayPicker } from '../../components/WeekDayPicker';
@@ -9,6 +9,7 @@ import { useRecords } from '../../hooks/useRecords';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../model/routes';
+import { useNavOptions } from '../../hooks/useNavOptions';
 
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
