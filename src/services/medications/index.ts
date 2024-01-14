@@ -8,6 +8,10 @@ import {
     DocumentSnapshot,
     Firestore,
     getDoc,
+    getDocs,
+    limit,
+    query,
+    where,
 } from 'firebase/firestore';
 import { ProjectError } from '../error';
 
@@ -42,7 +46,7 @@ const MEDICATIONS: Medication[] = [
         form: MedicationRecordForm.TABLET,
         dosage: '12.5 mg',
         aimTitular: 'Takeda Pharma A/S',
-        comercialization: true,
+        commercialisation: true,
         isGeneric: false,
         administration: 'Oral use',
         presentations: [
@@ -96,7 +100,7 @@ const MEDICATIONS: Medication[] = [
         form: MedicationRecordForm.TABLET,
         dosage: '25 mg',
         aimTitular: 'Takeda Pharma A/S',
-        comercialization: true,
+        commercialisation: true,
         isGeneric: false,
         administration: 'Oral use',
         presentations: [
@@ -156,24 +160,45 @@ export const getMedications = async (token: string): Promise<Medication[]> => {
     });
 };
 
-export const getMedicationsByFilter = async (
+export const getMedicationsByNameSubstring = async (
     db: Firestore,
     name: string,
-    activeSubstance: string,
-    form: MedicationRecordForm,
-    administration: string
+    maxDocuments: number = 10
 ): Promise<Medication[]> => {
     console.log(
-        `getting medications filtered by name=${name}, activeSubstance=${activeSubstance}, form=${form}, administration=${administration}`
+        `getting medications filtered by name=${name} with maxDocuments=${maxDocuments}`
     );
 
-    // TODO: Implement this
+    const medicationsCollection = collection(db, MEDICATIONS_COLLECTION_NAME);
 
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(MEDICATIONS);
-        }, 1000);
-    });
+    const q = query(
+        medicationsCollection,
+        where('name', '>=', name),
+        where('name', '<=', name + '\uf8ff'), // https://stackoverflow.com/questions/46568142/google-firestore-query-on-substring-of-a-property-value-text-search
+        limit(maxDocuments)
+    );
+
+    try {
+        const medications: Medication[] = [];
+
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+            const medication: Medication = doc.data() as Medication;
+
+            medication.id = doc.id;
+
+            medications.push(medication);
+        });
+
+        return medications;
+    } catch (err) {
+        console.error('Error performing firebase query: ', err);
+        throw new ProjectError(
+            'GETTING_MEDICATIONS_BY_NAME_SUBSTRING_ERROR',
+            `Error getting document on path=${MEDICATIONS_COLLECTION_NAME} with substring=${name}`
+        );
+    }
 };
 
 export const getMedication = async (

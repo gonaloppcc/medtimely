@@ -6,6 +6,8 @@ export interface OwnedMedication extends Medication {
     stock: number;
 }
 
+export type OwnedMedicationData = Omit<OwnedMedication, 'id'>;
+
 export interface PlannedMedication {
     id: string;
     ownedMedication: OwnedMedication;

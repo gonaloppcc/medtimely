@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
-import { getOwnedMedication } from '../services/ownedMedication';
+import { getUserOwnedMedications } from '../services/ownedMedication';
 import { OwnedMedication } from '../model/ownedMedication';
 
 export interface useOwnedMedicationsProps extends FetcherProps {
@@ -20,7 +20,7 @@ export const useOwnedMedications = (
         refetch,
     } = useQuery({
         queryKey: ['ownedMedication', userId],
-        queryFn: () => getOwnedMedication(userId),
+        queryFn: () => getUserOwnedMedications(userId),
     });
 
     return {

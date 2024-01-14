@@ -8,7 +8,7 @@ export interface Medication {
     form: MedicationRecordForm; // Forma Farmacêutica
     dosage: string; // Dosagem
     aimTitular?: string; // Titular de AIM
-    comercialization?: boolean; // Comercialização
+    commercialisation?: boolean; // Comercialização
     isGeneric?: boolean; // Genérico
     administration?: string; // Via de Administração TODO: Create enum for this
 
@@ -22,6 +22,8 @@ export interface Medication {
 
     // TODO: Add scanning codes here
 }
+
+export type MedicationData = Omit<Medication, 'id'>;
 
 export interface MedicationPresentation {
     storageConditions: MedicationStorageConditions;

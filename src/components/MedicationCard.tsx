@@ -15,7 +15,7 @@ export const MedicationCard = ({
     form,
     dosage,
     aimTitular,
-    comercialization,
+    commercialisation,
     isGeneric,
     administration,
     presentations,
@@ -73,7 +73,7 @@ export const MedicationCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {comercialization}
+                    {commercialisation}
                 </Text>
                 <Text
                     variant="labelMedium"

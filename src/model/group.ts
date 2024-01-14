@@ -1,5 +1,15 @@
+import { User } from './user';
+
+export type Permissions = 'view' | 'manage' | 'none';
+
 export interface Group {
-    id: string;
-    groupName: string;
+    id?: string;
+    name: string;
     description: string;
+    users: User[];
+    sharedMeds: string[];
+    treatmentPermissions: Permissions;
+    hasSharedStock: boolean;
 }
+
+export type GroupData = Omit<Group, 'id'>;

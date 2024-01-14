@@ -9,7 +9,10 @@ type ErrorName =
     // Medication errors
     | 'CREATING_MEDICATION_ERROR'
     | 'GETTING_MEDICATION_ERROR'
-    | 'INVALID_MEDICATION_ID_ERROR';
+    | 'INVALID_MEDICATION_ID_ERROR'
+    | 'UPDATING_MEDICATION_ERROR'
+    | 'DELETING_MEDICATION_ERROR'
+    | 'GETTING_MEDICATIONS_BY_NAME_SUBSTRING_ERROR';
 
 export class ProjectError extends Error {
     name: ErrorName;
