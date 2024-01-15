@@ -24,14 +24,14 @@ export const OWNED_MEDICATION: OwnedMedication = {
     administration: '',
     aimTitular: '',
     commercialisation: false,
-    dosage: '',
+    dosage: '12 mg',
     form: MedicationRecordForm.AEROSOL,
-    id: '',
+    id: '1',
     isGeneric: false,
     medicationId: '',
-    name: '',
+    name: 'Brufen',
     presentations: [],
-    stock: 0,
+    stock: 12,
 };
 
 const OWNED_MEDICATIONS_COLLECTION = 'ownedMedications';
@@ -152,7 +152,7 @@ export const getUserGroupOwnedMedications = async (
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve([OWNED_MEDICATION]);
+            resolve(Array(10).fill(OWNED_MEDICATION));
         }, 1000);
     });
 };

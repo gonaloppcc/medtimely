@@ -6,72 +6,67 @@ import { Text } from 'react-native-paper';
 import { StockCards } from '../../components/StockCards';
 import { useState } from 'react';
 import { ValuePicker } from '../../components/ValuePicker';
+import { useGroupOwnedMedications } from '../../hooks/useGroupOwnedMedications';
+import { EmptyStockMsg } from '../../components/EmptyStockMsg';
 
 const PERSONAL_VALUE = 'Personal';
 
 export default function StockScreen() {
-    const { isSuccess, isLoading, isError, ownedMedications } =
-        useOwnedMedications('1'); // TODO: Replace with user's token
     const [stockFilterSelected, setStockFilterSelected] =
         useState(PERSONAL_VALUE);
-    const [stockItemFilter] = useState(ownedMedications); // FIXME: This is a temporary fix, idk what this actually is
 
     const stockFilters: { label: string; value: string }[] = [
         { label: PERSONAL_VALUE, value: PERSONAL_VALUE },
     ];
 
-    if (isSuccess) {
-        /*
-        stock.groupsStock.forEach((group) =>
-            stockFilters.push({
-                label: group.groupName,
-                value: group.groupName,
-            })
-        );
-         */
+    //TODO: Get groups's user
+    const groupsUUID = ['Family', 'Uni'];
+    groupsUUID.forEach((group) => {
+        stockFilters.push({
+            label: group,
+            value: group,
+        });
+    });
+
+    let isSuccess, isLoading, isError, ownedMedications;
+
+    //TODO: change uuid and group uuid
+    if (PERSONAL_VALUE !== stockFilterSelected) {
+        ({ isSuccess, isLoading, isError, ownedMedications } =
+            useGroupOwnedMedications('1', '1'));
+    } else {
+        ({ isSuccess, isLoading, isError, ownedMedications } =
+            useOwnedMedications('1'));
     }
 
     const onPressPersonalStockHandler = (id: string) => {
         //TODO: do something
         console.log(id);
     };
+
     const selectValueHandler = (value: string) => {
         setStockFilterSelected(value);
-
-        /*
-        if (value == PERSONAL_VALUE) {
-            setStockItemFilter(stock.personalStock);
-        } else {
-            const findGroup = stock.groupsStock.find(
-                (group) => group.groupName == value
-            );
-            if (findGroup) {
-                setStockItemFilter(findGroup.stock);
-            } else {
-                setStockItemFilter(stock.personalStock);
-            }
-        }
-         */
     };
 
     return (
         <View style={styles.container}>
+            <ValuePicker
+                values={stockFilters}
+                selectValueHandler={selectValueHandler}
+                selectedValue={stockFilterSelected}
+            />
             {isError && (
                 <Text variant="headlineMedium">Something went wrong</Text>
             )}
             {isLoading && <ProgressIndicator />}
-            {isSuccess && ownedMedications && (
-                <>
-                    <ValuePicker
-                        values={stockFilters}
-                        selectValueHandler={selectValueHandler}
-                        selectedValue={stockFilterSelected}
-                    />
-                    <StockCards
-                        ownedMedications={stockItemFilter}
-                        onPressOwnedMedication={onPressPersonalStockHandler}
-                    />
-                </>
+            {isSuccess && ownedMedications && ownedMedications.length > 0 && (
+                <StockCards
+                    ownedMedications={ownedMedications}
+                    onPressOwnedMedication={onPressPersonalStockHandler}
+                />
+            )}
+            {isSuccess && ownedMedications && ownedMedications.length == 0 && (
+                <EmptyStockMsg />
             )}
         </View>
     );
