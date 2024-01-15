@@ -19,6 +19,8 @@ export default function MedicationsScreen() {
         new Set(medications.map((value) => value.form))
     );
 
+    console.log(medicationForms);
+
     const medicationsFiltered =
         selectForm === ''
             ? medications
@@ -38,11 +40,13 @@ export default function MedicationsScreen() {
 
     return (
         <View style={styles.container}>
-            <MedicationFormFilterButtons
-                forms={medicationForms}
-                onValueChange={onSelectFilter}
-                value={selectForm}
-            />
+            {medicationForms.length > 1 && (
+                <MedicationFormFilterButtons
+                    forms={medicationForms}
+                    onValueChange={onSelectFilter}
+                    value={selectForm}
+                />
+            )}
             {isError && (
                 <Text variant="headlineMedium">Something went wrong</Text>
             )}
