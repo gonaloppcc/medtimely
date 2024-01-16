@@ -318,7 +318,7 @@ export default function SignUpScreen() {
                                     textContentType="jobTitle"
                                     keyboardType="default"
                                     returnKeyType="next"
-                                    onChangeText={(text) => handleChange('job')}
+                                    onChangeText={handleChange('job')}
                                     value={values.job} 
                                     onSubmitEditing={() => {
                                         // @ts-expect-error Needed to focus on next input
@@ -334,7 +334,7 @@ export default function SignUpScreen() {
                                     textContentType="none"
                                     keyboardType="numeric"
                                     returnKeyType="next"
-                                    onChangeText={(text) => handleChange('height')} 
+                                    onChangeText={handleChange('height')} 
                                     value={values.height} 
                                     onSubmitEditing={() => {
                                         // @ts-expect-error Needed to focus on next input
@@ -350,7 +350,7 @@ export default function SignUpScreen() {
                                     textContentType="none"
                                     keyboardType="numeric"
                                     returnKeyType="next"
-                                    onChangeText={(text) => handleChange('weight')} 
+                                    onChangeText={handleChange('weight')} 
                                     value={values.weight} 
                                 />
                                 <Picker
