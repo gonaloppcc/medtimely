@@ -8,6 +8,7 @@ import { View } from 'react-native';
 import { formStyle } from './signin';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { getAuth, updateProfile } from 'firebase/auth';
 import {db} from '../../firebase';
 import { Picker, ItemPickerProp } from '../../components/Picker';
 import Checkbox from '../../components/Checkbox';
@@ -48,6 +49,9 @@ const planFollowedOptions: ItemPickerProp[] = [
 ];
 
 const signupValidationSchema = Yup.object().shape({
+    name: Yup.string()
+        .min(3, 'Name must be at least 3 characters')
+        .required('Required'),
     email: Yup.string().email('Invalid email address').required('Required'),
     password: Yup.string()
         .min(6, 'Password must be at least 6 characters')
@@ -58,6 +62,7 @@ const signupValidationSchema = Yup.object().shape({
 });
 
 interface Values {
+    name: string;
     firstname: string;
     lastname: string;
     email: string;
@@ -73,6 +78,7 @@ interface Values {
 }
 
 const initialValues: Values = {
+    name: '',
     firstname: '',
     lastname: '',
     email: '',
@@ -123,6 +129,13 @@ export default function SignUpScreen() {
                     values.email,
                     values.password
                 );
+
+                const auth = getAuth();
+
+                auth.currentUser &&
+                    (await updateProfile(auth.currentUser, {
+                        displayName: values.name,
+                    }));
                 if (showQuestionnaire) {
                     const heightNum : number = values.height.length > 0 ? parseInt(values.height, 10) : -1;
                     const weightNum : number = values.weight.length > 0 ? parseInt(values.weight, 10) : -1;
@@ -183,6 +196,30 @@ export default function SignUpScreen() {
                 <View style={formStyle.formStyle}>
                     <View style={formStyle.formStyle}>
                         <Text variant="titleLarge">Sign up</Text>
+                        <TextInput
+                            id="name"
+                            placeholder="Name"
+                            autoCapitalize="none"
+                            textContentType="name"
+                            keyboardType="default"
+                            returnKeyType="next"
+                            onChangeText={handleChange('name')}
+                            value={values.name}
+                            onSubmitEditing={() => {
+                                // @ts-expect-error Needed to focus on next input
+                                // noinspection JSUnresolvedReference
+                                passwordTextInput.current.focus();
+                            }}
+                            blurOnSubmit={false}
+                        />
+                        {touched.name && errors.name && (
+                            <Text
+                                variant="bodySmall"
+                                style={{ color: theme.colors.error }}
+                            >
+                                {errors.name}
+                            </Text>
+                        )}
                         <TextInput
                             id='firstname'
                             placeholder="First Name"

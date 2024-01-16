@@ -63,30 +63,38 @@ export const MedicationCard = ({
                 >
                     {activeSubstance}
                 </Text>
-                <Text
-                    variant="labelMedium"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {aimTitular}
-                </Text>
-                <Text
-                    variant="labelMedium"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {commercialisation}
-                </Text>
-                <Text
-                    variant="labelMedium"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {isGeneric}
-                </Text>
-                <Text
-                    variant="labelMedium"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {administration}
-                </Text>
+                {aimTitular && (
+                    <Text
+                        variant="labelMedium"
+                        style={{ color: theme.colors.onSurface }}
+                    >
+                        {aimTitular}
+                    </Text>
+                )}
+                {commercialisation && (
+                    <Text
+                        variant="labelMedium"
+                        style={{ color: theme.colors.onSurface }}
+                    >
+                        {commercialisation}
+                    </Text>
+                )}
+                {isGeneric && (
+                    <Text
+                        variant="labelMedium"
+                        style={{ color: theme.colors.onSurface }}
+                    >
+                        {isGeneric}
+                    </Text>
+                )}
+                {administration && (
+                    <Text
+                        variant="labelMedium"
+                        style={{ color: theme.colors.onSurface }}
+                    >
+                        {administration}
+                    </Text>
+                )}
                 <Text
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}

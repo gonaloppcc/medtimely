@@ -1,9 +1,22 @@
 import React from 'react';
 import { CommonActions } from '@react-navigation/native';
-import { Tabs, Redirect } from 'expo-router';
+import { Tabs, Redirect, router } from 'expo-router';
 import { BottomNavigation, Icon } from 'react-native-paper';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { ROUTE } from '../../model/routes';
+import {
+    HeaderButton,
+    HeaderButtonProps,
+    HeaderButtons,
+    Item,
+} from 'react-navigation-header-buttons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
+const MaterialHeaderButton = (props: HeaderButtonProps) => (
+    // the `props` here come from <Item ... />
+    // you may access them and pass something else to `HeaderButton` if you like
+    <HeaderButton IconComponent={MaterialIcons} iconSize={23} {...props} />
+);
 
 export default function HomeLayout() {
     const { user, isLoading } = useAuthentication();
@@ -70,6 +83,19 @@ export default function HomeLayout() {
                     tabBarIcon: ({ color }) => (
                         <Icon source="home" color={color} size={24} />
                     ),
+                    headerRight: () => (
+                        <HeaderButtons
+                            HeaderButtonComponent={MaterialHeaderButton}
+                        >
+                            <Item
+                                title="settings"
+                                iconName="settings"
+                                onPress={() => {
+                                    router.push(ROUTE.SETTINGS.BASE_NAME);
+                                }}
+                            />
+                        </HeaderButtons>
+                    ),
                 }}
             />
 
@@ -112,16 +138,6 @@ export default function HomeLayout() {
                     title: 'Stock',
                     tabBarIcon: ({ color }) => (
                         <Icon source="archive" color={color} size={24} />
-                    ),
-                }}
-            />
-
-            <Tabs.Screen
-                name={ROUTE.SETTINGS.BASE_NAME}
-                options={{
-                    title: 'Settings',
-                    tabBarIcon: ({ color }) => (
-                        <Icon source="cog" color={color} size={24} />
                     ),
                 }}
             />

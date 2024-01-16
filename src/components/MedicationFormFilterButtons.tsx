@@ -4,6 +4,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { SegmentedButtons } from 'react-native-paper';
 import { useAppTheme } from '../theme';
 import { medicationFormToIconName } from '../model/medication';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ROUNDNESS = 0.8;
 
@@ -30,24 +31,31 @@ export const MedicationFormFilterButtons = ({
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <SegmentedButtons
-                value={value}
-                onValueChange={onValueChange}
-                buttons={medButtons}
-                theme={{
-                    roundness: ROUNDNESS,
-                    colors: {
-                        secondaryContainer: theme.colors.brandContainer,
-                    },
-                }}
-            />
+        <SafeAreaView>
+            <ScrollView horizontal style={styles.container}>
+                <SegmentedButtons
+                    style={styles.segmentedButtons}
+                    value={value}
+                    onValueChange={onValueChange}
+                    buttons={medButtons}
+                    theme={{
+                        roundness: ROUNDNESS,
+                        colors: {
+                            secondaryContainer: theme.colors.brandContainer,
+                        },
+                    }}
+                />
+            </ScrollView>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        width: '100%',
+    },
+
+    segmentedButtons: {
         width: '100%',
     },
 });

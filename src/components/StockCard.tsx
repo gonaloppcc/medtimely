@@ -2,24 +2,22 @@ import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MedicationIcon } from './MedicationIcon';
+import { OwnedMedication } from '../model/ownedMedication';
 
-type GroupStockItemCardProps = GroupStockItem & {
+type PersonalStockItemCardProps = OwnedMedication & {
     onPressStock: (id: string) => void;
     // Added any extra props here
 };
-
-export const GroupStockItemCard = ({
+export const StockCard = ({
     medicationId,
-    medicationName,
+    name,
     form,
-    amountLeft,
-    daysToRunOf,
-    numberOfPersons,
+    stock,
     onPressStock,
-}: GroupStockItemCardProps) => {
+}: PersonalStockItemCardProps) => {
     const theme = useTheme();
 
-    const title = medicationName;
+    const title = name;
 
     const backgroundColor = theme.colors.surface;
 
@@ -29,7 +27,7 @@ export const GroupStockItemCard = ({
         borderColor: theme.colors.outline,
     };
 
-    const subtitle = `${form}, ${amountLeft} left`;
+    const subtitle = `${form}, ${stock} left`;
 
     const onPress = () => {
         onPressStock(medicationId);
@@ -55,14 +53,7 @@ export const GroupStockItemCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {daysToRunOf} days to run out
-                </Text>
-
-                <Text
-                    variant="labelMedium"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {numberOfPersons} persons use this
+                    {0 /* FIXME: Finish migrating this */} days to run out
                 </Text>
             </View>
         </TouchableOpacity>

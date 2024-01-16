@@ -24,8 +24,7 @@ export const GroupCard = ({
     };
 
     const onPressGroup = () => {
-        onPress(id);
-        // router.push({ pathname: '/groups/[id]', params: { id: '1' } });
+        if (id) onPress(id);
     };
 
     return (

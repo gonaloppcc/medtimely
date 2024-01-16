@@ -2,11 +2,13 @@ import * as React from 'react';
 
 import { Button, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { signOut } from '../../services/auth';
+import { signOut } from '../services/auth';
+import { router } from 'expo-router';
 
 export default function SettingsScreen() {
     const onPressHandler = async () => {
         await signOut();
+        router.replace('/');
     };
     return (
         <View style={styles.container}>
