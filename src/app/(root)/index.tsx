@@ -13,6 +13,18 @@ import { ROUTE } from '../../model/routes';
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
+const getFormattedUserName = (userName: string): string => {
+    const spaceIndex = userName.indexOf(' ');
+
+    if (spaceIndex !== -1) {
+        userName = userName.substring(0, spaceIndex);
+    }
+
+    userName =
+        userName.length > 8 ? userName.substring(0, 6) + '...' : userName;
+    return userName;
+};
+
 export default function HomeScreen() {
     const { user } = useAuthentication();
     const day =
@@ -24,7 +36,9 @@ export default function HomeScreen() {
         selectedDay
     );
 
-    const userName = 'Jack'; // TODO: Replace with user's name
+    const userName =
+        user && user.displayName ? getFormattedUserName(user.displayName) : '';
+    const welcomeString = user ? `Welcome back, ${userName}` : 'Welcome back';
 
     const selectDay = (day: Date) => {
         setSelectedDay(day);
@@ -36,7 +50,7 @@ export default function HomeScreen() {
 
     return (
         <View style={styles.container}>
-            <Text variant="headlineMedium">Welcome back, {userName}</Text>
+            <Text variant="headlineMedium">{welcomeString}</Text>
             <WeekDayPicker
                 selectedDay={selectedDay}
                 selectDay={selectDay}

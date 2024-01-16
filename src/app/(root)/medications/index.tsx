@@ -19,8 +19,6 @@ export default function MedicationsScreen() {
         new Set(medications.map((value) => value.form))
     );
 
-    console.log(medicationForms);
-
     const medicationsFiltered =
         selectForm === ''
             ? medications
