@@ -95,6 +95,7 @@ const initialValues: Values = {
 
 export default function SignUpScreen() {
     const insets = useSafeAreaInsets();
+    const firstNameTextInput = React.useRef(null);
     const lastNameTextInput = React.useRef(null);
     const emailTextInput = React.useRef(null);
     const passwordTextInput = React.useRef(null);
@@ -102,10 +103,12 @@ export default function SignUpScreen() {
     const jobTextInput =  React.useRef(null);
     const heightTextInput = React.useRef(null);
     const weightTextInput = React.useRef(null);
+    /*
     const pharmacyVisitsFrequencyTextInput =  React.useRef(null);
     const medicationUseFrequencyTextInput =  React.useRef(null);
     const planFollowedFrequencyTextInput =  React.useRef(null);
     const physicalActivityFrequencyTextInput =  React.useRef(null);
+    */
     const [submitErrorMessage, setSubmitErrorMessage] =
         React.useState<string>('');
 
@@ -198,7 +201,7 @@ export default function SignUpScreen() {
                         <Text variant="titleLarge">Sign up</Text>
                         <TextInput
                             id="name"
-                            placeholder="Name"
+                            placeholder="Display Name"
                             autoCapitalize="none"
                             textContentType="name"
                             keyboardType="default"
@@ -208,7 +211,7 @@ export default function SignUpScreen() {
                             onSubmitEditing={() => {
                                 // @ts-expect-error Needed to focus on next input
                                 // noinspection JSUnresolvedReference
-                                passwordTextInput.current.focus();
+                                firstNameTextInput.current.focus();
                             }}
                             blurOnSubmit={false}
                         />
@@ -222,6 +225,7 @@ export default function SignUpScreen() {
                         )}
                         <TextInput
                             id='firstname'
+                            ref={firstNameTextInput}
                             placeholder="First Name"
                             autoCapitalize="none"
                             textContentType="name"
