@@ -102,7 +102,7 @@ export const getGroup = async (
         users: usersData,
     } as Group;
 };
-// TODO updateGroup, deleteGroup, addUserToGroup, removeUserFromGroup
+// TODO updateGroup, deleteGroup, removeUserFromGroup
 // Maybe store the user that created so that only that user can delete the group
 export const createGroup = async (
     db: Firestore,
@@ -117,4 +117,20 @@ export const createGroup = async (
     await updateDoc(userRef, { groups: arrayUnion(groupRef) });
 
     return groupRef.id;
+};
+
+export const addUserToGroup = async (
+    db: Firestore,
+    groupId: string,
+    userId: string
+): Promise<void> => {
+    const groupRef: DocumentReference = doc(
+        db,
+        GROUPS_COLLECTION_NAME,
+        groupId
+    );
+    const userRef: DocumentReference = doc(db, USERS_COLLECTION_NAME, userId);
+
+    await updateDoc(groupRef, { users: arrayUnion(userRef) });
+    await updateDoc(userRef, { groups: arrayUnion(groupRef) });
 };
