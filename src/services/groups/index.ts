@@ -9,10 +9,11 @@ import {
     updateDoc,
     collection,
     arrayUnion,
+    arrayRemove,
+    FieldValue,
 } from 'firebase/firestore';
 import { Firestore } from 'firebase/firestore';
 import { ProjectError } from '../error';
-//import { runTransaction } from 'firebase/firestore';
 
 const USERS_COLLECTION_NAME = 'users';
 const GROUPS_COLLECTION_NAME = 'groups';
@@ -124,6 +125,23 @@ export const addUserToGroup = async (
     groupId: string,
     userId: string
 ): Promise<void> => {
+    await addOrRemoveUserFromGroup(db, groupId, userId, arrayUnion);
+};
+
+export const removeUserFromGroup = async (
+    db: Firestore,
+    groupId: string,
+    userId: string
+): Promise<void> => {
+    await addOrRemoveUserFromGroup(db, groupId, userId, arrayRemove);
+};
+
+const addOrRemoveUserFromGroup = async (
+    db: Firestore,
+    groupId: string,
+    userId: string,
+    arrayFun: (...elements: unknown[]) => FieldValue
+): Promise<string> => {
     const groupRef: DocumentReference = doc(
         db,
         GROUPS_COLLECTION_NAME,
@@ -131,6 +149,8 @@ export const addUserToGroup = async (
     );
     const userRef: DocumentReference = doc(db, USERS_COLLECTION_NAME, userId);
 
-    await updateDoc(groupRef, { users: arrayUnion(userRef) });
-    await updateDoc(userRef, { groups: arrayUnion(groupRef) });
+    await updateDoc(groupRef, { users: arrayFun(userRef) });
+    await updateDoc(userRef, { groups: arrayFun(groupRef) });
+
+    return groupRef.id;
 };
