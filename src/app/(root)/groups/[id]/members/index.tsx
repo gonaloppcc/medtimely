@@ -28,7 +28,7 @@ const MEMBERS_INFO = [
 //    onPress: (id: string) => void;
 //}
 
-export default function GroupScreen() {
+export default function GroupMembersScreen() {
     const id = useLocalSearchParams().id || '';
     const groupMembers = MEMBERS_INFO;
 

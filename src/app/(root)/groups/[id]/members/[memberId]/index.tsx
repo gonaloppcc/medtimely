@@ -1,9 +1,9 @@
 import React from 'react';
-import { Icon, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 
-export const GroupMemberCard = () => {
+export default function GroupMemberScreen ()  {
     const theme = useTheme();
 
     const backgroundColor = theme.colors.errorContainer;
