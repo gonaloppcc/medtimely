@@ -29,6 +29,7 @@ export default function GroupScreen({onPress}) {
     
 
     const onPressMembers = () => {
+        console.log(id);
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });
     };
 
