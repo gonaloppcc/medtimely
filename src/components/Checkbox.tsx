@@ -9,7 +9,7 @@ export interface CheckboxProps {
     onValueChange: (value: boolean) => void;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ label, value, onValueChange }) => {
+export const Checkbox: React.FC<CheckboxProps> = ({ label, value, onValueChange }) => {
     return (
         <PaperCheckbox.Item
             label={label}
@@ -19,4 +19,3 @@ const Checkbox: React.FC<CheckboxProps> = ({ label, value, onValueChange }) => {
     );
 };
 
-export default Checkbox;

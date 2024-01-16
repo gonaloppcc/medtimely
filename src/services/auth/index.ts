@@ -10,7 +10,6 @@ import { Firestore, addDoc, collection } from 'firebase/firestore';
 import { ProjectError } from '../error';
 import { OptionalInfo, User } from '../../model/user';
 
-
 const USERS_COLLECTION_NAME = 'users';
 
 const createUserWithEmailAndPassword = async (
@@ -34,12 +33,14 @@ const createUserDoc = async (
     hasOptionalInfo: boolean,
     optionalValues?: OptionalInfo
 ): Promise<string> => {
-    console.log(`Creating user with name=${firstname} ${lastname} and ID=${id}`);
+    console.log(
+        `Creating user with name=${firstname} ${lastname} and ID=${id}`
+    );
 
     const usersCollection = collection(db, USERS_COLLECTION_NAME);
 
-    let userData : User;
-    if(hasOptionalInfo) {
+    let userData: User;
+    if (hasOptionalInfo) {
         userData = {
             id: id,
             firstname: firstname,
@@ -47,17 +48,17 @@ const createUserDoc = async (
             records: [],
             medications: [],
             groups: [],
-            optionalInfo : optionalValues
-        }
-    }else{
+            optionalInfo: optionalValues,
+        };
+    } else {
         userData = {
             id: id,
             firstname: firstname,
             lastname: lastname,
             records: [],
             medications: [],
-            groups: []
-        }
+            groups: [],
+        };
     }
 
     try {
@@ -90,7 +91,9 @@ const loginWithEmailAndPassword = async (
     return userCredentials.user;
 };
 
-const onAuthStateChanged = (callback: (user: UserFirebase) => void): (() => void) => {
+const onAuthStateChanged = (
+    callback: (user: UserFirebase) => void
+): (() => void) => {
     // TODO: Transform this type of callback to the one used by the firebase auth
     return onAuthStateChangedFirebase(auth, callback);
 };

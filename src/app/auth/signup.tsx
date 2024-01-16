@@ -3,15 +3,18 @@ import * as React from 'react';
 import * as Yup from 'yup';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import { useFormik } from 'formik';
-import { createUserWithEmailAndPassword, createUserDoc } from '../../services/auth';
+import {
+    createUserWithEmailAndPassword,
+    createUserDoc,
+} from '../../services/auth';
 import { View } from 'react-native';
 import { formStyle } from './signin';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { getAuth, updateProfile } from 'firebase/auth';
-import {db} from '../../firebase';
+import { db } from '../../firebase';
 import { Picker, ItemPickerProp } from '../../components/Picker';
-import Checkbox from '../../components/Checkbox';
+import { Checkbox } from '../../components/Checkbox';
 import { ScrollView } from 'react-native';
 import { OptionalInfo } from '../../model/user';
 
@@ -68,13 +71,13 @@ interface Values {
     email: string;
     password: string;
     confirmPassword: string;
-    job : string;
+    job: string;
     height: string;
     weight: string;
-    pharmacyVisitsFrequency : string;
-    medicationUseFrequency : string;
-    planFollowedFrequency : string;
-    physicalActivityFrequency : string;
+    pharmacyVisitsFrequency: string;
+    medicationUseFrequency: string;
+    planFollowedFrequency: string;
+    physicalActivityFrequency: string;
 }
 
 const initialValues: Values = {
@@ -84,13 +87,13 @@ const initialValues: Values = {
     email: '',
     password: '',
     confirmPassword: '',
-    job : '',
-    height : '',
+    job: '',
+    height: '',
     weight: '',
-    pharmacyVisitsFrequency : '',
-    medicationUseFrequency : '',
-    planFollowedFrequency : '',
-    physicalActivityFrequency : '',
+    pharmacyVisitsFrequency: '',
+    medicationUseFrequency: '',
+    planFollowedFrequency: '',
+    physicalActivityFrequency: '',
 };
 
 export default function SignUpScreen() {
@@ -100,7 +103,7 @@ export default function SignUpScreen() {
     const emailTextInput = React.useRef(null);
     const passwordTextInput = React.useRef(null);
     const confirmPasswordTextInput = React.useRef(null);
-    const jobTextInput =  React.useRef(null);
+    const jobTextInput = React.useRef(null);
     const heightTextInput = React.useRef(null);
     const weightTextInput = React.useRef(null);
     /*
@@ -140,18 +143,24 @@ export default function SignUpScreen() {
                         displayName: values.name,
                     }));
                 if (showQuestionnaire) {
-                    const heightNum : number = values.height.length > 0 ? parseInt(values.height, 10) : -1;
-                    const weightNum : number = values.weight.length > 0 ? parseInt(values.weight, 10) : -1;
-                    const optionalValues : OptionalInfo = {
-                        job : values.job,
-                        height : heightNum,
+                    const heightNum: number =
+                        values.height.length > 0
+                            ? parseInt(values.height, 10)
+                            : -1;
+                    const weightNum: number =
+                        values.weight.length > 0
+                            ? parseInt(values.weight, 10)
+                            : -1;
+                    const optionalValues: OptionalInfo = {
+                        job: values.job,
+                        height: heightNum,
                         weight: weightNum,
-                        pharmacyVisitsFrequency : values.pharmacyVisitsFrequency,
-                        medicationUseFrequency : values.medicationUseFrequency,
-                        planFollowedFrequency : values.planFollowedFrequency,
-                        physicalActivityFrequency : values.physicalActivityFrequency,
-                        
-                    }
+                        pharmacyVisitsFrequency: values.pharmacyVisitsFrequency,
+                        medicationUseFrequency: values.medicationUseFrequency,
+                        planFollowedFrequency: values.planFollowedFrequency,
+                        physicalActivityFrequency:
+                            values.physicalActivityFrequency,
+                    };
                     await createUserDoc(
                         db,
                         User.uid,
@@ -159,17 +168,16 @@ export default function SignUpScreen() {
                         values.lastname,
                         true,
                         optionalValues
-                    )
-                }else{
+                    );
+                } else {
                     await createUserDoc(
                         db,
                         User.uid,
                         values.firstname,
                         values.lastname,
                         false
-                    )
+                    );
                 }
-                
             } catch (error) {
                 const errorMessage =
                     (error.message as string) || 'Something went wrong';
@@ -224,7 +232,7 @@ export default function SignUpScreen() {
                             </Text>
                         )}
                         <TextInput
-                            id='firstname'
+                            id="firstname"
                             ref={firstNameTextInput}
                             placeholder="First Name"
                             autoCapitalize="none"
@@ -241,7 +249,7 @@ export default function SignUpScreen() {
                             blurOnSubmit={false}
                         />
                         <TextInput
-                            id='lastname'
+                            id="lastname"
                             ref={lastNameTextInput}
                             placeholder="Last Name"
                             autoCapitalize="none"
@@ -349,7 +357,6 @@ export default function SignUpScreen() {
                         />
 
                         {showQuestionnaire && (
-
                             <View style={formStyle.formStyle}>
                                 <TextInput
                                     id="job"
@@ -360,7 +367,7 @@ export default function SignUpScreen() {
                                     keyboardType="default"
                                     returnKeyType="next"
                                     onChangeText={handleChange('job')}
-                                    value={values.job} 
+                                    value={values.job}
                                     onSubmitEditing={() => {
                                         // @ts-expect-error Needed to focus on next input
                                         // noinspection JSUnresolvedReference
@@ -375,8 +382,8 @@ export default function SignUpScreen() {
                                     textContentType="none"
                                     keyboardType="numeric"
                                     returnKeyType="next"
-                                    onChangeText={handleChange('height')} 
-                                    value={values.height} 
+                                    onChangeText={handleChange('height')}
+                                    value={values.height}
                                     onSubmitEditing={() => {
                                         // @ts-expect-error Needed to focus on next input
                                         // noinspection JSUnresolvedReference
@@ -391,33 +398,55 @@ export default function SignUpScreen() {
                                     textContentType="none"
                                     keyboardType="numeric"
                                     returnKeyType="next"
-                                    onChangeText={handleChange('weight')} 
-                                    value={values.weight} 
+                                    onChangeText={handleChange('weight')}
+                                    value={values.weight}
                                 />
                                 <Picker
                                     label="Physical Activity Frequency"
-                                    selectedValue={values.physicalActivityFrequency}
-                                    onValueChange={(value) => handleChange('physicalActivityFrequency')(value)}
+                                    selectedValue={
+                                        values.physicalActivityFrequency
+                                    }
+                                    onValueChange={(value) =>
+                                        handleChange(
+                                            'physicalActivityFrequency'
+                                        )(value)
+                                    }
                                     items={physicalActivityOptions}
                                 />
                                 <Picker
                                     label="Pharmacy Visits Frequency"
-                                    selectedValue={values.pharmacyVisitsFrequency}
-                                    onValueChange={(value) => handleChange('pharmacyVisitsFrequency')(value)}
+                                    selectedValue={
+                                        values.pharmacyVisitsFrequency
+                                    }
+                                    onValueChange={(value) =>
+                                        handleChange('pharmacyVisitsFrequency')(
+                                            value
+                                        )
+                                    }
                                     items={pharmacyVisitsOptions}
                                 />
                                 <Picker
                                     label="Medication Use Frequency"
-                                    selectedValue={values.medicationUseFrequency}
-                                    onValueChange={(value) => handleChange('medicationUseFrequency')(value)}
+                                    selectedValue={
+                                        values.medicationUseFrequency
+                                    }
+                                    onValueChange={(value) =>
+                                        handleChange('medicationUseFrequency')(
+                                            value
+                                        )
+                                    }
                                     items={medicationUseOptions}
                                 />
                                 <Picker
                                     label="Plan Followed Frequency"
                                     selectedValue={values.planFollowedFrequency}
-                                    onValueChange={(value) => handleChange('planFollowedFrequency')(value)}
+                                    onValueChange={(value) =>
+                                        handleChange('planFollowedFrequency')(
+                                            value
+                                        )
+                                    }
                                     items={planFollowedOptions}
-                                />                          
+                                />
                             </View>
                         )}
 

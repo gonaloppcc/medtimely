@@ -37,8 +37,6 @@ type ErrorName =
     | 'UPDATING_USER_ERROR'
     | 'INVALID_USER_ID_ERROR';
 
-
-
 export class ProjectError extends Error {
     name: ErrorName;
     message: string;
