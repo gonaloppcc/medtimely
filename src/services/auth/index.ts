@@ -8,7 +8,7 @@ import { User as UserFirebase } from '@firebase/auth';
 import { auth } from '../../firebase';
 import { Firestore, addDoc, collection } from 'firebase/firestore';
 import { ProjectError } from '../error';
-import { User } from '../../model/user';
+import { OptionalInfo, User } from '../../model/user';
 
 
 const USERS_COLLECTION_NAME = 'users';
@@ -31,18 +31,33 @@ const createUserDoc = async (
     id: string,
     firstname: string,
     lastname: string,
+    hasOptionalInfo: boolean,
+    optionalValues?: OptionalInfo
 ): Promise<string> => {
     console.log(`Creating user with name=${firstname} ${lastname} and ID=${id}`);
 
     const usersCollection = collection(db, USERS_COLLECTION_NAME);
 
-    const userData : User = {
-        id: id,
-        firstname: firstname,
-        lastname: lastname,
-        records: [],
-        medications: [],
-        groups: []
+    let userData : User;
+    if(hasOptionalInfo) {
+        userData = {
+            id: id,
+            firstname: firstname,
+            lastname: lastname,
+            records: [],
+            medications: [],
+            groups: [],
+            optionalInfo : optionalValues
+        }
+    }else{
+        userData = {
+            id: id,
+            firstname: firstname,
+            lastname: lastname,
+            records: [],
+            medications: [],
+            groups: []
+        }
     }
 
     try {
