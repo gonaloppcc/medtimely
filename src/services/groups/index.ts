@@ -7,6 +7,7 @@ import {
     getDoc,
     addDoc,
     updateDoc,
+    deleteDoc,
     collection,
     arrayUnion,
     arrayRemove,
@@ -165,4 +166,23 @@ export const updateGroup = async (
         groupId
     );
     await updateDoc(groupRef, group);
+};
+
+export const deleteGroup = async (
+    db: Firestore,
+    groupId: string
+): Promise<void> => {
+    const groupRef: DocumentReference = doc(
+        db,
+        GROUPS_COLLECTION_NAME,
+        groupId
+    );
+    const groupDocSnapshot: DocumentSnapshot = await getDoc(groupRef);
+    const userRefInGroup: DocumentReference[] = groupDocSnapshot.data()?.users;
+    await Promise.all(
+        userRefInGroup.map((userRef) => {
+            updateDoc(userRef, { groups: arrayRemove(groupRef) });
+        })
+    );
+    await deleteDoc(groupRef);
 };
