@@ -9,7 +9,10 @@ import { ROUTE } from '../../../../model/routes';
 // TODO: This is just for now, it should be replaced with data from the database
 const GROUP_INFO = {
     groupName: 'name',
-    description: 'descr'
+    description: 'descr',
+    sharedMeds: ["test1", "test2", "test3"],
+    treatmentPermission: 'manage',
+    hasSharedStock: false
 };
 
 export interface GroupCardProps {
@@ -18,7 +21,7 @@ export interface GroupCardProps {
 
 export default function GroupScreen({onPress}) {
     const id = useLocalSearchParams().id || '';
-    const { groupName, description } = GROUP_INFO;
+    const { groupName, description, sharedMeds, treatmentPermission, hasSharedStock } = GROUP_INFO;
 
     const headerRight = () => (
         <Appbar.Action
@@ -37,6 +40,9 @@ export default function GroupScreen({onPress}) {
         <View style={styles.container}>
             <Text variant="headlineMedium">{groupName}</Text>
             <Text variant="labelMedium">{description}</Text>
+            <Text variant="labelMedium">{sharedMeds}</Text>
+            <Text variant="labelMedium">{treatmentPermission}</Text>
+            <Text variant="labelMedium">{hasSharedStock}</Text>
             <Button onPress={onPressMembers}>See group members </Button>
         </View>
     );
@@ -49,5 +55,11 @@ const styles = StyleSheet.create({
         height: '100%',
         display: 'flex',
         gap: 32,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
     },
 });

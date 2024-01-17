@@ -6,9 +6,8 @@ import { useNavOptions } from '../../../../../../hooks/useNavOptions';
 import { WeekDayPicker } from '../../../../../../components/WeekDayPicker';
 import { ProgressIndicator } from '../../../../../../components/ProgressIndicator';
 import { RecordCards } from '../../../../../../components/RecordCards';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useRecords } from '../../../../../../hooks/useRecords';
-import { ROUTE } from '../../../../../../model/routes';
 
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
@@ -31,13 +30,6 @@ export default function GroupMemberScreen ()  {
         headerTitle: "memberName",
     });
 
-    const onPressMemberMeds = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS});
-    };
-
-    const onPressMemberRecord = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER_RECORDS});
-    };
 
 
 
@@ -49,19 +41,12 @@ export default function GroupMemberScreen ()  {
 
     return (
             <View style={styles.innerStyle}>
-                <Button onPress={onPressMemberMeds}>Records History</Button>
-                <Button onPress={onPressMemberRecord}>Meds</Button>
                 <Text
                     variant="labelLarge"
                     style={{ color: theme.colors.onSurface }}
                 >
                     {"Hello"}
                 </Text>
-                <WeekDayPicker
-                selectedDay={selectedDay}
-                selectDay={selectDay}
-                startDay={startDay}
-            />
     
             </View>
     );
