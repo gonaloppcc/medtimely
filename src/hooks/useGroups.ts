@@ -21,7 +21,6 @@ export const useGroups = (userId: string): useGroupsProps => {
         queryFn: () => getUserGroups(db, userId),
     });
 
-
     return {
         isSuccess,
         isLoading,

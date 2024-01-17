@@ -11,17 +11,17 @@ import { ROUTE } from '../../../../../model/routes';
 // TODO: This is just for now, it should be replaced with data from the database
 const MEMBERS_INFO = [
     {
-    id: "test",
-    name:"name",
-    sharedMeds: ["testMed1", "testMed2", "testMed3"],
-    hasSharedStock: false,
+        id: 'test',
+        name: 'name',
+        sharedMeds: ['testMed1', 'testMed2', 'testMed3'],
+        hasSharedStock: false,
     },
     {
-    id: "test2",
-    name: "name2",
-    sharedMeds: ["testMed4", "testMed5", "testMed6"],
-    hasSharedStock: false,
-    }
+        id: 'test2',
+        name: 'name2',
+        sharedMeds: ['testMed4', 'testMed5', 'testMed6'],
+        hasSharedStock: false,
+    },
 ];
 
 //export interface GroupCardProps {
@@ -40,18 +40,24 @@ export default function GroupMembersScreen() {
     );
 
     useNavOptions({
-        headerTitle: "Members",
+        headerTitle: 'Members',
         headerRight,
     });
 
     const onPressGroupMember = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER, params: {id: "testId", memberId: "test"} });
+        router.push({
+            pathname: ROUTE.GROUPS.MEMBER,
+            params: { id: 'testId', memberId: 'test' },
+        });
     };
 
     return (
         <View style={styles.container}>
             <Text variant="headlineLarge">Group Members</Text>
-            <GroupMembers groupMembers={groupMembers} onPressGroupMember={onPressGroupMember} />
+            <GroupMembers
+                groupMembers={groupMembers}
+                onPressGroupMember={onPressGroupMember}
+            />
         </View>
     );
 }

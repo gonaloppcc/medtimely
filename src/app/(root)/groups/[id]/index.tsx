@@ -5,23 +5,30 @@ import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Button } from '../../../../components/Button';
 import { ROUTE } from '../../../../model/routes';
+import { useNavOptions } from '../../../../hooks/useNavOptions';
 
 // TODO: This is just for now, it should be replaced with data from the database
 const GROUP_INFO = {
     groupName: 'name',
     description: 'descr',
-    sharedMeds: ["test1", "test2", "test3"],
+    sharedMeds: ['test1', 'test2', 'test3'],
     treatmentPermission: 'manage',
-    hasSharedStock: false
+    hasSharedStock: false,
 };
 
 export interface GroupCardProps {
     onPress: (id: string) => void;
 }
 
-export default function GroupScreen({onPress}) {
+export default function GroupScreen({ onPress }) {
     const id = useLocalSearchParams().id || '';
-    const { groupName, description, sharedMeds, treatmentPermission, hasSharedStock } = GROUP_INFO;
+    const {
+        groupName,
+        description,
+        sharedMeds,
+        treatmentPermission,
+        hasSharedStock,
+    } = GROUP_INFO;
 
     const headerRight = () => (
         <Appbar.Action
@@ -29,10 +36,13 @@ export default function GroupScreen({onPress}) {
             //onPress={() => navigation.navigate('EditRecord')}
         />
     );
-    
+
+    useNavOptions({
+        headerTitle: 'Members',
+        headerRight,
+    });
 
     const onPressMembers = () => {
-        console.log(id);
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });
     };
 

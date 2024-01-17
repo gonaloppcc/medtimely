@@ -12,7 +12,7 @@ import { useRecords } from '../../../../../../hooks/useRecords';
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
-export default function GroupMemberScreen ()  {
+export default function GroupMemberScreen() {
     const theme = useTheme();
     const day =
         (useLocalSearchParams().day as string) || new Date().toISOString();
@@ -27,30 +27,20 @@ export default function GroupMemberScreen ()  {
     };
 
     useNavOptions({
-        headerTitle: "memberName",
+        headerTitle: 'memberName',
     });
 
-
-
-
-
-    const selectDay = (day: Date) => {
-        setSelectedDay(day);
-    };
-
-
     return (
-            <View style={styles.innerStyle}>
-                <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {"Hello"}
-                </Text>
-    
-            </View>
+        <View style={styles.innerStyle}>
+            <Text
+                variant="labelLarge"
+                style={{ color: theme.colors.onSurface }}
+            >
+                {'Hello'}
+            </Text>
+        </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

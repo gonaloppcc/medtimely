@@ -41,7 +41,6 @@ export const GroupMember = ({
                 >
                     {name}
                 </Text>
-               
             </View>
         </TouchableOpacity>
     );

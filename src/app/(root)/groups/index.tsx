@@ -24,7 +24,7 @@ export default function GroupsScreen() {
             {isSuccess && (
                 <GroupCards groups={groups} onPressGroup={onPressGroup} />
             )}
-            <Link asChild href="/groups/new">
+            <Link asChild href="/groups/add">
                 <FAB icon="plus" style={styles.fab} />
             </Link>
         </View>

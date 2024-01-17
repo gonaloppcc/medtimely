@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { Button } from '../../../../../../components/Button';
-import { useNavOptions } from '../../../../../../hooks/useNavOptions';
-import { WeekDayPicker } from '../../../../../../components/WeekDayPicker';
-import { ProgressIndicator } from '../../../../../../components/ProgressIndicator';
-import { RecordCards } from '../../../../../../components/RecordCards';
+import { useNavOptions } from '../../../hooks/useNavOptions';
 import { useLocalSearchParams } from 'expo-router';
-import { useRecords } from '../../../../../../hooks/useRecords';
-import { MedicationCards } from '../../../../../../components/MedicationCards';
-import { MedicationFormFilterButtons } from '../../../../../../components/MedicationFormFilterButtons';
-import { MedicationRecordForm } from '../../../../../../model/medicationRecord';
 
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();

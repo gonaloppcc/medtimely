@@ -13,7 +13,7 @@ import { ROUTE } from '../../../../../../model/routes';
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
-export default function GroupMemberScreen ()  {
+export default function GroupMemberScreen() {
     const theme = useTheme();
     const day =
         (useLocalSearchParams().day as string) || new Date().toISOString();
@@ -28,44 +28,39 @@ export default function GroupMemberScreen ()  {
     };
 
     useNavOptions({
-        headerTitle: "memberName",
+        headerTitle: 'memberName',
     });
 
     const onPressMemberMeds = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS});
+        router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS });
     };
 
     const onPressMemberRecord = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER_RECORDS});
+        router.push({ pathname: ROUTE.GROUPS.MEMBER_RECORDS });
     };
-
-
-
 
     const selectDay = (day: Date) => {
         setSelectedDay(day);
     };
 
-
     return (
-            <View style={styles.innerStyle}>
-                <Button onPress={onPressMemberMeds}>Records History</Button>
-                <Button onPress={onPressMemberRecord}>Meds</Button>
-                <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {"Hello"}
-                </Text>
-                <WeekDayPicker
+        <View style={styles.innerStyle}>
+            <Button onPress={onPressMemberMeds}>Records History</Button>
+            <Button onPress={onPressMemberRecord}>Meds</Button>
+            <Text
+                variant="labelLarge"
+                style={{ color: theme.colors.onSurface }}
+            >
+                {'Hello'}
+            </Text>
+            <WeekDayPicker
                 selectedDay={selectedDay}
                 selectDay={selectDay}
                 startDay={startDay}
             />
-    
-            </View>
+        </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
