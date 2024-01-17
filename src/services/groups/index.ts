@@ -1,4 +1,5 @@
 import { Group, GroupData } from '../../model/group';
+import { MedicationRecordForm } from '../../model/medicationRecord';
 import { User } from '../../model/user';
 import {
     addDoc,
@@ -32,9 +33,9 @@ export const getUserGroups = async (
     );
     const userDocSnapshot: DocumentSnapshot = await getDoc(userDocRef);
 
-    if (!userDocSnapshot.exists()) {
-        throw new Error(`User with id=${userId} does not exist`);
-    }
+    //if (!userDocSnapshot.exists()) {
+    //    throw new Error(`User with id=${userId} does not exist`);
+    //}
 
     const groupRefs: DocumentReference[] = userDocSnapshot.data()?.groups || [];
 
@@ -55,6 +56,34 @@ export const getUserGroups = async (
             } as Group;
         })
     );
+    groupsData.push({
+        id: 'testId',
+        name: 'testName',
+        description: 'testDescription',
+        users: [
+            {
+                id: 'testUserId',
+                firstname: 'testFs',
+                lastname: 'testLs',
+                records: [
+                    {
+                        id: 'testRecordId',
+                        name: 'testRecord',
+                        dosage: 'testDosage',
+                        form: MedicationRecordForm.CAPSULE,
+                        units: 10,
+                        missed: true,
+                        scheduledTime: new Date(2024, 0, 13, 12, 30, 0),
+                    },
+                ],
+                medications: [],
+                groups: [],
+            },
+        ],
+        sharedMeds: ['med1', 'med2', 'med3'],
+        treatmentPermissions: 'view',
+        hasSharedStock: true,
+    });
     return groupsData;
 };
 

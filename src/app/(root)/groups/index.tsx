@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { Text } from 'react-native-paper';
+import { FAB, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { GroupCards } from '../../../components/GroupCards';
 import { useGroups } from '../../../hooks/useGroups';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 
@@ -24,6 +24,9 @@ export default function GroupsScreen() {
             {isSuccess && (
                 <GroupCards groups={groups} onPressGroup={onPressGroup} />
             )}
+            <Link asChild href="/groups/add">
+                <FAB icon="plus" style={styles.fab} />
+            </Link>
         </View>
     );
 }
@@ -36,5 +39,11 @@ const styles = StyleSheet.create({
         height: '100%',
         display: 'flex',
         gap: 32,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
     },
 });

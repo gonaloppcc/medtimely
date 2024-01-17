@@ -1,20 +1,18 @@
 import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Group } from '../model/group';
+import { router } from 'expo-router';
+import { Member } from '../model/member';
 
-export interface GroupCardProps extends Group {
-    onPress: (id: string) => void;
+export interface GroupMemberCardProps extends Member {
+    onPressGroupMember: (id: string) => void;
 }
 
-export const GroupCard = ({
-    name,
-    description,
+export const GroupMember = ({
     id,
-    users,
-
-    onPress,
-}: GroupCardProps) => {
+    name,
+    onPressGroupMember,
+}: GroupMemberCardProps) => {
     const theme = useTheme();
 
     const backgroundColor = theme.colors.errorContainer;
@@ -25,12 +23,12 @@ export const GroupCard = ({
         borderColor: theme.colors.outline,
     };
 
-    const onPressGroup = () => {
-        if (id) onPress(id);
+    const onPress = () => {
+        onPressGroupMember(id);
     };
 
     return (
-        <TouchableOpacity style={style} onPress={onPressGroup}>
+        <TouchableOpacity style={style} onPress={onPress}>
             <Icon
                 size={40}
                 source="account-group"
@@ -42,18 +40,6 @@ export const GroupCard = ({
                     style={{ color: theme.colors.onSurface }}
                 >
                     {name}
-                </Text>
-                <Text
-                    variant="labelMedium"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {'Number of elements'}
-                </Text>
-                <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.error }}
-                >
-                    {description}
                 </Text>
             </View>
         </TouchableOpacity>
