@@ -10271,6 +10271,11 @@ react-native-gesture-handler@~2.12.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
+react-native-infinite-pager@^0.3.13:
+  version "0.3.13"
+  resolved "https://registry.yarnpkg.com/react-native-infinite-pager/-/react-native-infinite-pager-0.3.13.tgz#3d96d8a53b84df72af83de372e1414e7c00d79a6"
+  integrity sha512-F9o7GlHp79UQf9Nl9bMrdTN/eq9YpSESciypTMuk664vrB2HyaLdhHwAd596riHu3OE2KdmgoeLMIqNychZRqw==
+
 react-native-paper-dropdown@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/react-native-paper-dropdown/-/react-native-paper-dropdown-1.0.7.tgz#64fe004b05b73ca5c781873d800ac5062b35bdc9"
