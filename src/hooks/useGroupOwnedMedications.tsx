@@ -21,7 +21,7 @@ export const useGroupOwnedMedications = (
         error,
         refetch,
     } = useQuery({
-        queryKey: ['groupOwnedMedication', userId],
+        queryKey: ['groupOwnedMedication', groupId],
         queryFn: () => getUserGroupOwnedMedications(db, userId, groupId),
     });
 

@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useOwnedMedications } from '../../hooks/useOwnedMedications';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
-import { Text } from 'react-native-paper';
 import { StockCards } from '../../components/StockCards';
 import { ValuePicker } from '../../components/ValuePicker';
-import { useGroupOwnedMedications } from '../../hooks/useGroupOwnedMedications';
 import { EmptyStockMsg } from '../../components/EmptyStockMsg';
+import { useGroups } from '../../hooks/useGroups';
+import { useAuthentication } from '../../hooks/useAuthentication';
+import { useStock } from '../../hooks/useStock';
+import { ErrorMessage } from '../../hooks/ErrorMessage';
 
 const PERSONAL_VALUE = 'Personal';
 
@@ -15,29 +16,29 @@ export default function StockScreen() {
     const [stockFilterSelected, setStockFilterSelected] =
         useState(PERSONAL_VALUE);
 
-    const stockFilters: { label: string; value: string }[] = [
-        { label: PERSONAL_VALUE, value: PERSONAL_VALUE },
-    ];
+    const uid = useAuthentication().user?.uid ?? '';
+    const {
+        isLoading: isLoadingGroups,
+        isError: isErrorGroups,
+        isSuccess: isSuccessGroups,
+        groups,
+    } = useGroups(uid);
 
-    //TODO: Get groups's user
-    const groupsUUID = ['Family', 'Uni'];
-    groupsUUID.forEach((group) => {
-        stockFilters.push({
-            label: group,
-            value: group,
-        });
-    });
+    const { isSuccess, isLoading, isError, ownedMedications } = useStock(
+        uid,
+        stockFilterSelected
+    );
 
-    let isSuccess, isLoading, isError, ownedMedications;
+    const stockFilters: { label: string; value: string }[] = groups.map(
+        (group) => {
+            return {
+                label: group.name,
+                value: group.id,
+            };
+        }
+    );
 
-    //TODO: change uuid and group uuid
-    if (PERSONAL_VALUE !== stockFilterSelected) {
-        ({ isSuccess, isLoading, isError, ownedMedications } =
-            useGroupOwnedMedications('1', '1'));
-    } else {
-        ({ isSuccess, isLoading, isError, ownedMedications } =
-            useOwnedMedications('1'));
-    }
+    stockFilters.unshift({ label: PERSONAL_VALUE, value: PERSONAL_VALUE });
 
     const onPressPersonalStockHandler = (id: string) => {
         //TODO: do something
@@ -50,14 +51,18 @@ export default function StockScreen() {
 
     return (
         <View style={styles.container}>
-            <ValuePicker
-                values={stockFilters}
-                selectValueHandler={selectValueHandler}
-                selectedValue={stockFilterSelected}
-            />
-            {isError && (
-                <Text variant="headlineMedium">Something went wrong</Text>
+            {isLoadingGroups && <ProgressIndicator />}
+            {isErrorGroups && (
+                <ErrorMessage errorMessage="Could not load groups" />
             )}
+            {isSuccessGroups && (
+                <ValuePicker
+                    values={stockFilters}
+                    selectValueHandler={selectValueHandler}
+                    selectedValue={stockFilterSelected}
+                />
+            )}
+            {isError && <ErrorMessage errorMessage="Could not load stock" />}
             {isLoading && <ProgressIndicator />}
             {isSuccess && ownedMedications && ownedMedications.length > 0 && (
                 <StockCards

@@ -3,7 +3,7 @@ import { User } from './user';
 export type Permissions = 'view' | 'manage' | 'none';
 
 export interface Group {
-    id?: string;
+    id: string;
     name: string;
     description: string;
     users: User[];
