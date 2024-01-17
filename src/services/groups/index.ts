@@ -1,19 +1,19 @@
 import { Group, GroupData } from '../../model/group';
 import { User } from '../../model/user';
 import {
+    addDoc,
+    arrayRemove,
+    arrayUnion,
+    collection,
+    deleteDoc,
+    doc,
     DocumentReference,
     DocumentSnapshot,
-    doc,
-    getDoc,
-    addDoc,
-    updateDoc,
-    deleteDoc,
-    collection,
-    arrayUnion,
-    arrayRemove,
     FieldValue,
+    Firestore,
+    getDoc,
+    updateDoc,
 } from 'firebase/firestore';
-import { Firestore } from 'firebase/firestore';
 import { ProjectError } from '../error';
 
 const USERS_COLLECTION_NAME = 'users';

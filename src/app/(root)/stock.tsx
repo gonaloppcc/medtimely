@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useOwnedMedications } from '../../hooks/useOwnedMedications';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
 import { Text } from 'react-native-paper';
 import { StockCards } from '../../components/StockCards';
-import { useState } from 'react';
 import { ValuePicker } from '../../components/ValuePicker';
 import { useGroupOwnedMedications } from '../../hooks/useGroupOwnedMedications';
 import { EmptyStockMsg } from '../../components/EmptyStockMsg';

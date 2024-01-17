@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { AuthenticationProvider } from '../providers/AuthProvider';
 import { useFonts } from 'expo-font';
-import { useCallback } from 'react';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';

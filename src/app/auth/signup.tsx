@@ -3,20 +3,17 @@ import * as React from 'react';
 import * as Yup from 'yup';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import { useFormik } from 'formik';
-import {
-    createUserWithEmailAndPassword,
-    createUserDoc,
-} from '../../services/auth';
-import { View } from 'react-native';
+import { createUserWithEmailAndPassword } from '../../services/auth';
+import { ScrollView, View } from 'react-native';
 import { formStyle } from './signin';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { db } from '../../firebase';
-import { Picker, ItemPickerProp } from '../../components/Picker';
+import { ItemPickerProp, Picker } from '../../components/Picker';
 import { Checkbox } from '../../components/Checkbox';
-import { ScrollView } from 'react-native';
 import { OptionalInfo } from '../../model/user';
+import { createUserDoc } from '../../services/users';
 
 const physicalActivityOptions: ItemPickerProp[] = [
     { label: 'Never', value: 'never' },

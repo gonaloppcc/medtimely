@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text } from 'react-native-paper';
+import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import { View } from 'react-native';
-import { ActivityIndicator, Button } from 'react-native-paper';
 import { useLocalSearchParams } from 'expo-router';
 import { useMedication } from '../../../../hooks/useMedication';
 import { MedicationCard } from '../../../../components/MedicationCard';

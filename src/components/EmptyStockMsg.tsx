@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useTheme, Text, Icon } from 'react-native-paper';
+import { Icon, Text, useTheme } from 'react-native-paper';
 
 export const EmptyStockMsg = () => {
     const theme = useTheme();

@@ -16,7 +16,7 @@ import {
     query,
 } from 'firebase/firestore';
 import { ProjectError } from '../error';
-import { USERS_COLLECTION } from '../users';
+import { USERS_COLLECTION_NAME } from '../users';
 import { getMedication } from '../medications';
 
 export const OWNED_MEDICATION: OwnedMedication = {
@@ -38,7 +38,7 @@ const OWNED_MEDICATIONS_COLLECTION = 'ownedMedications';
 const getUserOwnedMedicationCollection = (db: Firestore, uid: string) => {
     return collection(
         db,
-        `${USERS_COLLECTION}/${uid}/${OWNED_MEDICATIONS_COLLECTION}`
+        `${USERS_COLLECTION_NAME}/${uid}/${OWNED_MEDICATIONS_COLLECTION}`
     );
 };
 

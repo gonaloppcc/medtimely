@@ -52,6 +52,8 @@ export const getRecords = async (
     // todo: use onSnapshot
     const matchDocs = await getDocs(q);
 
+    console.log(`Found ${matchDocs.docs.length} records`);
+
     return matchDocs.docs.map(snapshotToRecord);
 };
 

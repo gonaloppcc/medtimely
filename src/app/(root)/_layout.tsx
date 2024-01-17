@@ -1,6 +1,6 @@
 import React from 'react';
 import { CommonActions } from '@react-navigation/native';
-import { Tabs, Redirect, router } from 'expo-router';
+import { Redirect, router, Tabs } from 'expo-router';
 import { BottomNavigation, Icon } from 'react-native-paper';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { ROUTE } from '../../model/routes';

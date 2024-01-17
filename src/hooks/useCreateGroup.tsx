@@ -1,19 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
 import { Group } from '../model/group';
 import { createGroup } from '../services/groups';
+import { db } from '../firebase';
 
 interface UseCreateGroupReturn {
     createGroup: (group: Group) => Promise<string>;
 }
 
 export const useCreateGroup = (
-    token: string,
+    userid: string,
     onSuccess: () => void,
     onError: (error: Error) => void
 ): UseCreateGroupReturn => {
     const createGroupMutation = useMutation({
         mutationFn: async (group: Group) => {
-            return await createGroup(token, group);
+            return await createGroup(db, group, userid);
         },
         onSuccess,
         onError,

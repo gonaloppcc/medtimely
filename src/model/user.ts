@@ -1,6 +1,3 @@
-import { MedicationRecord } from './medicationRecord';
-import { Medication } from './medication';
-
 export interface OptionalInfo {
     job?: string;
     height?: number;
@@ -16,8 +13,6 @@ export interface User {
     id?: string;
     firstname?: string;
     lastname?: string;
-    records: MedicationRecord[];
-    medications: Medication[];
     groups: string[];
     optionalInfo?: OptionalInfo;
 
