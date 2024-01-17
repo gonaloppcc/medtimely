@@ -20,6 +20,14 @@ import { MedicationRecord } from '../../model/medicationRecord';
 import dayjs from 'dayjs';
 import { ProjectError } from '../error';
 
+type Day = `${number}/${number}/${number}`;
+
+interface FirestoreMedicationRecord
+    extends Omit<MedicationRecord, 'scheduledTime'> {
+    day: Day;
+    scheduledTime: Timestamp;
+}
+
 const getUserRecordCollection = (db: Firestore, userId: string) => {
     return collection(db, `users/${userId}/records`);
 };
@@ -37,24 +45,26 @@ export const getRecords = async (
         `Fetching records in date=${date.toDateString()} for user with id=${userId}`
     );
 
-    // date is stored as timestamp in the db
-    const startDate = dayjs(date).startOf('day').toDate();
-    const endDate = dayjs(date).endOf('day').toDate();
+    const day = dayjs(date).format('D/M/YYYY') as Day;
 
     const userRecordCollection = getUserRecordCollection(db, userId);
 
-    // TODO: Catch any possible errors here
-    const q = query(
-        userRecordCollection,
-        where('scheduledTime', '<=', endDate),
-        where('scheduledTime', '>=', startDate)
-    );
-    // todo: use onSnapshot
-    const matchDocs = await getDocs(q);
+    const q = query(userRecordCollection, where('day', '==', day));
 
-    console.log(`Found ${matchDocs.docs.length} records`);
+    try {
+        const matchDocs = await getDocs(q);
+        console.log(`Found ${matchDocs.docs.length} records`);
 
-    return matchDocs.docs.map(snapshotToRecord);
+        return matchDocs.docs.map(snapshotToRecord);
+    } catch (e) {
+        console.error('Error getting documents: ', e);
+        throw new ProjectError(
+            'GETTING_RECORDS_ERROR',
+            `Error getting documents on path=${getUserRecordCollectionString(
+                userId
+            )} with query=${JSON.stringify(q)}`
+        );
+    }
 };
 
 export const getRecord = async (
@@ -105,11 +115,14 @@ export const createRecord = async (
 
     const userRecordCollection = getUserRecordCollection(db, userId);
 
+    const firestoreRecord: FirestoreMedicationRecord = {
+        ...record,
+        day: dayjs(record.scheduledTime).format('D/M/YYYY') as Day,
+        scheduledTime: Timestamp.fromDate(record.scheduledTime),
+    };
+
     try {
-        const docRef = await addDoc(userRecordCollection, {
-            ...record,
-            scheduledTime: Timestamp.fromDate(record.scheduledTime),
-        });
+        const docRef = await addDoc(userRecordCollection, firestoreRecord);
 
         console.log(`Created record with id=${docRef.id}`);
 
