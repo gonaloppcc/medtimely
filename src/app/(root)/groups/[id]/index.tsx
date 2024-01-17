@@ -20,7 +20,7 @@ export interface GroupCardProps {
     onPress: (id: string) => void;
 }
 
-export default function GroupScreen({ onPress }) {
+export default function GroupScreen() {
     const id = useLocalSearchParams().id || '';
     const {
         groupName,

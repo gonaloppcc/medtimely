@@ -11,7 +11,6 @@ export const GroupCard = ({
     name,
     description,
     id,
-    users,
 
     onPress,
 }: GroupCardProps) => {

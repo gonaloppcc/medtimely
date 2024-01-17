@@ -4,10 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button } from '../../../../../../components/Button';
 import { useNavOptions } from '../../../../../../hooks/useNavOptions';
 import { WeekDayPicker } from '../../../../../../components/WeekDayPicker';
-import { ProgressIndicator } from '../../../../../../components/ProgressIndicator';
-import { RecordCards } from '../../../../../../components/RecordCards';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useRecords } from '../../../../../../hooks/useRecords';
 import { ROUTE } from '../../../../../../model/routes';
 
 // TODO: In the future this should be changeable by the user
@@ -19,13 +16,6 @@ export default function GroupMemberScreen() {
         (useLocalSearchParams().day as string) || new Date().toISOString();
     const initialSelectedDay = new Date(day);
     const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
-    const backgroundColor = theme.colors.errorContainer;
-
-    const style = {
-        ...styles.container,
-        backgroundColor,
-        borderColor: theme.colors.outline,
-    };
 
     useNavOptions({
         headerTitle: 'memberName',

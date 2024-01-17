@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useNavOptions } from '../../../../../hooks/useNavOptions';
-import { useLocalSearchParams } from 'expo-router';
 import { GroupMembers } from '../../../../../components/GroupMembers';
 import { router } from 'expo-router';
 import { ROUTE } from '../../../../../model/routes';
@@ -29,7 +28,6 @@ const MEMBERS_INFO = [
 //}
 
 export default function GroupMembersScreen() {
-    const id = useLocalSearchParams().id || '';
     const groupMembers = MEMBERS_INFO;
 
     const headerRight = () => (

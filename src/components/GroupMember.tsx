@@ -1,7 +1,6 @@
 import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { router } from 'expo-router';
 import { Member } from '../model/member';
 
 export interface GroupMemberCardProps extends Member {
