@@ -1,5 +1,4 @@
 import { Group, GroupData } from '../../model/group';
-import { MedicationRecordForm } from '../../model/medicationRecord';
 import { User } from '../../model/user';
 import {
     addDoc,
@@ -65,18 +64,6 @@ export const getUserGroups = async (
                 id: 'testUserId',
                 firstname: 'testFs',
                 lastname: 'testLs',
-                records: [
-                    {
-                        id: 'testRecordId',
-                        name: 'testRecord',
-                        dosage: 'testDosage',
-                        form: MedicationRecordForm.CAPSULE,
-                        units: 10,
-                        missed: true,
-                        scheduledTime: new Date(2024, 0, 13, 12, 30, 0),
-                    },
-                ],
-                medications: [],
                 groups: [],
             },
         ],

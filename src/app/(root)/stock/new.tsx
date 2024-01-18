@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text } from 'react-native-paper';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Input } from '../../../components/Input';
@@ -32,6 +33,7 @@ export default function NewStockScreen() {
     // Create an _owned_ medication
 
     const onSubmit = async (values: Values) => {
+        console.log(values);
         // todo
     };
 
@@ -49,6 +51,17 @@ export default function NewStockScreen() {
         validationSchema: schema,
         onSubmit,
     });
+
+    // TODO: FINISH THIS FORM
+    console.log(
+        isValid,
+        isSubmitting,
+        errors,
+        touched,
+        handleSubmit,
+        setFieldValue
+    );
+
     return (
         <ScrollView contentContainerStyle={styles.form}>
             <View style={styles.inputContainer}>

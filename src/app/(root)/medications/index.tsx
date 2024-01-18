@@ -13,6 +13,7 @@ import { ROUTE } from '../../../model/routes';
 
 export default function MedicationsScreen() {
     const [selectForm, setSelectForm] = useState<MedicationRecordForm | ''>('');
+
     const { isSuccess, isLoading, isError, medications } = useMedications('1'); // TODO: Replace with user's token
 
     const medicationForms = Array.from(

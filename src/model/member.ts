@@ -1,5 +1,5 @@
 export interface Member {
-    id?: string;
+    id: string;
     name: string;
     sharedMeds: string[];
     hasSharedStock: boolean;

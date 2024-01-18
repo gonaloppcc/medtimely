@@ -9,6 +9,7 @@ import {
     Firestore,
     getDoc,
     getDocs,
+    limit,
     query,
     Timestamp,
     updateDoc,
@@ -36,7 +37,42 @@ const getUserRecordCollectionString = (userId: string) => {
     return `users/${userId}/records`;
 };
 
-export const getRecords = async (
+export const getRecordsByMedication = async (
+    db: Firestore,
+    userId: string,
+    medicationId: string,
+    maxRecords: number = 10
+): Promise<MedicationRecord[]> => {
+    console.log(
+        `Fetching records for medication with id=${medicationId} for user with id=${userId} with maxRecords=${maxRecords}`
+    );
+
+    const userRecordCollection = getUserRecordCollection(db, userId);
+
+    const q = query(
+        userRecordCollection,
+        where('medicationId', '==', medicationId),
+        limit(maxRecords)
+    );
+
+    try {
+        const matchDocs = await getDocs(q);
+
+        console.log(`Found ${matchDocs.docs.length} records`);
+
+        return matchDocs.docs.map(snapshotToRecord);
+    } catch (e) {
+        console.error('Error getting documents: ', e);
+        throw new ProjectError(
+            'GETTING_RECORDS_BY_MEDICATION_ERROR',
+            `Error getting documents on path=${getUserRecordCollectionString(
+                userId
+            )} with query=${JSON.stringify(q)}`
+        );
+    }
+};
+
+export const getRecordsByDate = async (
     db: Firestore,
     userId: string,
     date: Date

@@ -13,8 +13,10 @@ export interface PlannedMedication {
     ownedMedication: OwnedMedication;
     doseToBeTaken: number;
     schedule: PlannedMedicationSchedule;
+    records: boolean[];
 }
 
 export interface PlannedMedicationSchedule {
-    timeEachDay: string; // FIXME: Is this the right type?
+    startDate: string;
+    timeBetweenDosesInHours: number;
 }

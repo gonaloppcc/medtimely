@@ -8,15 +8,16 @@ import { ProgressIndicator } from '../../../../components/ProgressIndicator';
 import { useMedication } from '../../../../hooks/useMedication';
 import { MedicationIcon } from '../../../../components/MedicationIcon';
 import { useAppTheme } from '../../../../theme';
-import { useRecords } from '../../../../hooks/useRecords';
 import { RecordCards } from '../../../../components/RecordCards';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../model/routes';
+import { useRecordsByMedication } from '../../../../hooks/useRecordsByMedication';
 
 export default function MedicationScreen() {
     const medicationID = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
     const theme = useAppTheme();
     const { user } = useAuthentication();
+    const uid = user?.uid ?? '';
 
     const { isSuccess, isLoading, isError, medication } =
         useMedication(medicationID);
@@ -38,20 +39,13 @@ export default function MedicationScreen() {
         headerRight,
     });
 
-    const initialSelectedDay = new Date();
-
-    //TODO: Change this to receive the last 10 records of that medicine.
-    // Receiving an array with this {day, record}
     const {
         isSuccess: isSuccessRecords,
         isLoading: isLoadingRecords,
         isError: isErrorRecords,
         records,
         refetch: refetchRecords,
-    } = useRecords(
-        user?.uid ?? '', // TODO: Replace with user's token in the future
-        initialSelectedDay
-    );
+    } = useRecordsByMedication(uid, medicationID);
 
     const onPressRecord = (id: string) => {
         router.push({ pathname: ROUTE.RECORDS.BY_ID, params: { id } });
@@ -73,7 +67,7 @@ export default function MedicationScreen() {
                     </View>
 
                     <View style={styles.textContainer}>
-                        <Text variant="headlineLarge">Programas</Text>
+                        <Text variant="headlineLarge">Programs</Text>
                         <Text variant="labelMedium">
                             {medication.form.toLocaleLowerCase()} every day
                         </Text>

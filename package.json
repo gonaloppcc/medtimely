@@ -17,6 +17,7 @@
         "prettier:fix": "npx prettier --write .",
         "lint:check": "eslint --ext .tsx --ext .ts src/",
         "lint:fix": "eslint --fix --ext .tsx --ext .ts src/**/*",
+        "check": "yarn ts:check && yarn prettier:check && yarn lint:check",
         "cmd:populate-user-records": "tsx cmd/populate-user-records.ts",
         "cmd:delete-record": "tsx cmd/delete-record.ts",
         "cmd:populate-medications": "tsx cmd/populate-medications.ts",

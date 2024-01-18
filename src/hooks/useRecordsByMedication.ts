@@ -2,14 +2,18 @@ import { AxiosError } from 'axios';
 import { MedicationRecord } from '../model/medicationRecord';
 import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
-import { getRecordsByDate } from '../services/records';
+import { getRecordsByMedication } from '../services/records';
 import { db } from '../firebase';
 
 export interface useRecordsProps extends FetcherProps {
     records: MedicationRecord[];
 }
 
-export const useRecords = (userId: string, date: Date): useRecordsProps => {
+export const useRecordsByMedication = (
+    userId: string,
+    medicationId: string,
+    maxRecords: number = 10
+): useRecordsProps => {
     const {
         isSuccess,
         isLoading,
@@ -18,8 +22,9 @@ export const useRecords = (userId: string, date: Date): useRecordsProps => {
         error,
         refetch,
     } = useQuery({
-        queryKey: ['records', date, userId],
-        queryFn: () => getRecordsByDate(db, userId, date),
+        queryKey: ['records', userId],
+        queryFn: () =>
+            getRecordsByMedication(db, userId, medicationId, maxRecords),
     });
 
     return {

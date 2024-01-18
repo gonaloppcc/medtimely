@@ -1,5 +1,6 @@
 export interface MedicationRecord {
     id?: string; // ID only set when retrieved from db // TODO: Migrate this to not be optional, if optional, the MedicationRecordData should be used instead
+    medicationId?: string; // Only set when the original medication still exists
     name: string;
     dosage: string;
     form: MedicationRecordForm;

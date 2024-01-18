@@ -1,11 +1,11 @@
-import { Readable } from 'stream';
-
 export async function decompressQRCode(code: string): Promise<string> {
     // Prescription QR codes are first base64-encoded, and then gzipped.
     // So our pipeline is base64decode -> ungzip -> parse
 
     // const decompressed = await inflate(code);
     // return decompressed;
+
+    const continueReading = true;
 
     const ds = new DecompressionStream('gzip');
     const buf = Buffer.from(code, 'base64');
@@ -14,10 +14,10 @@ export async function decompressQRCode(code: string): Promise<string> {
     const reader: ReadableStreamDefaultReader<string> =
         decompressedStream.getReader();
 
-    let contents: string[] = [];
+    const contents: string[] = [];
 
-    while (true) {
-        let { done, value } = await reader.read();
+    while (continueReading) {
+        const { done, value } = await reader.read();
         if (done) {
             break;
         } else {
