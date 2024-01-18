@@ -40,6 +40,7 @@ export default function RootLayout() {
             <AuthenticationProvider>
                 <PaperProvider theme={theme}>
                     <ThemeProvider value={theme}>
+                        
                         <Stack>
                             <Stack.Screen
                                 name="(root)"
@@ -52,6 +53,10 @@ export default function RootLayout() {
                             <Stack.Screen
                                 name="settings"
                                 options={{ headerTitle: 'Settings' }}
+                            />
+                            <Stack.Screen
+                                name="profile"
+                                options={{ headerTitle: 'Profile' }}
                             />
                         </Stack>
                     </ThemeProvider>

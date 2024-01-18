@@ -88,10 +88,10 @@ export default function HomeLayout() {
                             HeaderButtonComponent={MaterialHeaderButton}
                         >
                             <Item
-                                title="settings"
-                                iconName="settings"
+                                title="profile"
+                                iconName="account-circle"
                                 onPress={() => {
-                                    router.push(ROUTE.SETTINGS.BASE_NAME);
+                                    router.push(ROUTE.PROFILE.BASE_NAME);
                                 }}
                             />
                         </HeaderButtons>
@@ -116,7 +116,7 @@ export default function HomeLayout() {
                     title: 'Records',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Icon source="account-circle" color={color} size={24} />
+                        <Icon source="file-document-multiple" color={color} size={24} />
                     ),
                 }}
             />
@@ -127,7 +127,7 @@ export default function HomeLayout() {
                     title: 'Groups',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Icon source="account-circle" color={color} size={24} />
+                        <Icon source="account-multiple" color={color} size={24} />
                     ),
                 }}
             />

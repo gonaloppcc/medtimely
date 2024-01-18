@@ -36,10 +36,16 @@ const STOCK_ROUTES: Routes = {
     HOME: '/ownedMedication',
 };
 
+const PROFILE_ROUTES: Routes = {
+    BASE_NAME: 'profile',
+    HOME: '/profile',
+};
+
 export const ROUTE = {
     GROUPS: GROUPS_ROUTES,
     MEDICATIONS: MEDICATIONS_ROUTES,
     RECORDS: RECORDS_ROUTES,
     SETTINGS: SETTINGS_ROUTES,
     STOCK: STOCK_ROUTES,
+    PROFILE: PROFILE_ROUTES,
 };

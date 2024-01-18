@@ -4,20 +4,31 @@ import { Button, Icon, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { signOut } from '../services/auth';
 import { router } from 'expo-router';
+import { ROUTE } from '../model/routes';
 
-export default function SettingsScreen() {
+export default function ProfileScreen() {
     const COLOR = '#ffffff';
     const size = 15;
-    
-    const onPressHandler = async () => {
+
+    const onPressHandlerLogOut = async () => {
         await signOut();
         router.replace('/');
     };
+
+    const onPressHandlerSettings = async () => {
+        router.push(ROUTE.SETTINGS.BASE_NAME);
+    };
+
     return (
         <View style={styles.container}>
-            <Text>Settings Screen</Text>
+            <Text>Profile Screen</Text>
 
-            <Button onPress={onPressHandler} mode="contained">
+            <Button onPress={onPressHandlerSettings} mode="contained">
+                <Icon size={size} source='cog' color={COLOR} />
+                Settings
+            </Button>
+
+            <Button onPress={onPressHandlerLogOut} mode="contained">
                 <Icon size={size} source='logout' color={COLOR} />
                 Logout
             </Button>
