@@ -136,6 +136,7 @@ export default function HomeLayout() {
                 name={ROUTE.STOCK.BASE_NAME}
                 options={{
                     title: 'Stock',
+                    headerShown: false,
                     tabBarIcon: ({ color }) => (
                         <Icon source="archive" color={color} size={24} />
                     ),

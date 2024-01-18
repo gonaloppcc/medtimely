@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ProgressIndicator } from '../../components/ProgressIndicator';
-import { StockCards } from '../../components/StockCards';
-import { ValuePicker } from '../../components/ValuePicker';
-import { EmptyStockMsg } from '../../components/EmptyStockMsg';
-import { useGroups } from '../../hooks/useGroups';
-import { useAuthentication } from '../../hooks/useAuthentication';
-import { useStock } from '../../hooks/useStock';
-import { ErrorMessage } from '../../hooks/ErrorMessage';
+import { ProgressIndicator } from '../../../components/ProgressIndicator';
+import { StockCards } from '../../../components/StockCards';
+import { ValuePicker } from '../../../components/ValuePicker';
+import { EmptyStockMsg } from '../../../components/EmptyStockMsg';
+import { useGroups } from '../../../hooks/useGroups';
+import { useAuthentication } from '../../../hooks/useAuthentication';
+import { useStock } from '../../../hooks/useStock';
+import { ErrorMessage } from '../../../components/ErrorMessage';
+import { Link } from 'expo-router';
+import { FAB } from 'react-native-paper';
 
 const PERSONAL_VALUE = 'Personal';
 
@@ -73,6 +75,10 @@ export default function StockScreen() {
             {isSuccess && ownedMedications && ownedMedications.length == 0 && (
                 <EmptyStockMsg />
             )}
+
+            <Link asChild href="/stock/new">
+                <FAB icon="plus" style={styles.fab} />
+            </Link>
         </View>
     );
 }
@@ -84,5 +90,11 @@ const styles = StyleSheet.create({
         height: '100%',
         display: 'flex',
         gap: 32,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
     },
 });

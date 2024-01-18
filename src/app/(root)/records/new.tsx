@@ -11,7 +11,7 @@ import { Button } from '../../../components/Button';
 import { useFormik } from 'formik';
 import { useAppTheme } from '../../../theme';
 import * as Yup from 'yup';
-import { ErrorMessage } from '../../../hooks/ErrorMessage';
+import { ErrorMessage } from '../../../components/ErrorMessage';
 import { Switch } from '../../../components/Switch';
 import { ItemPickerProp, Picker } from '../../../components/Picker';
 import { useNavOptions } from '../../../hooks/useNavOptions';
