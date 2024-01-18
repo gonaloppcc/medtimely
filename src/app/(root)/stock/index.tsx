@@ -18,6 +18,8 @@ export default function StockScreen() {
     const [stockFilterSelected, setStockFilterSelected] =
         useState(PERSONAL_VALUE);
 
+    console.log('stockFilterSelected', stockFilterSelected);
+
     const uid = useAuthentication().user?.uid ?? '';
     const {
         isLoading: isLoadingGroups,

@@ -33,7 +33,7 @@ export const ValuePicker = ({
         <View style={style.picker}>
             {[
                 values.map((value, i) => {
-                    const isSelected = value.label == selectedValue;
+                    const isSelected = value.value == selectedValue;
 
                     const setSelectedValue = () => {
                         selectValueHandler(value.value);
@@ -50,6 +50,8 @@ export const ValuePicker = ({
                             : theme.colors.surface,
                         gap: 8,
                     };
+
+                    console.log('value, isSelected', value, isSelected);
 
                     return (
                         <TouchableOpacity
