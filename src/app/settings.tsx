@@ -1,9 +1,14 @@
 import * as React from 'react';
-
-import { Button, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { signOut } from '../services/auth';
 import { router } from 'expo-router';
+import {
+    DestructiveButton,
+    GhostButton,
+    OutlineButton,
+    PrimaryButton,
+    SecondaryButton,
+} from '../components/Button';
 
 export default function SettingsScreen() {
     const onPressHandler = async () => {
@@ -12,11 +17,36 @@ export default function SettingsScreen() {
     };
     return (
         <View style={styles.container}>
-            <Text>Settings Screen</Text>
+            <PrimaryButton
+                onPress={() => router.push({ pathname: '/groups/1/members/1' })}
+            >
+                Primary Button
+            </PrimaryButton>
 
-            <Button onPress={onPressHandler} mode="contained">
+            {/* TODO: Erase the buttons below when the design is ready and applied */}
+            <SecondaryButton
+                onPress={() => router.push({ pathname: '/groups/1/members/1' })}
+            >
+                Secondary Button
+            </SecondaryButton>
+
+            <OutlineButton onPress={() => router.push({ pathname: '/groups' })}>
+                Outline Button
+            </OutlineButton>
+
+            <GhostButton onPress={() => router.push({ pathname: '/groups' })}>
+                Ghost Button
+            </GhostButton>
+
+            <DestructiveButton
+                onPress={() => router.push({ pathname: '/groups/1/members/1' })}
+            >
+                Destructive Button
+            </DestructiveButton>
+
+            <DestructiveButton onPress={onPressHandler}>
                 Logout
-            </Button>
+            </DestructiveButton>
         </View>
     );
 }

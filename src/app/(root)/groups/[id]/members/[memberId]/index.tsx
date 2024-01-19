@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { Button } from '../../../../../../components/Button';
+import { PrimaryButton } from '../../../../../../components/Button';
 import { useNavOptions } from '../../../../../../hooks/useNavOptions';
 import { WeekDayPicker } from '../../../../../../components/WeekDayPicker';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -35,8 +35,10 @@ export default function GroupMemberScreen() {
 
     return (
         <View style={styles.innerStyle}>
-            <Button onPress={onPressMemberMeds}>Records History</Button>
-            <Button onPress={onPressMemberRecord}>Meds</Button>
+            <PrimaryButton onPress={onPressMemberMeds}>
+                Records History
+            </PrimaryButton>
+            <PrimaryButton onPress={onPressMemberRecord}>Meds</PrimaryButton>
             <Text
                 variant="labelLarge"
                 style={{ color: theme.colors.onSurface }}

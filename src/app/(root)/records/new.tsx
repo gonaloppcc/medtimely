@@ -7,7 +7,7 @@ import {
     MedicationRecordForm,
 } from '../../../model/medicationRecord';
 import { Input } from '../../../components/Input';
-import { Button } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/Button';
 import { useFormik } from 'formik';
 import { useAppTheme } from '../../../theme';
 import * as Yup from 'yup';
@@ -228,13 +228,13 @@ export default function CreateRecordScreen() {
                     {submitErrorMessage}
                 </Text>
             )}
-            <Button
+            <PrimaryButton
                 disabled={!isValid}
                 isLoading={isSubmitting}
                 onPress={handleSubmit}
             >
                 Add Record
-            </Button>
+            </PrimaryButton>
         </ScrollView>
     );
 }

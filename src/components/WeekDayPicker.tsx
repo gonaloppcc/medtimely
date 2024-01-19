@@ -76,16 +76,15 @@ export const WeekDayPicker = ({
                             selectDay(date);
                         };
 
+                        const month = date.toLocaleString('default', {
+                            month: 'short',
+                        });
+
                         if (title) {
-                            // return <Text>mon</Text>;
                             return (
                                 <View style={style.weekdayContainer}>
                                     {i == 0 || date.getDate() == 1 ? (
-                                        <Text variant="bodySmall">
-                                            {date.toLocaleString('default', {
-                                                month: 'short',
-                                            })}
-                                        </Text>
+                                        <Text variant="bodySmall">{month}</Text>
                                     ) : (
                                         <View style={{ width: '100%' }} />
                                     )}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CommonActions } from '@react-navigation/native';
 import { Redirect, router, Tabs } from 'expo-router';
-import { BottomNavigation, Icon } from 'react-native-paper';
+import { BottomNavigation, Icon, Text } from 'react-native-paper';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { ROUTE } from '../../model/routes';
 import {
@@ -11,6 +11,7 @@ import {
     Item,
 } from 'react-navigation-header-buttons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { View } from 'react-native';
 
 const MaterialHeaderButton = (props: HeaderButtonProps) => (
     // the `props` here come from <Item ... />
@@ -83,6 +84,22 @@ export default function HomeLayout() {
                     tabBarIcon: ({ color }) => (
                         <Icon source="home" color={color} size={24} />
                     ),
+                    headerTitle: () => <></>,
+                    headerLeft: () => (
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                gap: 0,
+                            }}
+                        >
+                            <Icon
+                                source={require('../../../assets/adaptive-icon-fg.png')}
+                                size={64}
+                            />
+                            <Text variant="headlineSmall">Medtimely</Text>
+                        </View>
+                    ),
                     headerRight: () => (
                         <HeaderButtons
                             HeaderButtonComponent={MaterialHeaderButton}
@@ -127,7 +144,7 @@ export default function HomeLayout() {
                     title: 'Groups',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Icon source="account-circle" color={color} size={24} />
+                        <Icon source="account-group" color={color} size={24} />
                     ),
                 }}
             />

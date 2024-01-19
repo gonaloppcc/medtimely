@@ -51,8 +51,6 @@ export const ValuePicker = ({
                         gap: 8,
                     };
 
-                    console.log('value, isSelected', value, isSelected);
-
                     return (
                         <TouchableOpacity
                             style={stylePicker}

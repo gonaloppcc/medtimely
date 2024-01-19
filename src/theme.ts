@@ -32,20 +32,24 @@ export const themeFonts = {
 export const customThemeColors = {
     light: {
         colors: {
+            main: 'rgb(0, 0, 0)', // FIXME: Not sure if this is correct according to the design
             brand: 'rgb(187, 21, 34)',
             onBrand: 'rgb(255, 255, 255)',
             brandContainer: 'rgb(255, 218, 215)',
             onBrandContainer: 'rgb(65, 0, 4)',
             inverseBrand: 'rgb(255, 179, 174)',
+            mainContrast: 'rgb(255, 255, 255)', // FIXME: Not sure if this is correct according to the design
         },
     },
     dark: {
         colors: {
+            main: 'rgb(255, 255, 255)', // FIXME: Not sure if this is correct according to the design
             brand: 'rgb(255, 179, 174)',
             onBrand: 'rgb(104, 0, 11)',
             brandContainer: 'rgb(147, 0, 20)',
             onBrandContainer: 'rgb(255, 218, 215)',
             inverseBrand: 'rgb(187, 21, 34)',
+            mainContrast: 'rgb(0, 0, 0)', // FIXME: Not sure if this is correct according to the design
         },
     },
 };

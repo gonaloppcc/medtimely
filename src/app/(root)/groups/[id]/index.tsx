@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Button } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/Button';
 import { ROUTE } from '../../../../model/routes';
 import { useNavOptions } from '../../../../hooks/useNavOptions';
 
@@ -53,7 +53,9 @@ export default function GroupScreen() {
             <Text variant="labelMedium">{sharedMeds}</Text>
             <Text variant="labelMedium">{treatmentPermission}</Text>
             <Text variant="labelMedium">{hasSharedStock}</Text>
-            <Button onPress={onPressMembers}>See group members </Button>
+            <PrimaryButton onPress={onPressMembers}>
+                See group members{' '}
+            </PrimaryButton>
         </View>
     );
 }
