@@ -118,16 +118,18 @@ export const getUserOwnedMedications = async (
 
                 console.log('ownedMedication', JSON.stringify(ownedMedication));
 
-                // Fetch the medication document data too and merge it with the owned medication
-                const medication = await getMedication(
-                    db,
-                    ownedMedication.medicationId
-                );
+                return ownedMedication;
 
-                return {
-                    ...medication,
-                    ...ownedMedication,
-                };
+                // Fetch the medication document data too and merge it with the owned medication
+                // const medication = await getMedication(
+                //     db,
+                //     ownedMedication.medicationId
+                // );
+
+                // return {
+                //     ...medication,
+                //     ...ownedMedication,
+                // };
             })
         );
     } catch (err) {
@@ -160,22 +162,27 @@ export const getUserGroupOwnedMedications = async (
 export const createOwnedMedication = async (
     db: Firestore,
     uid: string,
-    medicationId: string,
-    medicationForm: MedicationRecordForm,
-    stock: number
+    ownedMedication: OwnedMedicationData
 ): Promise<string> => {
-    console.log(
-        `creating owned medication for user with id=${uid} for medicationId=${medicationId} with stock=${stock}`
-    );
+    console.log(`creating owned medication for user with id=${uid}`);
 
     const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
 
+    // If there's a medicationId, try to get that medication's data to autofill
+    if (ownedMedication.medicationId && ownedMedication.medicationId !== '') {
+        const medication = await getMedication(
+            db,
+            ownedMedication.medicationId
+        );
+
+        ownedMedication = {
+            ...medication,
+            ...ownedMedication,
+        };
+    }
+
     try {
-        const docRef = await addDoc(ownedMedicationCollection, {
-            medicationForm: medicationForm,
-            medicationId: medicationId,
-            stock,
-        });
+        const docRef = await addDoc(ownedMedicationCollection, ownedMedication);
 
         console.log(`created record with id=${docRef.id}`);
 
