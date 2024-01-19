@@ -10,11 +10,12 @@ import { MedicationCards } from '../../../components/MedicationCards';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 import { router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
+import { db } from '../../../firebase';
 
 export default function MedicationsScreen() {
     const [selectForm, setSelectForm] = useState<MedicationRecordForm | ''>('');
 
-    const { isSuccess, isLoading, isError, medications } = useMedications('1'); // TODO: Replace with user's token
+    const { isSuccess, isLoading, isError, medications } = useMedications(db); // TODO: Replace with user's token
 
     const medicationForms = Array.from(
         new Set(medications.map((value) => value.form))
@@ -36,6 +37,8 @@ export default function MedicationsScreen() {
     const onPressMedication = (id: string) => {
         router.push({ pathname: ROUTE.MEDICATIONS.BY_ID, params: { id } });
     };
+
+    // TODO: Infinite list
 
     return (
         <View style={styles.container}>
@@ -63,6 +66,7 @@ export default function MedicationsScreen() {
 const styles = StyleSheet.create({
     container: {
         padding: 12,
+        paddingBottom: 0,
         width: '100%',
         height: '100%',
         display: 'flex',

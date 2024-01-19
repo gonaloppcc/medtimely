@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Input } from '../../../components/Input';
 import { MedicationFormDropdown } from '../../../components/MedicationFormDropdown';
@@ -7,6 +7,8 @@ import { MedicationRecordForm } from '../../../model/medicationRecord';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '../../../components/ErrorMessage';
+import { useNavOptions } from '../../../hooks/useNavOptions';
+import { router } from 'expo-router';
 
 interface Values {
     name: string;
@@ -31,6 +33,20 @@ const schema = Yup.object().shape({
 
 export default function NewStockScreen() {
     // Create an _owned_ medication
+    const searchMedicationAction = () => {
+        router.push('/stock/search');
+    };
+
+    useNavOptions({
+        headerRight: () => {
+            return (
+                <Appbar.Action
+                    icon="magnify"
+                    onPress={searchMedicationAction}
+                />
+            );
+        },
+    });
 
     const onSubmit = async (values: Values) => {
         console.log(values);
@@ -39,11 +55,11 @@ export default function NewStockScreen() {
 
     const {
         values,
-        isValid,
-        isSubmitting,
-        handleSubmit,
+        // isValid,
+        // isSubmitting,
+        // handleSubmit,
         handleChange,
-        setFieldValue,
+        // setFieldValue,
         errors,
         touched,
     } = useFormik<Values>({
@@ -51,16 +67,6 @@ export default function NewStockScreen() {
         validationSchema: schema,
         onSubmit,
     });
-
-    // TODO: FINISH THIS FORM
-    console.log(
-        isValid,
-        isSubmitting,
-        errors,
-        touched,
-        handleSubmit,
-        setFieldValue
-    );
 
     return (
         <ScrollView contentContainerStyle={styles.form}>

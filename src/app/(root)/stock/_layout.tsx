@@ -6,6 +6,13 @@ export default function StockLayout() {
         <Stack>
             <Stack.Screen name="index" options={{ title: 'Stock' }} />
             <Stack.Screen name="new" options={{ title: 'New medication' }} />
+            <Stack.Screen
+                name="search"
+                options={{
+                    presentation: 'modal',
+                    title: 'Search for medication',
+                }}
+            />
         </Stack>
     );
 }
