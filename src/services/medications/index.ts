@@ -22,31 +22,7 @@ export const getMedications = async (
 ): Promise<Medication[]> => {
     console.log(`getting medications`);
 
-    const medicationsCollection = collection(db, MEDICATIONS_COLLECTION_NAME);
-
-    const q = query(medicationsCollection, limit(maxDocuments));
-
-    try {
-        const medications: Medication[] = [];
-
-        const querySnapshot = await getDocs(q);
-
-        querySnapshot.forEach((doc) => {
-            const medication: Medication = doc.data() as Medication;
-
-            medication.id = doc.id;
-
-            medications.push(medication);
-        });
-
-        return medications;
-    } catch (err) {
-        console.error('Error performing firebase query: ', err);
-        throw new ProjectError(
-            'GETTING_MEDICATIONS_BY_NAME_SUBSTRING_ERROR',
-            `Error getting document on path=${MEDICATIONS_COLLECTION_NAME} with substring=${name}`
-        );
-    }
+    return await getMedicationsByNameSubstring(db, '', maxDocuments);
 };
 
 export const getMedicationsByNameSubstring = async (
