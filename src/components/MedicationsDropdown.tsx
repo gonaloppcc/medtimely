@@ -1,8 +1,8 @@
-import { useAuthentication } from '../hooks/useAuthentication';
 import DropDown from 'react-native-paper-dropdown';
 import React from 'react';
 import { useMedications } from '../hooks/useMedications';
 import { ProgressIndicator } from './ProgressIndicator';
+import { db } from '../firebase';
 
 export function MedicationsDropdown({
     setValue,
@@ -11,10 +11,9 @@ export function MedicationsDropdown({
     setValue: (_: string) => void;
     value: string;
 }) {
-    const uid = useAuthentication().user?.uid || '';
     const [visible, setVisible] = React.useState(false);
 
-    const { isLoading, medications } = useMedications(uid);
+    const { isLoading, medications } = useMedications(db);
 
     return isLoading ? (
         <ProgressIndicator />

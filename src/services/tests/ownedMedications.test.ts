@@ -9,6 +9,7 @@ import {
     getUserOwnedMedications,
 } from '../ownedMedication';
 import { MedicationRecordForm } from '../../model/medicationRecord';
+import { OwnedMedicationData } from '../../model/ownedMedication';
 
 const app = initializeApp(firebaseConfig);
 
@@ -41,13 +42,11 @@ test('createOwnedMedication and getOwnedMedications: should create and get owned
     const medicationForm = MedicationRecordForm.TABLET;
     const stock = 10;
 
-    const id = await createOwnedMedication(
-        db,
-        uid,
+    const id = await createOwnedMedication(db, uid, {
         medicationId,
-        medicationForm,
-        stock
-    );
+        form: medicationForm,
+        stock,
+    } as OwnedMedicationData);
 
     console.log(id);
 
@@ -83,13 +82,11 @@ test('getOwnedMedication: should get owned medication', async () => {
     const medicationForm = MedicationRecordForm.TABLET;
     const stock = 10;
 
-    const id = await createOwnedMedication(
-        db,
-        uid,
+    const id = await createOwnedMedication(db, uid, {
         medicationId,
-        medicationForm,
-        stock
-    );
+        form: medicationForm,
+        stock,
+    } as OwnedMedicationData);
 
     console.log(id);
 
