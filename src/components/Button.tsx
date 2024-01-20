@@ -15,7 +15,7 @@ const MODE = 'contained';
 const styles = StyleSheet.create({
     button: {
         borderRadius: 10,
-        width: '100%',
+        // width: '100%',
     },
 });
 
