@@ -29,158 +29,35 @@ Date.prototype.addHours = function (h: number) {
 const INTERVAL = 4; // 4 hours
 const START_DATE = new Date();
 
+const getPathToPersonalMed = (uid: string, medId: string) => {
+    return `users/${uid}/ownedMedications/${medId}`;
+};
+
+// TODO corrigir os ids
 const RECORDS: MedicationRecord[] = [
     {
-        name: 'Fluoxetine',
+        name: 'Paracetamol + Caffeine',
+        ownedMedicationRef: getPathToPersonalMed(
+            userId,
+            'U2DLymP1OcHmJVbzBb0A'
+        ),
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
-        units: 3,
+        units: 1,
         missed: true,
         scheduledTime: START_DATE,
     },
     {
-        name: 'Paracetamol',
-        dosage: '500mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: START_DATE,
-    },
-    {
-        name: 'Loratadine',
-        dosage: '10mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: START_DATE,
-    },
-    {
-        name: 'Cetirizine',
-        dosage: '100mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: START_DATE,
-    },
-    {
-        name: 'Ibuprofen',
-        dosage: '100mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: START_DATE,
-    },
-    {
-        name: 'Aspirin',
-        dosage: '100mg',
-        form: MedicationRecordForm.FOAM,
-        units: 1,
-        missed: false,
-        scheduledTime: START_DATE,
-    },
-    {
-        name: 'Benadryl',
-        dosage: '100mg',
-        form: MedicationRecordForm.PASTE,
-        units: 1,
-        missed: false,
-        scheduledTime: START_DATE,
-    },
-    {
-        name: 'Ifresh',
-        dosage: '100mg',
-        form: MedicationRecordForm.DROPS,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2023-12-25T23:50:00'),
-    },
-    {
-        name: 'Fluoxetine',
+        name: 'Brufen',
+        ownedMedicationRef: getPathToPersonalMed(
+            userId,
+            'Vq6SYbRIep0BxlYQkGIJ'
+        ),
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
-        units: 3,
-        missed: true,
-        scheduledTime: new Date('2023-12-26T08:00:00'),
-    },
-    {
-        name: 'Paracetamol',
-        dosage: '500mg',
-        form: MedicationRecordForm.TABLET,
         units: 1,
         missed: false,
-        scheduledTime: new Date('2023-12-26T12:00:00'),
-    },
-    {
-        name: 'Diphenhydramine',
-        dosage: '100mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2023-12-26T22:00:00'),
-    },
-    {
-        name: 'Benadryl',
-        dosage: '10mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2023-12-26T23:45:00'),
-    },
-    {
-        name: 'Ifresh',
-        dosage: '100mg',
-        form: MedicationRecordForm.DROPS,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2023-12-26T23:50:00'),
-    },
-    {
-        name: 'Diazepam',
-        dosage: '500mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2023-12-27T12:00:00'),
-    },
-    {
-        name: 'Ibuprofen',
-        dosage: '500mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2023-12-28T12:00:00'),
-    },
-    {
-        name: 'Paracetamol',
-        dosage: '400mg',
-        form: MedicationRecordForm.TABLET,
-        units: 3,
-        missed: true,
-        scheduledTime: new Date('2023-12-30T08:00:00'),
-    },
-    {
-        name: 'Levothyroxine',
-        dosage: '50mcg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2024-01-02T08:30:00'),
-    },
-    {
-        name: 'Buscopan',
-        dosage: '10mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2024-01-02T12:00:00'),
-    },
-    {
-        name: 'Iron',
-        dosage: '100mg',
-        form: MedicationRecordForm.TABLET,
-        units: 1,
-        missed: false,
-        scheduledTime: new Date('2024-01-02T12:00:00'),
+        scheduledTime: START_DATE,
     },
 ];
 

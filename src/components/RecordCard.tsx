@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, useTheme } from 'react-native-paper';
+import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MedicationRecord } from '../model/medicationRecord';
 import { MedicationIcon } from './MedicationIcon';
@@ -33,11 +33,7 @@ export const RecordCard = ({
 
     const subtitle = `${form}, ${dosage}`;
 
-    const takenText = missed ? 'Not taken' : 'Taken';
-
     const onPressRecord = () => {
-        //FIXME: the id cannot be null
-        // id has to be defined in order to navigate to the record
         if (id == null) {
             return;
         }
@@ -48,24 +44,23 @@ export const RecordCard = ({
     return (
         <TouchableOpacity onPress={onPressRecord} style={style}>
             <MedicationIcon form={form} />
-            <View style={styles.innerStyle}>
-                <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.onSurface }}
-                >
-                    {title}
-                </Text>
+            <View style={styles.containerStyle}>
+                <View style={styles.titleStyle}>
+                    <Text
+                        variant="bodyLarge"
+                        style={{ color: theme.colors.onSurface }}
+                    >
+                        {title}
+                    </Text>
+                    {missed !== null && !missed && (
+                        <Icon size={20} source="check-all" />
+                    )}
+                </View>
                 <Text
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
                     {subtitle}
-                </Text>
-                <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.error }}
-                >
-                    {takenText}
                 </Text>
             </View>
         </TouchableOpacity>
@@ -77,17 +72,22 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        gap: 10,
+        gap: 15,
         alignItems: 'center',
         borderRadius: 5,
         padding: 12,
         borderStyle: 'solid',
         borderWidth: 1,
-        // borderColor: 'rgba(0,0,0,0.15)',
     },
-    innerStyle: {
+    containerStyle: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
+        gap: 4,
+    },
+    titleStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 10,
     },
 });

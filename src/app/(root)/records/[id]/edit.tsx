@@ -34,6 +34,7 @@ export default function EditRecordScreen() {
             form: MedicationRecordForm.TABLET,
             missed: false,
             scheduledTime: record?.scheduledTime || new Date(),
+            ownedMedicationRef: '', // TODO
         };
 
         updateRecord(newRecord);
