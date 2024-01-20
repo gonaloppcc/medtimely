@@ -11,7 +11,7 @@ import { useAuthentication } from '../../../hooks/useAuthentication';
 
 export default function GroupsScreen() {
     const { user } = useAuthentication();
-    const { isSuccess, isLoading, groups } = useGroups(user?.uid ?? ''); // TODO: Replace with user's token
+    const { isSuccess, isLoading, groups } = useGroups(user?.uid ?? '');
 
     const onPressGroup = (id: string) => {
         router.push({ pathname: ROUTE.GROUPS.BY_ID, params: { id } });
