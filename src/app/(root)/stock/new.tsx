@@ -91,7 +91,7 @@ function SelectMedication({
         <Button
             icon="magnify"
             mode="contained"
-            style={{ alignSelf: 'center' }}
+            style={{ alignSelf: 'center', borderRadius: 5 }}
             onPress={searchMedicationAction}
         >
             Search for a medication
@@ -124,95 +124,101 @@ export default function NewStockScreen() {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.form}>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={schema}
-                onSubmit={onSubmit}
-            >
-                {({
-                    handleChange,
-                    handleSubmit,
-                    handleBlur,
-                    values,
-                    errors,
-                    touched,
-                }) => (
-                    <>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={schema}
+            onSubmit={onSubmit}
+        >
+            {({
+                handleChange,
+                handleSubmit,
+                handleBlur,
+                values,
+                errors,
+                touched,
+            }) => (
+                <ScrollView contentContainerStyle={styles.form}>
+                    <Text variant="headlineMedium">
+                        Add a new medication to your stock
+                    </Text>
+                    <View style={styles.medicationField}>
                         <SelectMedication setDisabled={setDisabled} />
-                        <View style={styles.inputContainer}>
-                            <View style={styles.field}>
-                                <Input
-                                    id="name"
-                                    label="Name"
-                                    value={values.name}
-                                    onChangeText={handleChange('name')}
-                                    onBlur={handleBlur('name')}
-                                    disabled={disabled}
-                                />
-                                {touched.name && errors.name && (
-                                    <ErrorMessage errorMessage={errors.name} />
-                                )}
-                            </View>
-
-                            <View style={styles.field}>
-                                <Input
-                                    id="dosage"
-                                    label="Dosage"
-                                    value={values.dosage}
-                                    onChangeText={handleChange('dosage')}
-                                    onBlur={handleBlur('dosage')}
-                                    disabled={disabled}
-                                />
-
-                                {touched.dosage && errors.dosage && (
-                                    <ErrorMessage
-                                        errorMessage={errors.dosage}
-                                    />
-                                )}
-                            </View>
-
-                            <View style={styles.field}>
-                                <MedicationFormDropdown
-                                    value={values.form}
-                                    setValue={handleChange('form')}
-                                    disabled={disabled}
-                                />
-                                {touched.form && errors.form && (
-                                    <ErrorMessage errorMessage={errors.form} />
-                                )}
-                            </View>
-
-                            <View style={styles.field}>
-                                <Input
-                                    id="stock"
-                                    label="Stock"
-                                    value={values.stock}
-                                    onChangeText={handleChange('stock')}
-                                    keyboardType="numeric"
-                                    onBlur={handleBlur('stock')}
-                                />
-
-                                {touched.stock && errors.stock && (
-                                    <ErrorMessage errorMessage={errors.stock} />
-                                )}
-                            </View>
-
-                            <View style={styles.field}>
-                                <GroupPicker
-                                    value={values.groupId}
-                                    setValue={handleChange('groupId')}
-                                />
-                            </View>
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <View style={styles.field}>
+                            <Text variant="labelLarge">Name</Text>
+                            <Input
+                                id="name"
+                                label="Name"
+                                value={values.name}
+                                onChangeText={handleChange('name')}
+                                onBlur={handleBlur('name')}
+                                disabled={disabled}
+                            />
+                            {touched.name && errors.name && (
+                                <ErrorMessage errorMessage={errors.name} />
+                            )}
                         </View>
 
-                        <PrimaryButton onPress={handleSubmit}>
-                            Create
-                        </PrimaryButton>
-                    </>
-                )}
-            </Formik>
-        </ScrollView>
+                        <View style={styles.field}>
+                            <Text variant="labelLarge">Dosage</Text>
+                            <Input
+                                id="dosage"
+                                label="Dosage"
+                                value={values.dosage}
+                                onChangeText={handleChange('dosage')}
+                                onBlur={handleBlur('dosage')}
+                                disabled={disabled}
+                            />
+
+                            {touched.dosage && errors.dosage && (
+                                <ErrorMessage errorMessage={errors.dosage} />
+                            )}
+                        </View>
+
+                        <View style={styles.field}>
+                            <Text variant="labelLarge">Form</Text>
+                            <MedicationFormDropdown
+                                value={values.form}
+                                setValue={handleChange('form')}
+                                disabled={disabled}
+                            />
+                            {touched.form && errors.form && (
+                                <ErrorMessage errorMessage={errors.form} />
+                            )}
+                        </View>
+
+                        <View style={styles.field}>
+                            <Text variant="labelLarge">Stock</Text>
+                            <Input
+                                id="stock"
+                                label="Stock"
+                                value={values.stock}
+                                onChangeText={handleChange('stock')}
+                                keyboardType="numeric"
+                                onBlur={handleBlur('stock')}
+                            />
+
+                            {touched.stock && errors.stock && (
+                                <ErrorMessage errorMessage={errors.stock} />
+                            )}
+                        </View>
+
+                        <View style={styles.field}>
+                            <Text variant="labelLarge">Group</Text>
+                            <GroupPicker
+                                value={values.groupId}
+                                setValue={handleChange('groupId')}
+                            />
+                        </View>
+                    </View>
+
+                    <PrimaryButton onPress={handleSubmit} fullWidth>
+                        Create
+                    </PrimaryButton>
+                </ScrollView>
+            )}
+        </Formik>
     );
 }
 
@@ -226,6 +232,14 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: 22,
     },
+    medicationField: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: 10,
+        width: '100%',
+    },
     inputContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -236,5 +250,10 @@ const styles = StyleSheet.create({
     },
     field: {
         width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        gap: 10,
     },
 });

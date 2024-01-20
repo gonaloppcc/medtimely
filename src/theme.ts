@@ -17,15 +17,7 @@ export const { LightTheme, DarkTheme } = adaptNavigationTheme({
 
 export const themeFonts = {
     fonts: {
-        headlineLarge: {
-            fontFamily: 'Roboto Serif',
-        },
-        headlineMedium: {
-            fontFamily: 'Roboto Serif',
-        },
-        headlineSmall: {
-            fontFamily: 'Roboto Serif',
-        },
+        fontFamily: 'system',
     },
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button as PaperButton } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 import { useAppTheme } from '../theme';
 
 interface ButtonProps {
@@ -8,6 +8,7 @@ interface ButtonProps {
     onPress?: () => void;
     disabled?: boolean;
     isLoading?: boolean;
+    fullWidth?: boolean;
 }
 
 const MODE = 'contained';
@@ -15,7 +16,8 @@ const MODE = 'contained';
 const styles = StyleSheet.create({
     button: {
         borderRadius: 10,
-        // width: '100%',
+        padding: 0,
+        //width: '100%',
     },
 });
 
@@ -24,14 +26,17 @@ export const PrimaryButton = ({
     onPress,
     disabled,
     isLoading,
+    fullWidth,
 }: ButtonProps) => {
     const theme = useAppTheme();
+
     return (
         <PaperButton
             textColor={theme.colors.mainContrast}
             style={{
                 ...styles.button,
                 backgroundColor: theme.colors.main,
+                width: fullWidth ? '100%' : undefined,
             }}
             mode={MODE}
             onPress={onPress}
@@ -48,6 +53,7 @@ export const SecondaryButton = ({
     onPress,
     disabled,
     isLoading,
+    fullWidth,
 }: ButtonProps) => {
     const theme = useAppTheme();
     return (
@@ -56,6 +62,7 @@ export const SecondaryButton = ({
             style={{
                 ...styles.button,
                 backgroundColor: '#212124',
+                width: fullWidth ? '100%' : undefined,
             }}
             mode={MODE}
             onPress={onPress}
@@ -72,6 +79,7 @@ export const OutlineButton = ({
     onPress,
     disabled,
     isLoading,
+    fullWidth,
 }: ButtonProps) => {
     const theme = useAppTheme();
     return (
@@ -83,6 +91,7 @@ export const OutlineButton = ({
                 borderStyle: 'solid',
                 borderWidth: 1,
                 borderColor: theme.colors.main,
+                width: fullWidth ? '100%' : undefined,
             }}
             mode={MODE}
             onPress={onPress}
@@ -98,24 +107,12 @@ export const GhostButton = ({
     children,
     onPress,
     disabled,
-    isLoading,
-}: ButtonProps) => {
-    const theme = useAppTheme();
-    return (
-        <PaperButton
-            textColor={theme.colors.brand}
-            style={{
-                ...styles.button,
-                backgroundColor: theme.colors.surface,
-            }}
-            mode={MODE}
-            onPress={onPress}
-            disabled={disabled}
-            loading={isLoading}
-        >
-            {children}
-        </PaperButton>
-    );
+}: {
+    children: string;
+    onPress: () => void;
+    disabled?: boolean;
+}) => {
+    return <Button onPress={onPress} disabled={disabled} title={children} />;
 };
 
 export const DestructiveButton = ({
@@ -123,6 +120,7 @@ export const DestructiveButton = ({
     onPress,
     disabled,
     isLoading,
+    fullWidth,
 }: ButtonProps) => {
     const theme = useAppTheme();
     return (
@@ -131,6 +129,7 @@ export const DestructiveButton = ({
             style={{
                 ...styles.button,
                 backgroundColor: theme.colors.errorContainer,
+                width: fullWidth ? '100%' : undefined,
             }}
             mode={MODE}
             onPress={onPress}

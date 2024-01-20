@@ -37,5 +37,6 @@ export const MedicationCards = ({
 const styles = StyleSheet.create({
     scrollView: {
         rowGap: 12,
+        paddingBottom: 12,
     },
 });

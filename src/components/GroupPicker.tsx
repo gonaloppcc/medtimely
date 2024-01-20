@@ -3,14 +3,14 @@ import { useAuthentication } from '../hooks/useAuthentication';
 import { useGroups } from '../hooks/useGroups';
 import { ErrorMessage } from './ErrorMessage';
 import * as React from 'react';
-import DropDown from 'react-native-paper-dropdown';
+import { Dropdown } from './Dropdown';
 
 export function GroupPicker({
     value,
     setValue,
 }: {
     value: string;
-    setValue: (string) => void;
+    setValue: (value: string) => void;
 }) {
     const uid = useAuthentication().user?.uid || '';
     const { groups, isSuccess, isLoading, isError, error } = useGroups(uid);
@@ -28,15 +28,13 @@ export function GroupPicker({
             })
         );
         return (
-            <DropDown
-                visible={visible}
+            <Dropdown
+                isVisible={visible}
                 onDismiss={() => setVisible(false)}
-                showDropDown={() => setVisible(true)}
+                showDropdown={() => setVisible(true)}
                 value={value}
                 setValue={setValue}
                 list={totalGroups}
-                mode="outlined"
-                label="Group"
             />
         );
     }

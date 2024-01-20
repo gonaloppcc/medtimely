@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import DropDown from 'react-native-paper-dropdown';
 import { MedicationRecordForm } from '../model/medicationRecord';
+import { Dropdown } from './Dropdown';
 
 const medicationFormList = Object.values(MedicationRecordForm).map((v) => {
     return {
@@ -23,16 +23,14 @@ export function MedicationFormDropdown({
 }: MedicationFormDropdownProps) {
     const [visible, setVisible] = useState(false);
     return (
-        <DropDown
-            visible={visible}
+        <Dropdown
+            isVisible={visible}
             onDismiss={() => setVisible(false)}
-            showDropDown={() => setVisible(true)}
+            showDropdown={() => setVisible(true)}
             value={value}
             setValue={setValue}
             list={medicationFormList}
-            mode="outlined"
-            label="Form"
-            inputProps={{ disabled: disabled }}
+            isDisabled={disabled}
         />
     );
 }

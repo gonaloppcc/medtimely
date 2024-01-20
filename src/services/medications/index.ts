@@ -28,7 +28,7 @@ export const getMedications = async (
 export const getMedicationsByNameSubstring = async (
     db: Firestore,
     name: string,
-    maxDocuments: number = 10
+    maxDocuments: number = 5
 ): Promise<Medication[]> => {
     console.log(
         `getting medications filtered by name=${name} with maxDocuments=${maxDocuments}`
