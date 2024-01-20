@@ -41,10 +41,7 @@ export const RecordCards = ({
                                 record.scheduledTime
                             )}
                         </Text>
-                        <RecordCard
-                            {...record}
-                            onPress={onPressRecord}
-                        />
+                        <RecordCard {...record} onPress={onPressRecord} />
                     </View>
                 );
             })}
