@@ -5,6 +5,7 @@ import { useMedicationsByName } from '../../../hooks/useMedicationsByName';
 import { useState } from 'react';
 import { Input } from '../../../components/Input';
 import * as React from 'react';
+import { router } from 'expo-router';
 
 export default function SearchModal() {
     const [search, setSearch] = useState('');
@@ -26,7 +27,14 @@ export default function SearchModal() {
             ) : (
                 <MedicationCards
                     medications={medications}
-                    onPressMedication={() => {}}
+                    onPressMedication={(id) => {
+                        router.push({
+                            pathname: '/stock/new',
+                            params: {
+                                medicationId: id,
+                            },
+                        });
+                    }}
                 />
             )}
         </View>

@@ -13,11 +13,13 @@ const medicationFormList = Object.values(MedicationRecordForm).map((v) => {
 interface MedicationFormDropdownProps {
     value: MedicationRecordForm;
     setValue: (medication: MedicationRecordForm) => void;
+    disabled?: boolean;
 }
 
 export function MedicationFormDropdown({
     value,
     setValue,
+    disabled,
 }: MedicationFormDropdownProps) {
     const [visible, setVisible] = useState(false);
     return (
@@ -29,6 +31,8 @@ export function MedicationFormDropdown({
             setValue={setValue}
             list={medicationFormList}
             mode="outlined"
+            label="Form"
+            inputProps={{ disabled: disabled }}
         />
     );
 }
