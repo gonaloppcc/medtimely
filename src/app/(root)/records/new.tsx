@@ -41,7 +41,7 @@ const initialValues: Values = {
 
 const schema = Yup.object().shape({
     medicationId: Yup.string().required('Required'),
-    name: Yup.string().required('Required'),
+    name: Yup.string().required('Required').min(1),
     amount: Yup.number().required('Required'),
     dosage: Yup.string().required('Required'),
     form: Yup.string().required('Required'),

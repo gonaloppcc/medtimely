@@ -130,7 +130,14 @@ export default function NewStockScreen() {
                 validationSchema={schema}
                 onSubmit={onSubmit}
             >
-                {({ handleChange, handleSubmit, values, errors, touched }) => (
+                {({
+                    handleChange,
+                    handleSubmit,
+                    handleBlur,
+                    values,
+                    errors,
+                    touched,
+                }) => (
                     <>
                         <SelectMedication setDisabled={setDisabled} />
                         <View style={styles.inputContainer}>
@@ -140,6 +147,7 @@ export default function NewStockScreen() {
                                     label="Name"
                                     value={values.name}
                                     onChangeText={handleChange('name')}
+                                    onBlur={handleBlur('name')}
                                     disabled={disabled}
                                 />
                                 {touched.name && errors.name && (
@@ -153,6 +161,7 @@ export default function NewStockScreen() {
                                     label="Dosage"
                                     value={values.dosage}
                                     onChangeText={handleChange('dosage')}
+                                    onBlur={handleBlur('dosage')}
                                     disabled={disabled}
                                 />
 
@@ -181,6 +190,7 @@ export default function NewStockScreen() {
                                     value={values.stock}
                                     onChangeText={handleChange('stock')}
                                     keyboardType="numeric"
+                                    onBlur={handleBlur('stock')}
                                 />
 
                                 {touched.stock && errors.stock && (

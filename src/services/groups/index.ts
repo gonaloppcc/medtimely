@@ -55,22 +55,6 @@ export const getUserGroups = async (
             } as Group;
         })
     );
-    groupsData.push({
-        id: 'testId',
-        name: 'testName',
-        description: 'testDescription',
-        users: [
-            {
-                id: 'testUserId',
-                firstname: 'testFs',
-                lastname: 'testLs',
-                groups: [],
-            },
-        ],
-        sharedMeds: ['med1', 'med2', 'med3'],
-        treatmentPermissions: 'view',
-        hasSharedStock: true,
-    });
     return groupsData;
 };
 

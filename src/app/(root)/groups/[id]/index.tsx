@@ -1,63 +1,59 @@
 import * as React from 'react';
 
-import { Appbar, Text } from 'react-native-paper';
+import { ProgressBar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { PrimaryButton } from '../../../../components/Button';
 import { ROUTE } from '../../../../model/routes';
-import { useNavOptions } from '../../../../hooks/useNavOptions';
-
-// TODO: This is just for now, it should be replaced with data from the database
-const GROUP_INFO = {
-    groupName: 'name',
-    description: 'descr',
-    sharedMeds: ['test1', 'test2', 'test3'],
-    treatmentPermission: 'manage',
-    hasSharedStock: false,
-};
+import { useGroup } from '../../../../hooks/useGroup';
+import { ErrorMessage } from '../../../../components/ErrorMessage';
 
 export interface GroupCardProps {
     onPress: (id: string) => void;
 }
 
 export default function GroupScreen() {
-    const id = useLocalSearchParams().id || '';
-    const {
-        groupName,
-        description,
-        sharedMeds,
-        treatmentPermission,
-        hasSharedStock,
-    } = GROUP_INFO;
-
-    const headerRight = () => (
-        <Appbar.Action
-            icon="pencil"
-            //onPress={() => navigation.navigate('EditRecord')}
-        />
-    );
-
-    useNavOptions({
-        headerTitle: 'Members',
-        headerRight,
-    });
+    const id = useLocalSearchParams<{ id: string }>().id!;
+    const { isSuccess, isLoading, isError, error, group } = useGroup(id);
+    const nav = useNavigation();
+    React.useEffect(() => {
+        if (isSuccess) {
+            nav.setOptions({
+                headerTitle: group.name,
+            });
+        }
+    }, [nav, isSuccess]);
 
     const onPressMembers = () => {
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });
     };
 
-    return (
-        <View style={styles.container}>
-            <Text variant="headlineMedium">{groupName}</Text>
-            <Text variant="labelMedium">{description}</Text>
-            <Text variant="labelMedium">{sharedMeds}</Text>
-            <Text variant="labelMedium">{treatmentPermission}</Text>
-            <Text variant="labelMedium">{hasSharedStock}</Text>
-            <PrimaryButton onPress={onPressMembers}>
-                See group members{' '}
-            </PrimaryButton>
-        </View>
-    );
+    if (isLoading) {
+        return <ProgressBar />;
+    } else if (isError) {
+        return <ErrorMessage errorMessage={error.message} />;
+    } else if (isSuccess && group) {
+        const {
+            name,
+            description,
+            sharedMeds,
+            hasSharedStock,
+            treatmentPermissions,
+        } = group;
+
+        return (
+            <View style={styles.container}>
+                <Text variant="headlineMedium">{name}</Text>
+                <Text variant="labelMedium">{description}</Text>
+                <Text variant="labelMedium">{sharedMeds}</Text>
+                <Text variant="labelMedium">{treatmentPermissions}</Text>
+                <Text variant="labelMedium">{hasSharedStock}</Text>
+                <PrimaryButton onPress={onPressMembers}>
+                    See group members{' '}
+                </PrimaryButton>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
