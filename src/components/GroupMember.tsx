@@ -1,20 +1,21 @@
 import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Member } from '../model/member';
+import { User } from '../model/user';
 
-export interface GroupMemberCardProps extends Member {
+export interface GroupMemberCardProps extends User {
     onPressGroupMember: (id: string) => void;
 }
 
 export const GroupMember = ({
     id,
-    name,
+    firstname,
+    lastname,
     onPressGroupMember,
 }: GroupMemberCardProps) => {
     const theme = useTheme();
 
-    const backgroundColor = theme.colors.errorContainer;
+    const backgroundColor = theme.colors.surface;
 
     const style = {
         ...styles.container,
@@ -23,7 +24,7 @@ export const GroupMember = ({
     };
 
     const onPress = () => {
-        onPressGroupMember(id);
+        if (id) onPressGroupMember(id);
     };
 
     return (
@@ -38,7 +39,7 @@ export const GroupMember = ({
                     variant="labelLarge"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {name}
+                    {`${firstname} ${lastname}`}
                 </Text>
             </View>
         </TouchableOpacity>
@@ -56,7 +57,6 @@ const styles = StyleSheet.create({
         padding: 12,
         borderStyle: 'solid',
         borderWidth: 1,
-        // borderColor: 'rgba(0,0,0,0.15)',
     },
     innerStyle: {
         display: 'flex',

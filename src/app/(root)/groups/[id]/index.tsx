@@ -34,6 +34,7 @@ export default function GroupScreen() {
     });
 
     const { isSuccess, isLoading, isError, group } = useGroupById(id);
+    const SHOW_USERS = 5;
 
     const onPressMembers = () => {
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });
@@ -66,16 +67,28 @@ export default function GroupScreen() {
                                 </OutlineButton>
                             </View>
                             <List.Section style={styles.listGroup}>
-                                {group.users.slice(0, 5).map((user, index) => (
+                                {group.users
+                                    .slice(0, SHOW_USERS)
+                                    .map((user, index) => (
+                                        <List.Item
+                                            key={index}
+                                            title={`${user.firstname} ${user.lastname}`}
+                                            left={() => (
+                                                <List.Icon icon="account-circle" />
+                                            )}
+                                            style={styles.listItem}
+                                        />
+                                    ))}
+                                {group.users.length > SHOW_USERS && (
                                     <List.Item
-                                        key={index}
-                                        title={`${user.firstname} ${user.lastname}`}
+                                        key="others"
+                                        title={'...'}
                                         left={() => (
                                             <List.Icon icon="account-circle" />
                                         )}
                                         style={styles.listItem}
                                     />
-                                ))}
+                                )}
                             </List.Section>
                         </View>
 

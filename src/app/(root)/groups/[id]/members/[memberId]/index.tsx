@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
-import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { PrimaryButton } from '../../../../../../components/Button';
 import { useNavOptions } from '../../../../../../hooks/useNavOptions';
 import { WeekDayPicker } from '../../../../../../components/WeekDayPicker';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../../../model/routes';
+import { useMemberGroupById } from '../../../../../../hooks/useMemberGroupById';
+import { ProgressIndicator } from '../../../../../../components/ProgressIndicator';
+import { Text } from 'react-native-paper';
 
 // TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
 export default function GroupMemberScreen() {
-    const theme = useTheme();
+    const localSearchParams = useLocalSearchParams();
+    const groupId = localSearchParams.groupId as string;
+    const memberId = localSearchParams.memberId as string;
+    const { isSuccess, isLoading, isError, user } = useMemberGroupById(
+        groupId,
+        memberId
+    );
+
     const day =
         (useLocalSearchParams().day as string) || new Date().toISOString();
     const initialSelectedDay = new Date(day);
     const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
 
-    useNavOptions({
-        headerTitle: 'memberName',
-    });
+    if (isSuccess && user)
+        useNavOptions({
+            headerTitle: user.firstname,
+        });
 
     const onPressMemberMeds = () => {
         router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS });
@@ -34,22 +44,26 @@ export default function GroupMemberScreen() {
     };
 
     return (
-        <View style={styles.innerStyle}>
-            <PrimaryButton onPress={onPressMemberMeds}>
-                Records History
-            </PrimaryButton>
-            <PrimaryButton onPress={onPressMemberRecord}>Meds</PrimaryButton>
-            <Text
-                variant="labelLarge"
-                style={{ color: theme.colors.onSurface }}
-            >
-                {'Hello'}
-            </Text>
-            <WeekDayPicker
-                selectedDay={selectedDay}
-                selectDay={selectDay}
-                startDay={startDay}
-            />
+        <View style={styles.container}>
+            {isLoading && <ProgressIndicator />}
+            {isError && <Text>Something went wrong</Text>}
+            {isSuccess && user && (
+                <>
+                    <View style={styles.buttonsContainer}>
+                        <PrimaryButton onPress={onPressMemberMeds}>
+                            Records History
+                        </PrimaryButton>
+                        <PrimaryButton onPress={onPressMemberRecord}>
+                            Meds
+                        </PrimaryButton>
+                    </View>
+                    <WeekDayPicker
+                        selectedDay={selectedDay}
+                        selectDay={selectDay}
+                        startDay={startDay}
+                    />
+                </>
+            )}
         </View>
     );
 }
@@ -57,19 +71,13 @@ export default function GroupMemberScreen() {
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        flexDirection: 'row',
         justifyContent: 'flex-start',
-        gap: 10,
-        alignItems: 'center',
-        borderRadius: 5,
+        gap: 26,
         padding: 12,
-        borderStyle: 'solid',
-        borderWidth: 1,
-        // borderColor: 'rgba(0,0,0,0.15)',
     },
-    innerStyle: {
+    buttonsContainer: {
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 });

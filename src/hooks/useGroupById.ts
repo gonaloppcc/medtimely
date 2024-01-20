@@ -4,11 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Group } from '../model/group';
 import { getGroupById } from '../services/groups';
 import { db } from '../firebase';
-export interface useGroupsProps extends FetcherProps {
+export interface useGroupByIdProps extends FetcherProps {
     group: Group;
 }
 
-export const useGroupById = (groupId: string): useGroupsProps => {
+export const useGroupById = (groupId: string): useGroupByIdProps => {
     const {
         isSuccess,
         isLoading,
