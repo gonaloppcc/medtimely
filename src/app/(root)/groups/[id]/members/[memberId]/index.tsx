@@ -26,10 +26,11 @@ export default function GroupMemberScreen() {
     const initialSelectedDay = new Date(day);
     const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
 
-    if (isSuccess && user)
+    if (isSuccess && user) {
         useNavOptions({
             headerTitle: user.firstname,
         });
+    }
 
     const onPressMemberMeds = () => {
         router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS });

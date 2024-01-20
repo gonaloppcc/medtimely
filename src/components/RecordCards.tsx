@@ -19,6 +19,12 @@ export const RecordCards = ({
     onPressRecord,
 }: MedCardsProps) => {
     const theme = useTheme();
+
+    records.sort(
+        (recordA, recordB) =>
+            recordA.scheduledTime.getTime() - recordB.scheduledTime.getTime()
+    );
+
     return (
         <ScrollView
             refreshControl={
