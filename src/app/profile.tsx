@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Button, Icon, Text, Avatar } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { Button, Text, Avatar, Icon } from 'react-native-paper';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { signOut } from '../services/auth';
 import { router } from 'expo-router';
 import { ROUTE } from '../model/routes';
@@ -14,9 +14,6 @@ export default function ProfileScreen() {
     const { isSuccess, isLoading, isError, userDoc, refetch } = useUser(
         user?.uid ?? '', // TODO: Replace with user's token in the future
     );
-
-    const COLOR = '#ffffff';
-    const size = 15;
 
     const onPressHandlerLogOut = async () => {
         await signOut();
@@ -93,13 +90,19 @@ export default function ProfileScreen() {
             </View>
 
 
-            <Button onPress={onPressHandlerSettings} mode="contained">
-                <Icon size={size} source='cog' color={COLOR} />
+            <Button
+                icon="cog"
+                onPress={onPressHandlerSettings}
+                mode="contained"
+            >
                 Settings
             </Button>
 
-            <Button onPress={onPressHandlerLogOut} mode="contained">
-                <Icon size={size} source='logout' color={COLOR} />
+            <Button
+                icon="logout"
+                onPress={onPressHandlerLogOut}
+                mode="contained"
+            >
                 Logout
             </Button>
         </View>
