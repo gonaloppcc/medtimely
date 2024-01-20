@@ -91,7 +91,10 @@ export default function CreateRecordScreen() {
     });
 
     const onSubmit = async (values: Values) => {
-        const newRecord: MedicationRecord = { ...values };
+        const newRecord: MedicationRecord = {
+            ...values,
+            ownedMedicationRef: '',
+        }; // FIXME
 
         console.log('newRecord: ' + JSON.stringify(newRecord));
 

@@ -152,11 +152,15 @@ export const createRecord = async (
 
     const userRecordCollection = getUserRecordCollection(db, userId);
 
+    const ownedMedicationRef: DocumentReference = doc(
+        db,
+        record.ownedMedicationRef
+    );
     const firestoreRecord: FirestoreMedicationRecord = {
         ...record,
         day: dayjs(record.scheduledTime).format('D/M/YYYY') as Day,
         scheduledTime: Timestamp.fromDate(record.scheduledTime),
-        ownedMedicationRef: doc(db, record.ownedMedicationRef),
+        ownedMedicationRef: ownedMedicationRef,
     };
 
     try {
