@@ -21,6 +21,7 @@
         "cmd:populate-user-records": "tsx cmd/populate-user-records.ts",
         "cmd:delete-record": "tsx cmd/delete-record.ts",
         "cmd:populate-medications": "tsx cmd/populate-medications.ts",
+        "cmd:populate-owned-medications": "tsx cmd/populate-owned-medications.ts",
         "test": "jest"
     },
     "dependencies": {
