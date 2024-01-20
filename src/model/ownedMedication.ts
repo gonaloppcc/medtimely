@@ -2,8 +2,8 @@ import { Medication } from './medication';
 
 export interface OwnedMedication extends Medication {
     id: string;
-    medicationId: string;
     stock: number;
+    medicationId?: string;
 }
 
 export type OwnedMedicationData = Omit<OwnedMedication, 'id'>;

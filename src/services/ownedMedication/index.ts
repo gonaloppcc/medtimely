@@ -84,7 +84,9 @@ export const getOwnedMedication = async (
     console.log('ownedMedication', JSON.stringify(ownedMedication));
 
     // Fetch the medication document data too and merge it with the owned medication
-    const medication = await getMedication(db, ownedMedication.medicationId);
+    const medication = ownedMedication.medicationId
+        ? await getMedication(db, ownedMedication.medicationId)
+        : {};
 
     return {
         ...medication,
@@ -168,17 +170,11 @@ export const createOwnedMedication = async (
 
     const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
 
-    // If there's a medicationId, try to get that medication's data to autofill
-    if (ownedMedication.medicationId && ownedMedication.medicationId !== '') {
-        const medication = await getMedication(
-            db,
-            ownedMedication.medicationId
-        );
-
-        ownedMedication = {
-            ...medication,
-            ...ownedMedication,
-        };
+    if (
+        ownedMedication.medicationId === undefined ||
+        ownedMedication.medicationId === ''
+    ) {
+        delete ownedMedication.medicationId;
     }
 
     try {

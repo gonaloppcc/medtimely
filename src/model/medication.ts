@@ -4,9 +4,9 @@ import { MedicationRecordForm } from './medicationRecord';
 export interface Medication {
     id: string; // Código do Medicamento
     name: string; // Nome do Medicamento
-    activeSubstance: string; // Substância Ativa/DCI
     form: MedicationRecordForm; // Forma Farmacêutica
     dosage: string; // Dosagem
+    activeSubstance?: string; // Substância Ativa/DCI
     aimTitular?: string; // Titular de AIM
     commercialisation?: boolean; // Comercialização
     isGeneric?: boolean; // Genérico

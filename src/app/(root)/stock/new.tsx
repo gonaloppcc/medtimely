@@ -10,12 +10,20 @@ import { ErrorMessage } from '../../../components/ErrorMessage';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useMedication } from '../../../hooks/useMedication';
 import { MiniMedicationCard } from '../../../components/MiniMedicationCard';
+import { GroupPicker } from '../../../components/GroupPicker';
+import { PrimaryButton } from '../../../components/Button';
+import { createOwnedMedication } from '../../../services/ownedMedication';
+import { db } from '../../../firebase';
+import { useAuthentication } from '../../../hooks/useAuthentication';
+import { OwnedMedicationData } from '../../../model/ownedMedication';
 
 interface Values {
+    medicationId?: string;
     name: string;
     dosage: string;
     form: MedicationRecordForm;
     stock: string;
+    groupId: string;
 }
 
 const initialValues: Values = {
@@ -23,6 +31,8 @@ const initialValues: Values = {
     dosage: '',
     form: MedicationRecordForm.CAPSULE,
     stock: '0',
+    groupId: '',
+    medicationId: undefined,
 };
 
 const schema = Yup.object().shape({
@@ -30,6 +40,7 @@ const schema = Yup.object().shape({
     dosage: Yup.string(),
     form: Yup.string().oneOf(Object.values(MedicationRecordForm)),
     stock: Yup.number().integer().min(0),
+    groupId: Yup.string(),
 });
 
 function SelectMedication({
@@ -50,8 +61,10 @@ function SelectMedication({
             setFieldValue('name', medication.name);
             setFieldValue('form', medication.form);
             setFieldValue('dosage', medication.dosage);
+            setFieldValue('medicationId', medicationId);
             setDisabled(true);
         } else {
+            setFieldValue('medicationId', undefined);
             setDisabled(false);
         }
     }, [medication, isSuccess]);
@@ -89,10 +102,25 @@ function SelectMedication({
 export default function NewStockScreen() {
     // Create an _owned_ medication
     const [disabled, setDisabled] = useState(false);
+    const uid = useAuthentication().user?.uid || '';
 
     const onSubmit = async (values: Values) => {
-        console.log(values);
-        // todo
+        const med: OwnedMedicationData = {
+            medicationId: values.medicationId,
+            form: values.form,
+            dosage: values.dosage,
+            name: values.name,
+            stock: Number.parseInt(values.stock),
+            presentations: [],
+        };
+
+        if (values.groupId && values.groupId !== '') {
+            // TODO
+        } else {
+            // TODO: Navigate to medication page
+            await createOwnedMedication(db, uid, med);
+            router.replace('/stock');
+        }
     };
 
     return (
@@ -102,7 +130,14 @@ export default function NewStockScreen() {
                 validationSchema={schema}
                 onSubmit={onSubmit}
             >
-                {({ handleChange, values, errors, touched }) => (
+                {({
+                    handleChange,
+                    handleSubmit,
+                    handleBlur,
+                    values,
+                    errors,
+                    touched,
+                }) => (
                     <>
                         <SelectMedication setDisabled={setDisabled} />
                         <View style={styles.inputContainer}>
@@ -112,6 +147,7 @@ export default function NewStockScreen() {
                                     label="Name"
                                     value={values.name}
                                     onChangeText={handleChange('name')}
+                                    onBlur={handleBlur('name')}
                                     disabled={disabled}
                                 />
                                 {touched.name && errors.name && (
@@ -125,6 +161,7 @@ export default function NewStockScreen() {
                                     label="Dosage"
                                     value={values.dosage}
                                     onChangeText={handleChange('dosage')}
+                                    onBlur={handleBlur('dosage')}
                                     disabled={disabled}
                                 />
 
@@ -153,13 +190,25 @@ export default function NewStockScreen() {
                                     value={values.stock}
                                     onChangeText={handleChange('stock')}
                                     keyboardType="numeric"
+                                    onBlur={handleBlur('stock')}
                                 />
 
                                 {touched.stock && errors.stock && (
                                     <ErrorMessage errorMessage={errors.stock} />
                                 )}
                             </View>
+
+                            <View style={styles.field}>
+                                <GroupPicker
+                                    value={values.groupId}
+                                    setValue={handleChange('groupId')}
+                                />
+                            </View>
                         </View>
+
+                        <PrimaryButton onPress={handleSubmit}>
+                            Create
+                        </PrimaryButton>
                     </>
                 )}
             </Formik>

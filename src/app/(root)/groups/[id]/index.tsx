@@ -28,13 +28,13 @@ export default function GroupScreen() {
         />
     );
 
-    useNavOptions({
-        headerTitle: 'Members',
-        headerRight,
-    });
-
     const { isSuccess, isLoading, isError, group } = useGroupById(id);
     const SHOW_USERS = 5;
+
+    useNavOptions({
+        headerTitle: 'Group',
+        headerRight,
+    });
 
     const onPressMembers = () => {
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });

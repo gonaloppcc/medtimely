@@ -50,14 +50,14 @@ const incompleteOwnedMedications = [
 
 Promise.all(
     incompleteOwnedMedications.map(
-        async (incompleteOwned: OwnedMedicationData) => {
+        async (incompleteOwned: Partial<OwnedMedicationData>) => {
             const medication: Medication = await getMedication(
                 db,
-                incompleteOwned.medicationId
+                incompleteOwned.medicationId!
             );
-            const ownedMedicationData = {
+            const ownedMedicationData: OwnedMedicationData = {
                 ...medication,
-                ...incompleteOwned,
+                ...(incompleteOwned as OwnedMedicationData),
             };
             return await createOwnedMedication(db, userId, ownedMedicationData);
         }

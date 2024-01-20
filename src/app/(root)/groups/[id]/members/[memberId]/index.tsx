@@ -16,13 +16,13 @@ export default function GroupMemberScreen() {
     const localSearchParams = useLocalSearchParams();
     const groupId = localSearchParams.groupId as string;
     const memberId = localSearchParams.memberId as string;
+
     const { isSuccess, isLoading, isError, user } = useMemberGroupById(
         groupId,
         memberId
     );
 
-    const day =
-        (useLocalSearchParams().day as string) || new Date().toISOString();
+    const day = (localSearchParams.day as string) || new Date().toISOString();
     const initialSelectedDay = new Date(day);
     const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
 
