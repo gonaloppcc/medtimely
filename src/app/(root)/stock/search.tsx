@@ -36,21 +36,23 @@ export default function SearchModal() {
                 </View>
             </View>
 
-            {search === '' ? (
-                <Text>Search for a medication to use</Text>
-            ) : (
-                <MedicationCards
-                    medications={medications}
-                    onPressMedication={(id) => {
-                        router.push({
-                            pathname: '/stock/new',
-                            params: {
-                                medicationId: id,
-                            },
-                        });
-                    }}
-                />
-            )}
+            <View style={styles.medicationsCards}>
+                {search === '' ? (
+                    <Text>Search for a medication to use</Text>
+                ) : (
+                    <MedicationCards
+                        medications={medications}
+                        onPressMedication={(id) => {
+                            router.push({
+                                pathname: '/stock/new',
+                                params: {
+                                    medicationId: id,
+                                },
+                            });
+                        }}
+                    />
+                )}
+            </View>
         </View>
     );
 }
@@ -77,4 +79,7 @@ const styles = StyleSheet.create({
         width: '80%',
     },
     cancelContainer: {},
+    medicationsCards: {
+        width: '100%',
+    },
 });
