@@ -14,39 +14,18 @@ import { ItemPickerProp, Picker } from '../../components/Picker';
 import { Checkbox } from '../../components/Checkbox';
 import { OptionalInfo } from '../../model/user';
 import { createUserDoc } from '../../services/users';
+import {
+    physicalActivityOptionsMap,
+    pharmacyVisitsOptionsMap,
+    medicationUseOptionsMap,
+    planFollowedOptionsMap,
+    createOptionsFromMap,
+} from '../constants/surveyConstants'
 
-const physicalActivityOptions: ItemPickerProp[] = [
-    { label: 'Never', value: 'never' },
-    { label: '1-2 times per week', value: '1_2_times_per_week' },
-    { label: '3-4 times per week', value: '3_4_times_per_week' },
-    { label: '5 or more times per week', value: '5_or_more_times_per_week' },
-    { label: 'Daily', value: 'daily' },
-];
-
-const pharmacyVisitsOptions: ItemPickerProp[] = [
-    { label: 'Never', value: 'never' },
-    { label: 'Rarely (few times per year)', value: 'rarely' },
-    { label: 'Monthly', value: 'monthly' },
-    { label: 'Once a week', value: 'once_a_week' },
-    { label: 'Several times a week', value: 'several_times_a_week' },
-];
-
-const medicationUseOptions: ItemPickerProp[] = [
-    { label: 'Not Applicable', value: 'not_applicable' },
-    { label: 'Rarely (occasional use)', value: 'rarely' },
-    { label: 'As needed (when symptoms occur)', value: 'as_needed' },
-    { label: 'Regularly (as prescribed)', value: 'regularly' },
-    { label: 'Daily (multiple times per day)', value: 'daily' },
-    { label: 'Multiple medications', value: 'multiple_medications' },
-];
-
-const planFollowedOptions: ItemPickerProp[] = [
-    { label: 'Not Applicable', value: 'not_applicable' },
-    { label: 'Rarely', value: 'rarely' },
-    { label: 'Sometimes', value: 'sometimes' },
-    { label: 'Most of the time', value: 'most_of_the_time' },
-    { label: 'Always', value: 'always' },
-];
+const physicalActivityOptions: ItemPickerProp[] = createOptionsFromMap(physicalActivityOptionsMap);
+const pharmacyVisitsOptions: ItemPickerProp[] = createOptionsFromMap(pharmacyVisitsOptionsMap);
+const medicationUseOptions: ItemPickerProp[] = createOptionsFromMap( medicationUseOptionsMap);
+const planFollowedOptions: ItemPickerProp[] = createOptionsFromMap(planFollowedOptionsMap);
 
 const signupValidationSchema = Yup.object().shape({
     name: Yup.string()

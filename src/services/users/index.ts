@@ -1,4 +1,4 @@
-import { doc, Firestore, setDoc } from 'firebase/firestore';
+import { doc, Firestore, setDoc, getDoc } from 'firebase/firestore';
 import { OptionalInfo, User } from '../../model/user';
 import { ProjectError } from '../error';
 
@@ -50,5 +50,22 @@ export const createUserDoc = async (
                 userData
             )}`
         );
+    }
+};
+
+export const getUserDoc = async (db: Firestore, userId: string) => {
+    try {
+        const userDocRef = doc(db, USERS_COLLECTION_NAME, userId);
+        const userSnapshot = await getDoc(userDocRef);
+
+        if (userSnapshot.exists()) {
+            return userSnapshot.data();
+        } else {
+            console.warn(`User with id=${userId} not found`);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error getting user document: ', error);
+        throw error; 
     }
 };

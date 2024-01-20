@@ -17,6 +17,12 @@ export default function SettingsScreen() {
         <View style={styles.container}>
             <Text>Settings Screen</Text>
 
+            {/* Add logic */}
+            <Button onPress={onPressHandler} mode="contained">
+                <Icon size={size} source='logout' color={COLOR} />
+                Delete Profile
+            </Button>
+
             <Button onPress={onPressHandler} mode="contained">
                 <Icon size={size} source='logout' color={COLOR} />
                 Logout
