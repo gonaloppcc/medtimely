@@ -11,12 +11,12 @@ export const GroupCard = ({
     name,
     description,
     id,
-
+    users,
     onPress,
 }: GroupCardProps) => {
     const theme = useTheme();
 
-    const backgroundColor = theme.colors.errorContainer;
+    const backgroundColor = theme.colors.surface;
 
     const style = {
         ...styles.container,
@@ -46,7 +46,7 @@ export const GroupCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {'Number of elements'}
+                    {users.length} members
                 </Text>
                 <Text
                     variant="labelLarge"

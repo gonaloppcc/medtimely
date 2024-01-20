@@ -9,7 +9,6 @@ interface GroupProps {
 }
 
 export const GroupCards = ({ groups, onPressGroup }: GroupProps) => {
-    //TODO GroupCard taking info
     return (
         <ScrollView
             contentContainerStyle={styles.scrollView}

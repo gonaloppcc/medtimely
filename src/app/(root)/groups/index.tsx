@@ -11,7 +11,9 @@ import { useAuthentication } from '../../../hooks/useAuthentication';
 
 export default function GroupsScreen() {
     const { user } = useAuthentication();
-    const { isSuccess, isLoading, groups } = useGroups(user?.uid ?? '');
+    const { isSuccess, isLoading, isError, groups } = useGroups(
+        user?.uid ?? ''
+    );
 
     const onPressGroup = (id: string) => {
         router.push({ pathname: ROUTE.GROUPS.BY_ID, params: { id } });
@@ -20,8 +22,9 @@ export default function GroupsScreen() {
     return (
         <View style={styles.container}>
             <Text variant="headlineMedium">Your Groups</Text>
+            {isError && <Text>Something went wrong</Text>}
             {isLoading && <ProgressIndicator />}
-            {isSuccess && (
+            {isSuccess && groups.length > 0 && (
                 <GroupCards groups={groups} onPressGroup={onPressGroup} />
             )}
             <Link asChild href="/groups/new">

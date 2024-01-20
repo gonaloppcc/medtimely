@@ -1,73 +1,145 @@
 import * as React from 'react';
 
-import { ProgressBar, Text } from 'react-native-paper';
+import { Appbar, List, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { router, useLocalSearchParams, useNavigation } from 'expo-router';
-import { PrimaryButton } from '../../../../components/Button';
+import { router, useLocalSearchParams } from 'expo-router';
+import { OutlineButton } from '../../../../components/Button';
 import { ROUTE } from '../../../../model/routes';
-import { useGroup } from '../../../../hooks/useGroup';
-import { ErrorMessage } from '../../../../components/ErrorMessage';
+import { useNavOptions } from '../../../../hooks/useNavOptions';
+import { useGroupById } from '../../../../hooks/useGroupById';
+import { ProgressIndicator } from '../../../../components/ProgressIndicator';
 
 export interface GroupCardProps {
     onPress: (id: string) => void;
 }
 
 export default function GroupScreen() {
-    const id = useLocalSearchParams<{ id: string }>().id!;
-    const { isSuccess, isLoading, isError, error, group } = useGroup(id);
-    const nav = useNavigation();
-    React.useEffect(() => {
-        if (isSuccess) {
-            nav.setOptions({
-                headerTitle: group.name,
-            });
-        }
-    }, [nav, isSuccess]);
+    const id = useLocalSearchParams().id as string;
+
+    const headerRight = () => (
+        <Appbar.Action
+            icon="pencil"
+            onPress={() =>
+                router.push({
+                    pathname: ROUTE.GROUPS.EDIT,
+                    params: { id },
+                })
+            }
+        />
+    );
+
+    const { isSuccess, isLoading, isError, group } = useGroupById(id);
+    const SHOW_USERS = 5;
+
+    useNavOptions({
+        headerTitle: 'Group',
+        headerRight,
+    });
 
     const onPressMembers = () => {
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });
     };
 
-    if (isLoading) {
-        return <ProgressBar />;
-    } else if (isError) {
-        return <ErrorMessage errorMessage={error.message} />;
-    } else if (isSuccess && group) {
-        const {
-            name,
-            description,
-            sharedMeds,
-            hasSharedStock,
-            treatmentPermissions,
-        } = group;
+    return (
+        <View style={styles.container}>
+            {isLoading && <ProgressIndicator />}
+            {isError && <Text>Something went wrong</Text>}
+            {isSuccess && group && (
+                <>
+                    <View style={styles.titleContainer}>
+                        <Text variant="headlineMedium">{group.name}</Text>
+                        <Text variant="labelMedium">{group.description}</Text>
+                    </View>
 
-        return (
-            <View style={styles.container}>
-                <Text variant="headlineMedium">{name}</Text>
-                <Text variant="labelMedium">{description}</Text>
-                <Text variant="labelMedium">{sharedMeds}</Text>
-                <Text variant="labelMedium">{treatmentPermissions}</Text>
-                <Text variant="labelMedium">{hasSharedStock}</Text>
-                <PrimaryButton onPress={onPressMembers}>
-                    See group members{' '}
-                </PrimaryButton>
-            </View>
-        );
-    }
+                    <View style={styles.bodyContainer}>
+                        <Text variant="titleMedium">
+                            {group.sharedMeds.length} shared medications
+                        </Text>
+
+                        <View style={styles.groupContainer}>
+                            <View style={styles.groupTitle}>
+                                <Text variant="titleMedium">
+                                    {group.users.length} Members
+                                </Text>
+
+                                <OutlineButton onPress={onPressMembers}>
+                                    See all
+                                </OutlineButton>
+                            </View>
+                            <List.Section style={styles.listGroup}>
+                                {group.users
+                                    .slice(0, SHOW_USERS)
+                                    .map((user, index) => (
+                                        <List.Item
+                                            key={index}
+                                            title={`${user.firstname} ${user.lastname}`}
+                                            left={() => (
+                                                <List.Icon icon="account-circle" />
+                                            )}
+                                            style={styles.listItem}
+                                        />
+                                    ))}
+                                {group.users.length > SHOW_USERS && (
+                                    <List.Item
+                                        key="others"
+                                        title={'...'}
+                                        left={() => (
+                                            <List.Icon icon="account-circle" />
+                                        )}
+                                        style={styles.listItem}
+                                    />
+                                )}
+                            </List.Section>
+                        </View>
+
+                        {group.hasSharedStock && (
+                            <Text variant="titleMedium">
+                                The group has shared stock.
+                            </Text>
+                        )}
+                    </View>
+                </>
+            )}
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        padding: 12,
-        width: '100%',
-        height: '100%',
         display: 'flex',
-        gap: 32,
+        padding: 12,
+        gap: 26,
     },
     fab: {
         position: 'absolute',
         margin: 16,
         right: 0,
         bottom: 0,
+    },
+    titleContainer: {
+        display: 'flex',
+        gap: 4,
+    },
+    bodyContainer: {
+        display: 'flex',
+        gap: 8,
+    },
+    groupContainer: {
+        display: 'flex',
+        gap: 0,
+    },
+    groupTitle: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    listGroup: {
+        padding: 10,
+        gap: 10,
+    },
+    listItem: {
+        paddingBottom: 0,
+        paddingTop: 0,
     },
 });

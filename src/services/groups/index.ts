@@ -55,7 +55,83 @@ export const getUserGroups = async (
             } as Group;
         })
     );
+    //TODO: Remove this
+    groupsData.push({
+        id: 'testId',
+        name: 'Family',
+        description: 'Something about family blbabalbalba',
+        users: [
+            {
+                id: 'testUserId',
+                firstname: 'João',
+                lastname: 'Pedro',
+                groups: [],
+            },
+            {
+                id: 'testUserId2',
+                firstname: 'Maria',
+                lastname: 'Carolina',
+                groups: [],
+            },
+        ],
+        sharedMeds: ['med1', 'med2', 'med3'],
+        treatmentPermissions: 'view',
+        hasSharedStock: true,
+    });
     return groupsData;
+};
+
+//TODO: Change
+export const getGroupById = async (
+    db: Firestore,
+    groupId: string
+): Promise<Group> => {
+    console.log(`Fetching group with id=${groupId}`);
+
+    const group = {
+        id: 'testId',
+        name: 'Family',
+        description: 'Something about family blbabalbalba',
+        users: [
+            {
+                id: 'testUserId',
+                firstname: 'João',
+                lastname: 'Pedro',
+                groups: [],
+            },
+            {
+                id: 'testUserId2',
+                firstname: 'Maria',
+                lastname: 'Carolina',
+                groups: [],
+            },
+        ],
+        sharedMeds: ['med1', 'med2', 'med3'],
+        treatmentPermissions: 'view',
+        hasSharedStock: true,
+    } as Group;
+
+    return Promise.resolve(group);
+};
+
+//TODO: Change
+export const getMemberGroupById = async (
+    db: Firestore,
+    groupId: string,
+    userId: string
+): Promise<User> => {
+    console.log(
+        `Fetching member group with id=${userId} on groupId=${groupId}`
+    );
+
+    const user = {
+        id: 'testUserId',
+        firstname: 'João',
+        lastname: 'Pedro',
+        groups: [],
+    } as User;
+
+    return Promise.resolve(user);
 };
 
 // TODO: create getUser
