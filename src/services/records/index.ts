@@ -24,9 +24,10 @@ import { ProjectError } from '../error';
 type Day = `${number}/${number}/${number}`;
 
 interface FirestoreMedicationRecord
-    extends Omit<MedicationRecord, 'scheduledTime'> {
+    extends Omit<MedicationRecord, 'scheduledTime' | 'ownedMedicationRef'> {
     day: Day;
     scheduledTime: Timestamp;
+    ownedMedicationRef: DocumentReference;
 }
 
 const getUserRecordCollection = (db: Firestore, userId: string) => {
@@ -155,6 +156,7 @@ export const createRecord = async (
         ...record,
         day: dayjs(record.scheduledTime).format('D/M/YYYY') as Day,
         scheduledTime: Timestamp.fromDate(record.scheduledTime),
+        ownedMedicationRef: doc(db, record.ownedMedicationRef),
     };
 
     try {
@@ -230,7 +232,12 @@ const snapshotToRecord = (doc: DocumentSnapshot): MedicationRecord => {
     if (doc.exists()) {
         const data = doc.data();
         const scheduledTime = data.scheduledTime.toDate();
-        return { ...data, scheduledTime, id: doc.id } as MedicationRecord;
+        return {
+            ...data,
+            scheduledTime,
+            id: doc.id,
+            ownedMedicationRef: data.ownedMedicationRef.path,
+        } as MedicationRecord;
     } else {
         throw new Error('Document does not exist');
     }
