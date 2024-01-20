@@ -1,6 +1,6 @@
 import React from 'react';
 import { MedicationRecord } from '../model/medicationRecord';
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { RecordCard } from './RecordCard';
 import { formateDateToHoursMinutesString } from '../services/date';
 import { Text, useTheme } from 'react-native-paper';
@@ -32,7 +32,7 @@ export const RecordCards = ({
         >
             {records.map((record, index) => {
                 return (
-                    <>
+                    <View key={index}>
                         <Text
                             variant="bodyMedium"
                             style={{ color: theme.colors.onSurface }}
@@ -42,11 +42,10 @@ export const RecordCards = ({
                             )}
                         </Text>
                         <RecordCard
-                            key={index}
                             {...record}
                             onPress={onPressRecord}
                         />
-                    </>
+                    </View>
                 );
             })}
         </ScrollView>
