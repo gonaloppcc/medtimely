@@ -85,3 +85,51 @@ export const deleteUserDoc = async (
         throw error;
     }
 };
+
+
+export const partialUpdateUserDoc = async (
+    db: Firestore,
+    userId: string,
+    newData: Partial<User>
+): Promise<void> => {
+    try {
+        const userDocRef = doc(db, USERS_COLLECTION_NAME, userId);
+
+        const userSnapshot = await getDoc(userDocRef);
+
+        if (userSnapshot.exists()) {
+            const updatedUserData = {
+                ...userSnapshot.data(),
+                ...newData,
+            };
+
+            await setDoc(userDocRef, updatedUserData);
+
+            console.log(`User with ID ${userId} updated successfully.`);
+        } else {
+            console.warn(`User with ID ${userId} not found`);
+        }
+    } catch (error) {
+        console.error('Error updating user document:', error);
+        throw error;
+    }
+};
+
+
+export const updateUserDoc = async (
+    db: Firestore,
+    userId: string,
+    newData: User
+): Promise<void> => {
+    try {
+        const userDocRef = doc(db, USERS_COLLECTION_NAME, userId);
+
+        // Update the document in Firestore with the new data
+        await setDoc(userDocRef, newData);
+
+        console.log(`User with ID ${userId} updated successfully.`);
+    } catch (error) {
+        console.error('Error updating user document:', error);
+        throw error;
+    }
+};

@@ -56,7 +56,6 @@ export default function SettingsScreen() {
                 router.replace('/');
             } catch (error) {
                 console.error('Error reauthenticating user:', error);
-                // Handle the error, show a user-friendly message, or redirect the user
             }
         }
     };
