@@ -8,6 +8,7 @@ type Routes = {
     MEMBER?: string;
     MEMBER_MEDS?: string;
     MEMBER_RECORDS?: string;
+    SEARCH?: string;
 };
 
 const createRoutes = (BASE_NAME: string): Routes => ({
@@ -33,7 +34,9 @@ const SETTINGS_ROUTES: Routes = {
 
 const STOCK_ROUTES: Routes = {
     BASE_NAME: 'stock',
-    HOME: '/ownedMedication',
+    HOME: '/stock',
+    ADD: '/stock/add',
+    SEARCH: '/stock/search',
 };
 
 const PROFILE_ROUTES: Routes = {

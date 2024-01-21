@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Input } from '../../../components/Input';
 import { router } from 'expo-router';
 import { GhostButton } from '../../../components/Button';
+import { ROUTE } from '../../../model/routes';
 
 export default function SearchModal() {
     const [search, setSearch] = useState('');
@@ -27,7 +28,7 @@ export default function SearchModal() {
                     <GhostButton
                         onPress={() => {
                             router.push({
-                                pathname: '/stock/new',
+                                pathname: ROUTE.STOCK.ADD,
                             });
                         }}
                     >
@@ -44,7 +45,7 @@ export default function SearchModal() {
                         medications={medications}
                         onPressMedication={(id) => {
                             router.push({
-                                pathname: '/stock/new',
+                                pathname: ROUTE.STOCK.ADD,
                                 params: {
                                     medicationId: id,
                                 },

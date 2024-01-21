@@ -115,7 +115,7 @@ export const getUserOwnedMedications = async (
                 // full path as id
                 ownedMedication.id = doc.ref.path;
 
-                console.log('ownedMedication', JSON.stringify(ownedMedication));
+                // console.log('ownedMedication', JSON.stringify(ownedMedication));
 
                 return ownedMedication;
 
