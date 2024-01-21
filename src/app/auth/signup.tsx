@@ -20,12 +20,20 @@ import {
     medicationUseOptionsMap,
     planFollowedOptionsMap,
     createOptionsFromMap,
-} from '../../constants/surveyConstants'
+} from '../../constants/surveyConstants';
 
-const physicalActivityOptions: ItemPickerProp[] = createOptionsFromMap(physicalActivityOptionsMap);
-const pharmacyVisitsOptions: ItemPickerProp[] = createOptionsFromMap(pharmacyVisitsOptionsMap);
-const medicationUseOptions: ItemPickerProp[] = createOptionsFromMap( medicationUseOptionsMap);
-const planFollowedOptions: ItemPickerProp[] = createOptionsFromMap(planFollowedOptionsMap);
+const physicalActivityOptions: ItemPickerProp[] = createOptionsFromMap(
+    physicalActivityOptionsMap
+);
+const pharmacyVisitsOptions: ItemPickerProp[] = createOptionsFromMap(
+    pharmacyVisitsOptionsMap
+);
+const medicationUseOptions: ItemPickerProp[] = createOptionsFromMap(
+    medicationUseOptionsMap
+);
+const planFollowedOptions: ItemPickerProp[] = createOptionsFromMap(
+    planFollowedOptionsMap
+);
 
 const signupValidationSchema = Yup.object().shape({
     name: Yup.string()

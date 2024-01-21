@@ -1,18 +1,24 @@
 import * as React from 'react';
-import { Button, Text, Avatar, Icon } from 'react-native-paper';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Button, Text, Icon } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 import { signOut } from '../services/auth';
 import { router } from 'expo-router';
 import { ROUTE } from '../model/routes';
 import { useAuthentication } from '../hooks/useAuthentication';
 import { useUser } from '../hooks/useUser';
-import { getValueFromLabel, physicalActivityOptionsMap, pharmacyVisitsOptionsMap, medicationUseOptionsMap, planFollowedOptionsMap, } from './../constants/surveyConstants';
+import {
+    getValueFromLabel,
+    physicalActivityOptionsMap,
+    pharmacyVisitsOptionsMap,
+    medicationUseOptionsMap,
+    planFollowedOptionsMap,
+} from './../constants/surveyConstants';
 
 export default function ProfileScreen() {
     const { user } = useAuthentication();
 
-    const { isSuccess, isLoading, isError, userDoc, refetch } = useUser(
-        user?.uid ?? '', // TODO: Replace with user's token in the future
+    const { userDoc } = useUser(
+        user?.uid ?? '' // TODO: Replace with user's token in the future
     );
 
     const onPressHandlerLogOut = async () => {
@@ -26,7 +32,7 @@ export default function ProfileScreen() {
 
     return (
         <View style={styles.container}>
-            <Icon size={150} source='account-circle' />
+            <Icon size={150} source="account-circle" />
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}>First Name: </Text>
@@ -55,8 +61,14 @@ export default function ProfileScreen() {
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}> Medication Use: </Text>
-                {userDoc?.optionalInfo?.medicationUseFrequency !== undefined && userDoc?.optionalInfo?.medicationUseFrequency !== '' ? (
-                    <Text>{getValueFromLabel(userDoc?.optionalInfo?.medicationUseFrequency, medicationUseOptionsMap)}</Text>
+                {userDoc?.optionalInfo?.medicationUseFrequency !== undefined &&
+                userDoc?.optionalInfo?.medicationUseFrequency !== '' ? (
+                    <Text>
+                        {getValueFromLabel(
+                            userDoc?.optionalInfo?.medicationUseFrequency,
+                            medicationUseOptionsMap
+                        )}
+                    </Text>
                 ) : (
                     <Text style={styles.redText}>Not answered</Text>
                 )}
@@ -64,8 +76,14 @@ export default function ProfileScreen() {
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}> Pharmacy Visits: </Text>
-                {userDoc?.optionalInfo?.pharmacyVisitsFrequency !== undefined && userDoc?.optionalInfo?.pharmacyVisitsFrequency !== '' ? (
-                    <Text>{getValueFromLabel(userDoc?.optionalInfo?.pharmacyVisitsFrequency, pharmacyVisitsOptionsMap)}</Text>
+                {userDoc?.optionalInfo?.pharmacyVisitsFrequency !== undefined &&
+                userDoc?.optionalInfo?.pharmacyVisitsFrequency !== '' ? (
+                    <Text>
+                        {getValueFromLabel(
+                            userDoc?.optionalInfo?.pharmacyVisitsFrequency,
+                            pharmacyVisitsOptionsMap
+                        )}
+                    </Text>
                 ) : (
                     <Text style={styles.redText}>Not answered</Text>
                 )}
@@ -73,8 +91,15 @@ export default function ProfileScreen() {
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}> Physical Activity: </Text>
-                {userDoc?.optionalInfo?.physicalActivityFrequency !== undefined && userDoc?.optionalInfo?.physicalActivityFrequency !== '' ? (
-                    <Text>{getValueFromLabel(userDoc?.optionalInfo?.physicalActivityFrequency, physicalActivityOptionsMap)}</Text>
+                {userDoc?.optionalInfo?.physicalActivityFrequency !==
+                    undefined &&
+                userDoc?.optionalInfo?.physicalActivityFrequency !== '' ? (
+                    <Text>
+                        {getValueFromLabel(
+                            userDoc?.optionalInfo?.physicalActivityFrequency,
+                            physicalActivityOptionsMap
+                        )}
+                    </Text>
                 ) : (
                     <Text style={styles.redText}>Not answered</Text>
                 )}
@@ -82,13 +107,18 @@ export default function ProfileScreen() {
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}> Plan Followed: </Text>
-                {userDoc?.optionalInfo?.planFollowedFrequency !== undefined && userDoc?.optionalInfo?.planFollowedFrequency !== '' ? (
-                    <Text>{getValueFromLabel(userDoc?.optionalInfo?.planFollowedFrequency, planFollowedOptionsMap)}</Text>
+                {userDoc?.optionalInfo?.planFollowedFrequency !== undefined &&
+                userDoc?.optionalInfo?.planFollowedFrequency !== '' ? (
+                    <Text>
+                        {getValueFromLabel(
+                            userDoc?.optionalInfo?.planFollowedFrequency,
+                            planFollowedOptionsMap
+                        )}
+                    </Text>
                 ) : (
                     <Text style={styles.redText}>Not answered</Text>
                 )}
             </View>
-
 
             <Button
                 icon="cog"
@@ -112,22 +142,22 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        justifyContent: 'flex-start', 
+        justifyContent: 'flex-start',
         padding: 12,
         width: '100%',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        gap: 16, 
+        gap: 16,
     },
     labelText: {
         fontWeight: 'bold',
         fontSize: 16,
     },
     profileInfo: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     redText: {
         color: 'red',
-    }
+    },
 });

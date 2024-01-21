@@ -66,19 +66,22 @@ export const getUserDoc = async (db: Firestore, userId: string) => {
         }
     } catch (error) {
         console.error('Error getting user document: ', error);
-        throw error; 
+        throw error;
     }
 };
 
-export const deleteUserDoc = async (db: Firestore, userId: string): Promise<void> => {
+export const deleteUserDoc = async (
+    db: Firestore,
+    userId: string
+): Promise<void> => {
     try {
         const userDocRef = doc(db, USERS_COLLECTION_NAME, userId);
-        
+
         await deleteDoc(userDocRef);
 
         console.log(`User with ID ${userId} deleted successfully.`);
     } catch (error) {
         console.error('Error deleting user:', error);
-        throw error; 
+        throw error;
     }
 };

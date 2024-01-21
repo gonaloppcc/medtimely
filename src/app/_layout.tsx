@@ -40,7 +40,6 @@ export default function RootLayout() {
             <AuthenticationProvider>
                 <PaperProvider theme={theme}>
                     <ThemeProvider value={theme}>
-                        
                         <Stack>
                             <Stack.Screen
                                 name="(root)"

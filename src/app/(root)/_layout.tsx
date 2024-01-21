@@ -133,7 +133,11 @@ export default function HomeLayout() {
                     title: 'Records',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Icon source="file-document-multiple" color={color} size={24} />
+                        <Icon
+                            source="file-document-multiple"
+                            color={color}
+                            size={24}
+                        />
                     ),
                 }}
             />

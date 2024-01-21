@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import { Formik } from 'formik';
 import { loginWithEmailAndPassword } from '../../services/auth';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as Yup from 'yup';
 import { formStyle } from '../../constants/formStyle';

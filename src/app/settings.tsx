@@ -11,13 +11,6 @@ import {
 import { deleteUserDoc } from '../services/users';
 import { db } from '../firebase';
 import { router } from 'expo-router';
-import {
-    DestructiveButton,
-    GhostButton,
-    OutlineButton,
-    PrimaryButton,
-    SecondaryButton,
-} from '../components/Button';
 import { ROUTE } from '../model/routes';
 
 export default function SettingsScreen() {
@@ -30,7 +23,7 @@ export default function SettingsScreen() {
     const showModal = () => setModalVisible(true);
     const hideModal = () => {
         setModalVisible(false);
-        setPassword('-1'); 
+        setPassword('-1');
     };
 
     const onPressHandlerLogOut = async () => {
@@ -44,12 +37,15 @@ export default function SettingsScreen() {
 
     const onPressHandlerEditProfile = async () => {
         router.push(ROUTE.EDITPROFILE.BASE_NAME);
-    }
+    };
 
     const handleDeleteConfirmation = async () => {
         if (user) {
             try {
-                const credentials = EmailAuthProvider.credential(user.email!, password);
+                const credentials = EmailAuthProvider.credential(
+                    user.email!,
+                    password
+                );
 
                 await reauthenticateWithCredential(user, credentials);
 
@@ -67,7 +63,6 @@ export default function SettingsScreen() {
 
     return (
         <View style={styles.container}>
-            
             {/* TODO: Erase the buttons below when the design is ready and applied
             USE THEM INSTEAD OF THE DEFAULT BUT ADD THE ICONS*/}
             {/*
@@ -102,15 +97,27 @@ export default function SettingsScreen() {
             </DestructiveButton>
             */}
 
-            <Button icon="pencil" onPress={onPressHandlerEditProfile} mode="contained">
+            <Button
+                icon="pencil"
+                onPress={onPressHandlerEditProfile}
+                mode="contained"
+            >
                 Edit Profile
             </Button>
 
-            <Button icon="delete" onPress={onPressHandlerDelete} mode="contained">
+            <Button
+                icon="delete"
+                onPress={onPressHandlerDelete}
+                mode="contained"
+            >
                 Delete Profile
             </Button>
 
-            <Button icon="logout" onPress={onPressHandlerLogOut} mode="contained">
+            <Button
+                icon="logout"
+                onPress={onPressHandlerLogOut}
+                mode="contained"
+            >
                 Logout
             </Button>
 
@@ -137,7 +144,9 @@ export default function SettingsScreen() {
                                     onChangeText={(text) => setPassword(text)}
                                     secureTextEntry
                                 />
-                                <Button onPress={handleDeleteConfirmation}>Confirm Delete</Button>
+                                <Button onPress={handleDeleteConfirmation}>
+                                    Confirm Delete
+                                </Button>
                             </React.Fragment>
                         )}
                     </View>
@@ -160,5 +169,5 @@ const styles = StyleSheet.create({
         padding: 20,
         margin: 20,
         borderRadius: 8,
-    }
+    },
 });

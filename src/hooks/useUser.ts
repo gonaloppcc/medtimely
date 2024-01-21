@@ -31,7 +31,3 @@ export const useUser = (userId: string): useUserProps => {
         refetch,
     };
 };
-
-
-
-
