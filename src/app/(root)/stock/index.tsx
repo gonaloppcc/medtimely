@@ -32,7 +32,6 @@ export default function StockScreen() {
     );
 
     useNavOptions({
-        headerTitle: 'Group',
         headerRight,
     });
 
