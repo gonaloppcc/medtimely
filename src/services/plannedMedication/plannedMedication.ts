@@ -24,10 +24,14 @@ export const getPlannedMedications = async (
     try {
         const querySnapshot: DocumentSnapshot = await getDoc(userRef);
         if (!querySnapshot.exists()) {
+            console.log("User doesn't exist");
             throw new Error('User does not exist');
         }
         // Object type
-        const plannedMedications = querySnapshot.data().plannedMedications;
+        const plannedMedications = querySnapshot.data()?.plannedMedications;
+        if (!plannedMedications) {
+            return [];
+        }
         // console.log(
         //    plannedMedications[
         //        '/users/10wFfsLJ3KTCPsW8oTU42K5x3Xt1/ownedMedications/4USkR96NecLgHItCWxFy'
