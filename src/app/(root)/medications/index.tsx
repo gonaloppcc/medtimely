@@ -12,6 +12,7 @@ import { ROUTE } from '../../../model/routes';
 import { db } from '../../../firebase';
 import { usePlannedMedications } from '../../../hooks/usePlannedMedication';
 import { useAuthentication } from '../../../hooks/useAuthentication';
+import { EmptyPlannedMedications } from '../../../components/EmptyPlannedMedications';
 
 export default function MedicationsScreen() {
     const [selectForm, setSelectForm] = useState<MedicationRecordForm | ''>('');
@@ -64,6 +65,10 @@ export default function MedicationsScreen() {
                     medications={medicationsFiltered}
                     onPressMedication={onPressMedication}
                 />
+            )}
+
+            {isSuccess && medicationsFiltered.length == 0 && (
+                <EmptyPlannedMedications />
             )}
         </View>
     );
