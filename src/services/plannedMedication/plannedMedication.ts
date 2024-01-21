@@ -28,11 +28,11 @@ export const getPlannedMedications = async (
         }
         // Object type
         const plannedMedications = querySnapshot.data().plannedMedications;
-        //console.log(
+        // console.log(
         //    plannedMedications[
         //        '/users/10wFfsLJ3KTCPsW8oTU42K5x3Xt1/ownedMedications/4USkR96NecLgHItCWxFy'
         //    ].startDate
-        //);
+        // );
         const planned = await plannedMedicationsObjectToArray(
             db,
             uid,
