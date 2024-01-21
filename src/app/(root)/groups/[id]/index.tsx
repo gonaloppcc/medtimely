@@ -1,13 +1,17 @@
 import * as React from 'react';
 
-import { Appbar, List, Text } from 'react-native-paper';
+import { Appbar, List, Portal, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { OutlineButton } from '../../../../components/Button';
+import {
+    DestructiveButton,
+    OutlineButton,
+} from '../../../../components/Button';
 import { ROUTE } from '../../../../model/routes';
 import { useNavOptions } from '../../../../hooks/useNavOptions';
 import { useGroupById } from '../../../../hooks/useGroupById';
 import { ProgressIndicator } from '../../../../components/ProgressIndicator';
+import { Modal } from '../../../../components/Modal';
 
 export interface GroupCardProps {
     onPress: (id: string) => void;
@@ -15,6 +19,7 @@ export interface GroupCardProps {
 
 export default function GroupScreen() {
     const id = useLocalSearchParams().id as string;
+    const SHOW_USERS = 5;
 
     const headerRight = () => (
         <Appbar.Action
@@ -29,10 +34,14 @@ export default function GroupScreen() {
     );
 
     const { isSuccess, isLoading, isError, group } = useGroupById(id);
-    const SHOW_USERS = 5;
+
+    //MODAl
+    const [visible, setVisible] = React.useState(false);
+
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
 
     useNavOptions({
-        headerTitle: 'Group',
         headerRight,
     });
 
@@ -40,14 +49,37 @@ export default function GroupScreen() {
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });
     };
 
+    const deleteGroupHandler = async () => {
+        //TODO: Call function
+        //TODO: Add error msg
+    };
+
     return (
         <View style={styles.container}>
+            <Portal>
+                <Modal
+                    visible={visible}
+                    onDismiss={hideModal}
+                    onDone={deleteGroupHandler}
+                    title="Delete Group"
+                >
+                    <Text variant="bodyMedium">
+                        Are you sure you want delete group: {group.name}?
+                    </Text>
+                </Modal>
+            </Portal>
+
             {isLoading && <ProgressIndicator />}
             {isError && <Text>Something went wrong</Text>}
             {isSuccess && group && (
                 <>
                     <View style={styles.titleContainer}>
-                        <Text variant="headlineMedium">{group.name}</Text>
+                        <View style={styles.titleAndButton}>
+                            <Text variant="headlineMedium">{group.name}</Text>
+                            <DestructiveButton onPress={showModal}>
+                                Delete
+                            </DestructiveButton>
+                        </View>
                         <Text variant="labelMedium">{group.description}</Text>
                     </View>
 
@@ -57,7 +89,7 @@ export default function GroupScreen() {
                         </Text>
 
                         <View style={styles.groupContainer}>
-                            <View style={styles.groupTitle}>
+                            <View style={styles.titleAndButton}>
                                 <Text variant="titleMedium">
                                     {group.users.length} Members
                                 </Text>
@@ -128,7 +160,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         gap: 0,
     },
-    groupTitle: {
+    titleAndButton: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
