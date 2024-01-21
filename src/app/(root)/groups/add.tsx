@@ -11,6 +11,7 @@ import { db } from '../../../firebase';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { GroupData } from '../../../model/group';
 import { router } from 'expo-router';
+import { ROUTE } from '../../../model/routes';
 
 interface Values {
     name: string;
@@ -38,7 +39,7 @@ export default function GroupMemberScreen() {
             treatmentPermissions: 'manage',
         };
         const groupId = await createGroup(db, group, uid);
-        router.push({ pathname: '/groups/[id]', params: { id: groupId } });
+        router.push({ pathname: ROUTE.GROUPS.BY_ID, params: { id: groupId } });
     };
 
     return (

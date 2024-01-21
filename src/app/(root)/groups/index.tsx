@@ -1,16 +1,33 @@
 import * as React from 'react';
 
-import { FAB, Text } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { GroupCards } from '../../../components/GroupCards';
 import { useGroups } from '../../../hooks/useGroups';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
 import { useAuthentication } from '../../../hooks/useAuthentication';
+import { useNavOptions } from '../../../hooks/useNavOptions';
 
 export default function GroupsScreen() {
     const { user } = useAuthentication();
+
+    const headerRight = () => (
+        <Appbar.Action
+            icon="plus"
+            onPress={() =>
+                router.push({
+                    pathname: ROUTE.GROUPS.ADD,
+                })
+            }
+        />
+    );
+
+    useNavOptions({
+        headerRight,
+    });
+
     const { isSuccess, isLoading, isError, groups } = useGroups(
         user?.uid ?? ''
     );
@@ -27,9 +44,6 @@ export default function GroupsScreen() {
             {isSuccess && groups.length > 0 && (
                 <GroupCards groups={groups} onPressGroup={onPressGroup} />
             )}
-            <Link asChild href="/groups/new">
-                <FAB icon="plus" style={styles.fab} />
-            </Link>
         </View>
     );
 }
