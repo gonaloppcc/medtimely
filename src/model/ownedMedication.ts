@@ -15,7 +15,7 @@ export interface PlannedMedication {
 }
 
 export interface PlannedMedicationSchedule {
-    startDate: string;
-    endDate?: string;
+    startDate: Date; // datetime of first time medication is scheduled
+    endDate?: Date;
     timeBetweenDosesInHours: number;
 }
