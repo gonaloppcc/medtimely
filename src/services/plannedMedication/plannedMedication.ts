@@ -61,7 +61,57 @@ interface PlannedMedicationFirestore {
     timeBetweenDosesInHours: number;
 }
 
-// TODO convert timestamps
+const getPlannedMedicationById = async (
+    db: Firestore,
+    uid: string,
+    ownedMedicationId: string
+): Promise<PlannedMedication> => {
+    const userRef = doc(db, USERS_COLLECTION_NAME, uid);
+    try {
+        const snapshot: DocumentSnapshot = await getDoc(userRef);
+        if (!snapshot.exists()) {
+            throw new Error('User does not exist');
+        }
+        const plannedMedications: PlannedMedicationsFirestore =
+            snapshot.data()?.plannedMedications;
+        // TODO add check
+        const plannedMedication: PlannedMedicationFirestore =
+            plannedMedications[ownedMedicationId];
+        return await plannedMedicationObjectToArray(db, uid, plannedMedication);
+    } catch (e) {
+        throw new Error('Error getting planned medication');
+    }
+};
+
+const getSchedule = (
+    plannedMedicationObj: PlannedMedicationFirestore
+): PlannedMedicationSchedule => {
+    const schedule: PlannedMedicationSchedule = {
+        startDate: plannedMedicationObj.startDate.toDate(),
+        endDate: plannedMedicationObj.endDate?.toDate(),
+        timeBetweenDosesInHours: plannedMedicationObj.timeBetweenDosesInHours,
+    };
+    return schedule;
+};
+
+const plannedMedicationObjectToArray = async (
+    db: Firestore,
+    uid: string,
+    ownedMedicationId: string,
+    plannedMedicationObj: PlannedMedicationFirestore
+): Promise<PlannedMedication> => {
+    const ownedMedication: OwnedMedication = await getOwnedMedication(
+        db,
+        uid,
+        ownedMedicationId
+    );
+    const plannedMedication: PlannedMedication = {
+        ownedMedication: ownedMedication,
+        doseToBeTaken: plannedMedicationObj.doseToBeTaken,
+        schedule: getSchedule(plannedMedicationObj),
+    };
+    return plannedMedication;
+};
 
 const plannedMedicationsObjectToArray = async (
     db: Firestore,
@@ -74,28 +124,15 @@ const plannedMedicationsObjectToArray = async (
         plannedMedications
     )) {
         // key is OwnedMedication id and is used to fetch the OwnedMedication
-        const ownedMedication: OwnedMedication = await getOwnedMedication(
-            db,
-            uid,
-            ownedMedicationId
-        );
-        const plannedMedication: PlannedMedication = {
-            ownedMedication: ownedMedication,
-            doseToBeTaken: plannedMedicationObj.doseToBeTaken,
-            schedule: getSchedule(plannedMedicationObj),
-        };
+        const plannedMedication: PlannedMedication =
+            await plannedMedicationObjectToArray(
+                db,
+                uid,
+                ownedMedicationId,
+                plannedMedicationObj
+            );
+
         plannedMedicationsArray.push(plannedMedication);
     }
     return plannedMedicationsArray;
-};
-
-const getSchedule = (
-    plannedMedicationObj: PlannedMedicationFirestore
-): PlannedMedicationSchedule => {
-    const schedule: PlannedMedicationSchedule = {
-        startDate: plannedMedicationObj.startDate.toDate(),
-        endDate: plannedMedicationObj.endDate?.toDate(),
-        timeBetweenDosesInHours: plannedMedicationObj.timeBetweenDosesInHours,
-    };
-    return schedule;
 };
