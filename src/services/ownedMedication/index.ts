@@ -42,6 +42,7 @@ const getUserOwnedMedicationCollection = (db: Firestore, uid: string) => {
     );
 };
 
+// ownedMedicationId is a full document reference path!!
 export const getOwnedMedication = async (
     db: Firestore,
     uid: string,
@@ -51,12 +52,7 @@ export const getOwnedMedication = async (
         `Fetching stock for user with id=${uid} and ownedMedicationId=${ownedMedicationId}`
     );
 
-    const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
-
-    const ownedMedicationDoc = doc(
-        ownedMedicationCollection,
-        ownedMedicationId
-    );
+    const ownedMedicationDoc = doc(db, ownedMedicationId);
 
     let docSnapshot: DocumentSnapshot;
 
@@ -79,7 +75,7 @@ export const getOwnedMedication = async (
 
     const ownedMedication = docSnapshot.data() as OwnedMedication;
 
-    ownedMedication.id = docSnapshot.id;
+    ownedMedication.id = docSnapshot.ref.path;
 
     console.log('ownedMedication', JSON.stringify(ownedMedication));
 
@@ -116,7 +112,8 @@ export const getUserOwnedMedications = async (
             querySnapshot.docs.map(async (doc) => {
                 const ownedMedication = doc.data() as OwnedMedication;
 
-                ownedMedication.id = doc.id;
+                // full path as id
+                ownedMedication.id = doc.ref.path;
 
                 console.log('ownedMedication', JSON.stringify(ownedMedication));
 
@@ -180,9 +177,9 @@ export const createOwnedMedication = async (
     try {
         const docRef = await addDoc(ownedMedicationCollection, ownedMedication);
 
-        console.log(`created record with id=${docRef.id}`);
+        console.log(`created ownedMedication with id=${docRef.id}`);
 
-        return docRef.id;
+        return docRef.path;
     } catch (err) {
         console.error('Error creating document: ', err);
         throw new ProjectError(
@@ -212,6 +209,7 @@ export const updateOwnedMedication = async (
     });
 };
 
+// TODO check if id should be full path
 export const deleteOwnedMedication = async (
     db: Firestore,
     uid: string,
@@ -221,12 +219,14 @@ export const deleteOwnedMedication = async (
         `Deleting owned medication for user with id=${uid} and ownedMedicationId=${ownedMedicationId}`
     );
 
-    const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
+    //const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
 
-    const ownedMedicationDoc = doc(
-        ownedMedicationCollection,
-        ownedMedicationId
-    );
+    //const ownedMedicationDoc = doc(
+    //    ownedMedicationCollection,
+    //    ownedMedicationId
+    //);
+    // If id is full path
+    const ownedMedicationDoc = doc(db, ownedMedicationId);
 
     try {
         await deleteDoc(ownedMedicationDoc);
