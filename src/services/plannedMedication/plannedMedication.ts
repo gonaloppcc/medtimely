@@ -61,7 +61,7 @@ interface PlannedMedicationFirestore {
     timeBetweenDosesInHours: number;
 }
 
-const getPlannedMedicationById = async (
+export const getPlannedMedicationById = async (
     db: Firestore,
     uid: string,
     ownedMedicationId: string
@@ -77,7 +77,12 @@ const getPlannedMedicationById = async (
         // TODO add check
         const plannedMedication: PlannedMedicationFirestore =
             plannedMedications[ownedMedicationId];
-        return await plannedMedicationObjectToArray(db, uid, plannedMedication);
+        return await plannedMedicationObjectToArray(
+            db,
+            uid,
+            ownedMedicationId,
+            plannedMedication
+        );
     } catch (e) {
         throw new Error('Error getting planned medication');
     }
