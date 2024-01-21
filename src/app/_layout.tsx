@@ -58,6 +58,10 @@ export default function RootLayout() {
                                 name="profile"
                                 options={{ headerTitle: 'Profile' }}
                             />
+                            <Stack.Screen
+                                name="editProfile"
+                                options={{ headerTitle: 'Edit Profile' }}
+                            />
                         </Stack>
                     </ThemeProvider>
                 </PaperProvider>

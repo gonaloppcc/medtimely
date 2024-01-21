@@ -6,7 +6,7 @@ import { router } from 'expo-router';
 import { ROUTE } from '../model/routes';
 import { useAuthentication } from '../hooks/useAuthentication';
 import { useUser } from '../hooks/useUser';
-import { getValueFromLabel, physicalActivityOptionsMap, pharmacyVisitsOptionsMap, medicationUseOptionsMap, planFollowedOptionsMap, } from './constants/surveyConstants';
+import { getValueFromLabel, physicalActivityOptionsMap, pharmacyVisitsOptionsMap, medicationUseOptionsMap, planFollowedOptionsMap, } from './../constants/surveyConstants';
 
 export default function ProfileScreen() {
     const { user } = useAuthentication();

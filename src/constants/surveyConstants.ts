@@ -1,4 +1,4 @@
-import { ItemPickerProp } from "../../components/Picker";
+import { ItemPickerProp } from "../components/Picker";
 
 export const physicalActivityOptionsMap = { 
     'Never': 'never',

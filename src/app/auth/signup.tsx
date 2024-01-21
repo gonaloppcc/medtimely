@@ -5,7 +5,7 @@ import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import { useFormik } from 'formik';
 import { createUserWithEmailAndPassword } from '../../services/auth';
 import { ScrollView, View } from 'react-native';
-import { formStyle } from './signin';
+import { formStyle } from '../../constants/formStyle';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { getAuth, updateProfile } from 'firebase/auth';
@@ -20,7 +20,7 @@ import {
     medicationUseOptionsMap,
     planFollowedOptionsMap,
     createOptionsFromMap,
-} from '../constants/surveyConstants'
+} from '../../constants/surveyConstants'
 
 const physicalActivityOptions: ItemPickerProp[] = createOptionsFromMap(physicalActivityOptionsMap);
 const pharmacyVisitsOptions: ItemPickerProp[] = createOptionsFromMap(pharmacyVisitsOptionsMap);
@@ -82,12 +82,6 @@ export default function SignUpScreen() {
     const jobTextInput = React.useRef(null);
     const heightTextInput = React.useRef(null);
     const weightTextInput = React.useRef(null);
-    /*
-    const pharmacyVisitsFrequencyTextInput =  React.useRef(null);
-    const medicationUseFrequencyTextInput =  React.useRef(null);
-    const planFollowedFrequencyTextInput =  React.useRef(null);
-    const physicalActivityFrequencyTextInput =  React.useRef(null);
-    */
     const [submitErrorMessage, setSubmitErrorMessage] =
         React.useState<string>('');
 

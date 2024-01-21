@@ -1,4 +1,4 @@
-import { doc, Firestore, setDoc, getDoc } from 'firebase/firestore';
+import { doc, Firestore, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { OptionalInfo, User } from '../../model/user';
 import { ProjectError } from '../error';
 
@@ -66,6 +66,19 @@ export const getUserDoc = async (db: Firestore, userId: string) => {
         }
     } catch (error) {
         console.error('Error getting user document: ', error);
+        throw error; 
+    }
+};
+
+export const deleteUserDoc = async (db: Firestore, userId: string): Promise<void> => {
+    try {
+        const userDocRef = doc(db, USERS_COLLECTION_NAME, userId);
+        
+        await deleteDoc(userDocRef);
+
+        console.log(`User with ID ${userId} deleted successfully.`);
+    } catch (error) {
+        console.error('Error deleting user:', error);
         throw error; 
     }
 };

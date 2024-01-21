@@ -5,17 +5,7 @@ import { loginWithEmailAndPassword } from '../../services/auth';
 import { StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as Yup from 'yup';
-
-// FIXME: Should be in a separate file
-export const formStyle = StyleSheet.create({
-    formStyle: {
-        display: 'flex',
-        width: '100%',
-        // alignItems: 'center',
-        justifyContent: 'center',
-        rowGap: 16,
-    },
-});
+import { formStyle } from '../../constants/formStyle';
 
 const loginValidationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),

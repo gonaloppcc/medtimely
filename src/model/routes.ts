@@ -41,6 +41,11 @@ const PROFILE_ROUTES: Routes = {
     HOME: '/profile',
 };
 
+const EDIT_PROFILE_ROUTES: Routes = {
+    BASE_NAME: 'editProfile',
+    HOME: '/editProfile',
+};
+
 export const ROUTE = {
     GROUPS: GROUPS_ROUTES,
     MEDICATIONS: MEDICATIONS_ROUTES,
@@ -48,4 +53,5 @@ export const ROUTE = {
     SETTINGS: SETTINGS_ROUTES,
     STOCK: STOCK_ROUTES,
     PROFILE: PROFILE_ROUTES,
+    EDITPROFILE : EDIT_PROFILE_ROUTES
 };
