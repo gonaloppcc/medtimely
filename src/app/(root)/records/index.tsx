@@ -1,16 +1,33 @@
 import * as React from 'react';
 
-import { FAB, Text } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { Link } from 'expo-router';
+import { router } from 'expo-router';
+import { useNavOptions } from '../../../hooks/useNavOptions';
+import { ROUTE } from '../../../model/routes';
 
 export default function RecordsScreen() {
+    const headerRight = () => (
+        <Appbar.Action
+            icon="plus"
+            onPress={() =>
+                router.push({
+                    pathname: ROUTE.RECORDS.ADD,
+                })
+            }
+        />
+    );
+
+    useNavOptions({
+        headerRight,
+    });
+
     return (
         <View style={styles.container}>
             <Text>Records Screen</Text>
-            <Link asChild href="/records/new">
+            {/* <Link asChild href={ROUTE.RECORDS.ADD}>
                 <FAB icon="plus" style={styles.fab} />
-            </Link>
+            </Link> */}
         </View>
     );
 }

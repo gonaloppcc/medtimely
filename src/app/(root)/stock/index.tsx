@@ -9,8 +9,10 @@ import { useGroups } from '../../../hooks/useGroups';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { useStock } from '../../../hooks/useStock';
 import { ErrorMessage } from '../../../components/ErrorMessage';
-import { Link } from 'expo-router';
-import { FAB } from 'react-native-paper';
+import { router } from 'expo-router';
+import { Appbar } from 'react-native-paper';
+import { useNavOptions } from '../../../hooks/useNavOptions';
+import { ROUTE } from '../../../model/routes';
 
 const PERSONAL_VALUE = 'Personal';
 
@@ -18,9 +20,23 @@ export default function StockScreen() {
     const [stockFilterSelected, setStockFilterSelected] =
         useState(PERSONAL_VALUE);
 
-    console.log('stockFilterSelected', stockFilterSelected);
+    const headerRight = () => (
+        <Appbar.Action
+            icon="plus"
+            onPress={() =>
+                router.push({
+                    pathname: ROUTE.STOCK.ADD,
+                })
+            }
+        />
+    );
+
+    useNavOptions({
+        headerRight,
+    });
 
     const uid = useAuthentication().user?.uid ?? '';
+
     const {
         isLoading: isLoadingGroups,
         isError: isErrorGroups,
@@ -77,10 +93,6 @@ export default function StockScreen() {
             {isSuccess && ownedMedications && ownedMedications.length == 0 && (
                 <EmptyStockMsg />
             )}
-
-            <Link asChild href="/stock/new">
-                <FAB icon="plus" style={styles.fab} />
-            </Link>
         </View>
     );
 }

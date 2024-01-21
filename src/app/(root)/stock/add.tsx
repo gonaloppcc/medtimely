@@ -16,6 +16,7 @@ import { createOwnedMedication } from '../../../services/ownedMedication';
 import { db } from '../../../firebase';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { OwnedMedicationData } from '../../../model/ownedMedication';
+import { ROUTE } from '../../../model/routes';
 
 interface Values {
     medicationId?: string;
@@ -53,7 +54,9 @@ function SelectMedication({
     const { setFieldValue } = useFormikContext();
 
     const searchMedicationAction = () => {
-        router.push('/stock/search');
+        router.push({
+            pathname: ROUTE.STOCK.SEARCH,
+        });
     };
 
     useEffect(() => {
