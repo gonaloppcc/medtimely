@@ -2,8 +2,8 @@ import { Medication } from './medication';
 
 export interface OwnedMedication extends Medication {
     id: string;
-    medicationId: string;
     stock: number;
+    medicationId?: string;
 }
 
 export type OwnedMedicationData = Omit<OwnedMedication, 'id'>;
@@ -13,8 +13,10 @@ export interface PlannedMedication {
     ownedMedication: OwnedMedication;
     doseToBeTaken: number;
     schedule: PlannedMedicationSchedule;
+    records: boolean[];
 }
 
 export interface PlannedMedicationSchedule {
-    timeEachDay: string; // FIXME: Is this the right type?
+    startDate: string;
+    timeBetweenDosesInHours: number;
 }

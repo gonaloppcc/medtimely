@@ -1,7 +1,9 @@
 import React from 'react';
 import { MedicationRecord } from '../model/medicationRecord';
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { RecordCard } from './RecordCard';
+import { formateDateToHoursMinutesString } from '../services/date';
+import { Text, useTheme } from 'react-native-paper';
 
 interface MedCardsProps {
     records: MedicationRecord[];
@@ -16,6 +18,13 @@ export const RecordCards = ({
     onRefresh,
     onPressRecord,
 }: MedCardsProps) => {
+    const theme = useTheme();
+
+    records.sort(
+        (recordA, recordB) =>
+            recordA.scheduledTime.getTime() - recordB.scheduledTime.getTime()
+    );
+
     return (
         <ScrollView
             refreshControl={
@@ -29,11 +38,17 @@ export const RecordCards = ({
         >
             {records.map((record, index) => {
                 return (
-                    <RecordCard
-                        key={index}
-                        {...record}
-                        onPress={onPressRecord}
-                    />
+                    <View key={index}>
+                        <Text
+                            variant="bodyMedium"
+                            style={{ color: theme.colors.onSurface }}
+                        >
+                            {formateDateToHoursMinutesString(
+                                record.scheduledTime
+                            )}
+                        </Text>
+                        <RecordCard {...record} onPress={onPressRecord} />
+                    </View>
                 );
             })}
         </ScrollView>

@@ -1,5 +1,4 @@
 import { Medication, MedicationData } from '../../model/medication';
-import { MedicationRecordForm } from '../../model/medicationRecord';
 import {
     addDoc,
     collection,
@@ -15,155 +14,21 @@ import {
 } from 'firebase/firestore';
 import { ProjectError } from '../error';
 
-const MEDICATIONS: Medication[] = [
-    {
-        id: '1',
-        name: 'Brufenon',
-        activeSubstance: 'Ibuprofen + Paracetamol',
-        dosage: '200 mg + 500 mg',
-        form: MedicationRecordForm.TABLET,
-        administration: 'Oral use',
-        isGeneric: true,
-        presentations: [
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 20,
-                },
-                safetyFeatures: false,
-            },
-        ],
-    },
-    {
-        id: '2',
-        name: 'Vipidia',
-        activeSubstance: 'alogliptin',
-        form: MedicationRecordForm.TABLET,
-        dosage: '12.5 mg',
-        aimTitular: 'Takeda Pharma A/S',
-        commercialisation: true,
-        isGeneric: false,
-        administration: 'Oral use',
-        presentations: [
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 14,
-                    pvp: 9.97,
-                    maxPrice: 10.44,
-                },
-                safetyFeatures: true,
-            },
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 28,
-                    pvp: 19.84,
-                    maxPrice: 19.84,
-                },
-                safetyFeatures: true,
-            },
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 56,
-                    isNotMarketed: true,
-                },
-                safetyFeatures: true,
-            },
-        ],
-    },
-    {
-        id: '3',
-        name: 'Vipidia',
-        activeSubstance: 'alogliptin',
-        form: MedicationRecordForm.TABLET,
-        dosage: '25 mg',
-        aimTitular: 'Takeda Pharma A/S',
-        commercialisation: true,
-        isGeneric: false,
-        administration: 'Oral use',
-        presentations: [
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 14,
-                    pvp: 9.97,
-                    maxPrice: 10.44,
-                },
-                safetyFeatures: true,
-            },
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 28,
-                    pvp: 19.84,
-                    maxPrice: 19.84,
-                },
-                safetyFeatures: true,
-            },
-            {
-                storageConditions: {
-                    presentationType: 'Unopened',
-                    shelfLife: 4 * 12, // 4 years
-                    temperature: null,
-                    conditions: null,
-                },
-                pricing: {
-                    units: 56,
-                    isNotMarketed: true,
-                },
-                safetyFeatures: true,
-            },
-        ],
-    },
-];
-
 const MEDICATIONS_COLLECTION_NAME = 'medications';
 
-export const getMedications = async (token: string): Promise<Medication[]> => {
-    console.log(`getting medications with token ${token}`);
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(MEDICATIONS);
-        }, 1000);
-    });
+export const getMedications = async (
+    db: Firestore,
+    maxDocuments: number = 10
+): Promise<Medication[]> => {
+    console.log(`getting medications`);
+
+    return await getMedicationsByNameSubstring(db, '', maxDocuments);
 };
 
 export const getMedicationsByNameSubstring = async (
     db: Firestore,
     name: string,
-    maxDocuments: number = 10
+    maxDocuments: number = 5
 ): Promise<Medication[]> => {
     console.log(
         `getting medications filtered by name=${name} with maxDocuments=${maxDocuments}`

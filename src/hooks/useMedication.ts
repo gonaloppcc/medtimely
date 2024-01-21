@@ -5,11 +5,11 @@ import { Medication } from '../model/medication';
 import { getMedication } from '../services/medications';
 import { db } from '../firebase';
 
-export interface useMedicationsProps extends FetcherProps {
+export interface useMedicationProps extends FetcherProps {
     medication: Medication | null;
 }
 
-export const useMedication = (medicationId: string): useMedicationsProps => {
+export const useMedication = (medicationId?: string): useMedicationProps => {
     const {
         isSuccess,
         isLoading,
@@ -19,7 +19,10 @@ export const useMedication = (medicationId: string): useMedicationsProps => {
         refetch,
     } = useQuery({
         queryKey: ['medication', medicationId],
-        queryFn: () => getMedication(db, medicationId),
+        queryFn: async () => {
+            if (medicationId) return await getMedication(db, medicationId);
+            return null;
+        },
     });
 
     return {

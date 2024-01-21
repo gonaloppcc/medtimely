@@ -7,11 +7,11 @@ import {
     MedicationRecordForm,
 } from '../../../model/medicationRecord';
 import { Input } from '../../../components/Input';
-import { Button } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/Button';
 import { useFormik } from 'formik';
 import { useAppTheme } from '../../../theme';
 import * as Yup from 'yup';
-import { ErrorMessage } from '../../../hooks/ErrorMessage';
+import { ErrorMessage } from '../../../components/ErrorMessage';
 import { Switch } from '../../../components/Switch';
 import { ItemPickerProp, Picker } from '../../../components/Picker';
 import { useNavOptions } from '../../../hooks/useNavOptions';
@@ -41,7 +41,7 @@ const initialValues: Values = {
 
 const schema = Yup.object().shape({
     medicationId: Yup.string().required('Required'),
-    name: Yup.string().required('Required'),
+    name: Yup.string().required('Required').min(1),
     amount: Yup.number().required('Required'),
     dosage: Yup.string().required('Required'),
     form: Yup.string().required('Required'),
@@ -91,7 +91,10 @@ export default function CreateRecordScreen() {
     });
 
     const onSubmit = async (values: Values) => {
-        const newRecord: MedicationRecord = { ...values };
+        const newRecord: MedicationRecord = {
+            ...values,
+            ownedMedicationRef: '',
+        }; // FIXME
 
         console.log('newRecord: ' + JSON.stringify(newRecord));
 
@@ -228,13 +231,13 @@ export default function CreateRecordScreen() {
                     {submitErrorMessage}
                 </Text>
             )}
-            <Button
+            <PrimaryButton
                 disabled={!isValid}
                 isLoading={isSubmitting}
                 onPress={handleSubmit}
             >
                 Add Record
-            </Button>
+            </PrimaryButton>
         </ScrollView>
     );
 }

@@ -10,7 +10,6 @@ import { ProgressIndicator } from '../../components/ProgressIndicator';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../model/routes';
 
-// TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
 const getFormattedUserName = (userName: string): string => {
@@ -27,12 +26,13 @@ const getFormattedUserName = (userName: string): string => {
 
 export default function HomeScreen() {
     const { user } = useAuthentication();
+    const uid = user?.uid ?? '';
     const day =
         (useLocalSearchParams().day as string) || new Date().toISOString();
     const initialSelectedDay = new Date(day);
     const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
     const { isSuccess, isLoading, isError, records, refetch } = useRecords(
-        user?.uid ?? '', // TODO: Replace with user's token in the future
+        uid,
         selectedDay
     );
 

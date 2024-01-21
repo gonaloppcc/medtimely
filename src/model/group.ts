@@ -12,4 +12,4 @@ export interface Group {
     hasSharedStock: boolean;
 }
 
-export type GroupData = Omit<Group, 'id'>;
+export type GroupData = Omit<Omit<Group, 'id'>, 'users'>;

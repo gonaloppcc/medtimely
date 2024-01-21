@@ -30,7 +30,8 @@ export const StockCard = ({
     const subtitle = `${form}, ${stock} left`;
 
     const onPress = () => {
-        onPressStock(medicationId);
+        // TODO: What if there isn't?
+        if (medicationId) onPressStock(medicationId);
     };
 
     return (

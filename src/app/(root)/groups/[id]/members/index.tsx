@@ -4,31 +4,14 @@ import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useNavOptions } from '../../../../../hooks/useNavOptions';
 import { GroupMembers } from '../../../../../components/GroupMembers';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../../model/routes';
-
-// TODO: This is just for now, it should be replaced with data from the database
-const MEMBERS_INFO = [
-    {
-        id: 'test',
-        name: 'name',
-        sharedMeds: ['testMed1', 'testMed2', 'testMed3'],
-        hasSharedStock: false,
-    },
-    {
-        id: 'test2',
-        name: 'name2',
-        sharedMeds: ['testMed4', 'testMed5', 'testMed6'],
-        hasSharedStock: false,
-    },
-];
-
-//export interface GroupCardProps {
-//    onPress: (id: string) => void;
-//}
+import { ProgressIndicator } from '../../../../../components/ProgressIndicator';
+import { useGroupById } from '../../../../../hooks/useGroupById';
 
 export default function GroupMembersScreen() {
-    const groupMembers = MEMBERS_INFO;
+    const groupId = useLocalSearchParams().id as string;
+    const { isSuccess, isLoading, isError, group } = useGroupById(groupId);
 
     const headerRight = () => (
         <Appbar.Action
@@ -42,20 +25,25 @@ export default function GroupMembersScreen() {
         headerRight,
     });
 
-    const onPressGroupMember = () => {
-        router.push({
-            pathname: ROUTE.GROUPS.MEMBER,
-            params: { id: 'testId', memberId: 'test' },
-        });
+    const onPressGroupMember = (id: string) => {
+        if (id !== null)
+            router.push({
+                pathname: ROUTE.GROUPS.MEMBER,
+                params: { id: groupId, memberId: id },
+            });
     };
 
     return (
         <View style={styles.container}>
             <Text variant="headlineLarge">Group Members</Text>
-            <GroupMembers
-                groupMembers={groupMembers}
-                onPressGroupMember={onPressGroupMember}
-            />
+            {isLoading && <ProgressIndicator />}
+            {isError && <Text>Something went wrong</Text>}
+            {isSuccess && group && (
+                <GroupMembers
+                    groupMembers={group.users}
+                    onPressGroupMember={onPressGroupMember}
+                />
+            )}
         </View>
     );
 }

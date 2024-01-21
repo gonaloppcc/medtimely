@@ -108,6 +108,8 @@ export const MedicationCard = ({
 
 const styles = StyleSheet.create({
     container: {
+        maxWidth: '100%',
+        width: '100%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',

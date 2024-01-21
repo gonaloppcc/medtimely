@@ -9,6 +9,7 @@ import {
     Firestore,
     getDoc,
     getDocs,
+    limit,
     query,
     Timestamp,
     updateDoc,
@@ -23,9 +24,10 @@ import { ProjectError } from '../error';
 type Day = `${number}/${number}/${number}`;
 
 interface FirestoreMedicationRecord
-    extends Omit<MedicationRecord, 'scheduledTime'> {
+    extends Omit<MedicationRecord, 'scheduledTime' | 'ownedMedicationRef'> {
     day: Day;
     scheduledTime: Timestamp;
+    ownedMedicationRef: DocumentReference;
 }
 
 const getUserRecordCollection = (db: Firestore, userId: string) => {
@@ -36,7 +38,42 @@ const getUserRecordCollectionString = (userId: string) => {
     return `users/${userId}/records`;
 };
 
-export const getRecords = async (
+export const getRecordsByMedication = async (
+    db: Firestore,
+    userId: string,
+    medicationId: string,
+    maxRecords: number = 10
+): Promise<MedicationRecord[]> => {
+    console.log(
+        `Fetching records for medication with id=${medicationId} for user with id=${userId} with maxRecords=${maxRecords}`
+    );
+
+    const userRecordCollection = getUserRecordCollection(db, userId);
+
+    const q = query(
+        userRecordCollection,
+        where('medicationId', '==', medicationId),
+        limit(maxRecords)
+    );
+
+    try {
+        const matchDocs = await getDocs(q);
+
+        console.log(`Found ${matchDocs.docs.length} records`);
+
+        return matchDocs.docs.map(snapshotToRecord);
+    } catch (e) {
+        console.error('Error getting documents: ', e);
+        throw new ProjectError(
+            'GETTING_RECORDS_BY_MEDICATION_ERROR',
+            `Error getting documents on path=${getUserRecordCollectionString(
+                userId
+            )} with query=${JSON.stringify(q)}`
+        );
+    }
+};
+
+export const getRecordsByDate = async (
     db: Firestore,
     userId: string,
     date: Date
@@ -115,10 +152,15 @@ export const createRecord = async (
 
     const userRecordCollection = getUserRecordCollection(db, userId);
 
+    const ownedMedicationRef: DocumentReference = doc(
+        db,
+        record.ownedMedicationRef
+    );
     const firestoreRecord: FirestoreMedicationRecord = {
         ...record,
         day: dayjs(record.scheduledTime).format('D/M/YYYY') as Day,
         scheduledTime: Timestamp.fromDate(record.scheduledTime),
+        ownedMedicationRef: ownedMedicationRef,
     };
 
     try {
@@ -194,7 +236,12 @@ const snapshotToRecord = (doc: DocumentSnapshot): MedicationRecord => {
     if (doc.exists()) {
         const data = doc.data();
         const scheduledTime = data.scheduledTime.toDate();
-        return { ...data, scheduledTime, id: doc.id } as MedicationRecord;
+        return {
+            ...data,
+            scheduledTime,
+            id: doc.id,
+            ownedMedicationRef: data.ownedMedicationRef.path,
+        } as MedicationRecord;
     } else {
         throw new Error('Document does not exist');
     }
