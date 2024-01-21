@@ -46,6 +46,7 @@ const RECORDS: MedicationRecord[] = [
         units: 1,
         missed: true,
         scheduledTime: START_DATE,
+        isPlanned: true,
     },
     {
         name: 'Brufen',
@@ -58,6 +59,7 @@ const RECORDS: MedicationRecord[] = [
         units: 1,
         missed: false,
         scheduledTime: START_DATE,
+        isPlanned: true,
     },
 ];
 

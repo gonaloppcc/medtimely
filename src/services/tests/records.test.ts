@@ -33,6 +33,7 @@ test('createRecord&getRecord: should create a record and retrieve it', async () 
         missed: true,
         scheduledTime: new Date(),
         ownedMedicationRef: '', // FIXME
+        isPlanned: false,
     };
 
     const recordId = await createRecord(db, USER_ID, RECORD);
@@ -53,6 +54,7 @@ test('deleteRecord: should delete a record', async () => {
         missed: true,
         scheduledTime: new Date(),
         ownedMedicationRef: '', // FIXME
+        isPlanned: true,
     };
 
     const recordId = await createRecord(db, USER_ID, RECORD);
@@ -76,6 +78,7 @@ test('updateRecord: should update a record', async () => {
         missed: true,
         scheduledTime: new Date(),
         ownedMedicationRef: '', // FIXME
+        isPlanned: true,
     };
 
     const recordId = await createRecord(db, USER_ID, RECORD);
@@ -88,6 +91,7 @@ test('updateRecord: should update a record', async () => {
         missed: false,
         scheduledTime: new Date(),
         ownedMedicationRef: '', // FIXME
+        isPlanned: true,
     };
 
     await updateRecord(db, USER_ID, recordId, UPDATED_RECORD);

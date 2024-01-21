@@ -94,6 +94,7 @@ export default function CreateRecordScreen() {
         const newRecord: MedicationRecord = {
             ...values,
             ownedMedicationRef: '',
+            isPlanned: false,
         }; // FIXME
 
         console.log('newRecord: ' + JSON.stringify(newRecord));

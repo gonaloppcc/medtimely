@@ -1,7 +1,7 @@
 import { Medication } from './medication';
 
 export interface OwnedMedication extends Medication {
-    id: string;
+    id: string; // full path to subcollection
     stock: number;
     medicationId?: string;
 }
@@ -9,14 +9,13 @@ export interface OwnedMedication extends Medication {
 export type OwnedMedicationData = Omit<OwnedMedication, 'id'>;
 
 export interface PlannedMedication {
-    id: string;
     ownedMedication: OwnedMedication;
     doseToBeTaken: number;
     schedule: PlannedMedicationSchedule;
-    records: boolean[];
 }
 
 export interface PlannedMedicationSchedule {
     startDate: string;
+    endDate?: string;
     timeBetweenDosesInHours: number;
 }

@@ -1,6 +1,6 @@
 export interface MedicationRecord {
     id?: string; // ID only set when retrieved from db // TODO: Migrate this to not be optional, if optional, the MedicationRecordData should be used instead
-    plannedMedicationId?: string; // might be useful to access planned medication from the record
+    isPlanned: boolean; // se for planned então pode-se ir ao plannedMeds desse user com o ownedMedicationRef
     ownedMedicationRef: string; // Reference to the medication subcollection: personal or group
     name: string;
     dosage: string;
