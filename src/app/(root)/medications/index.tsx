@@ -42,11 +42,13 @@ export default function MedicationsScreen() {
         }
     };
 
-    const onPressMedication = (id: string) => {
-        router.push({ pathname: ROUTE.MEDICATIONS.BY_ID, params: { id } });
+    const onPressMedication = (medicationId: string) => {
+        router.push({
+            pathname: ROUTE.MEDICATIONS.BY_ID,
+            params: { id: medicationId },
+        });
     };
 
-    // TODO: Infinite list
     return (
         <View style={styles.container}>
             {medicationForms.length > 1 && (

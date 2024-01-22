@@ -14,7 +14,7 @@ import { ROUTE } from '../../../../model/routes';
 import { useRecordsByMedication } from '../../../../hooks/useRecordsByMedication';
 
 export default function MedicationScreen() {
-    const medicationID = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
+    const medicationID = useLocalSearchParams()!.id as string;
     const theme = useAppTheme();
     const { user } = useAuthentication();
     const uid = user?.uid ?? '';
@@ -35,7 +35,11 @@ export default function MedicationScreen() {
     );
 
     useNavOptions({
-        headerTitle: isSuccess ? medication!.name : 'Medication not found',
+        headerTitle: isLoading
+            ? 'Medication is loading'
+            : isSuccess && medication
+              ? medication.name
+              : 'Medication not found',
         headerRight,
     });
 

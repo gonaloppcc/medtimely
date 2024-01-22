@@ -42,7 +42,6 @@ export const getPlannedMedications = async (
             uid,
             plannedMedications
         );
-        console.log(planned);
         return planned;
     } catch (e) {
         throw new Error('Error getting planned medications');

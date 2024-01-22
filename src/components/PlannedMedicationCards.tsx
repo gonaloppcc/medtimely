@@ -18,15 +18,11 @@ export const PlannedMedicationCards = ({
             alwaysBounceVertical={false}
         >
             {medications.map((medication, index) => {
-                const onPressMedicationHandler = () => {
-                    onPressMedication(medication.ownedMedication.id);
-                };
-
                 return (
                     <PlannedMedicationCard
                         key={index}
                         {...medication}
-                        onPressMedication={onPressMedicationHandler}
+                        onPressMedication={onPressMedication}
                     />
                 );
             })}
