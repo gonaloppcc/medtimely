@@ -17,7 +17,7 @@ export const useDeleteRecord = (
         mutationFn: async (recordId: string) => {
             return await deleteRecord(db, userId, recordId);
         },
-        onSuccess: async (_, variables) => {
+        onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: ['records', date, userId],
             });
