@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { PlannedMedicationCards } from '../../../components/PlannedMedicationCards';
 import { useMedicationsByName } from '../../../hooks/useMedicationsByName';
 import * as React from 'react';
 import { useState } from 'react';
@@ -8,6 +7,7 @@ import { Input } from '../../../components/Input';
 import { router } from 'expo-router';
 import { GhostButton } from '../../../components/Button';
 import { ROUTE } from '../../../model/routes';
+import { MedicationCards } from '../../../components/MedicationCards';
 
 export default function SearchModal() {
     const [search, setSearch] = useState('');
@@ -41,7 +41,7 @@ export default function SearchModal() {
                 {search === '' ? (
                     <Text>Search for a medication to use</Text>
                 ) : (
-                    <PlannedMedicationCards
+                    <MedicationCards
                         medications={medications}
                         onPressMedication={(id) => {
                             router.push({
