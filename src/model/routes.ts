@@ -25,7 +25,6 @@ const createRoutes = (BASE_NAME: string): Routes => ({
 
 const GROUPS_ROUTES = createRoutes('groups');
 const MEDICATIONS_ROUTES = createRoutes('medications');
-const RECORDS_ROUTES = createRoutes('records');
 
 const SETTINGS_ROUTES: Routes = {
     BASE_NAME: 'settings',
@@ -52,7 +51,6 @@ const EDIT_PROFILE_ROUTES: Routes = {
 export const ROUTE = {
     GROUPS: GROUPS_ROUTES,
     MEDICATIONS: MEDICATIONS_ROUTES,
-    RECORDS: RECORDS_ROUTES,
     SETTINGS: SETTINGS_ROUTES,
     STOCK: STOCK_ROUTES,
     PROFILE: PROFILE_ROUTES,

@@ -48,7 +48,8 @@ export default function MedicationScreen() {
     } = useRecordsByMedication(uid, medicationID);
 
     const onPressRecord = (id: string) => {
-        router.push({ pathname: ROUTE.RECORDS.BY_ID, params: { id } });
+        console.log(id);
+        //TODO: Add modal like the homepage
     };
 
     return (
