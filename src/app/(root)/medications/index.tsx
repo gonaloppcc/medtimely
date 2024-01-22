@@ -48,6 +48,7 @@ export default function MedicationsScreen() {
             params: { id: medicationId },
         });
     };
+    console.log(medicationsFiltered.length);
 
     return (
         <View style={styles.container}>
@@ -70,7 +71,9 @@ export default function MedicationsScreen() {
             )}
 
             {isSuccess && medicationsFiltered.length == 0 && (
-                <EmptyPlannedMedications />
+                <View style={styles.emptyPlannedMedicationsContainer}>
+                    <EmptyPlannedMedications />
+                </View>
             )}
         </View>
     );
@@ -84,5 +87,8 @@ const styles = StyleSheet.create({
         height: '100%',
         display: 'flex',
         gap: 32,
+    },
+    emptyPlannedMedicationsContainer: {
+        marginTop: '50%',
     },
 });

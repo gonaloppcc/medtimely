@@ -11,6 +11,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { MedicationRecordModal } from '../../components/ModalMedicationRecord';
 import { MedicationRecord } from '../../model/medicationRecord';
 import { ROUTE } from '../../model/routes';
+import { EmptyPlannedMedications } from '../../components/EmptyPlannedMedications';
 
 const startDay = new Date();
 
@@ -116,6 +117,7 @@ export default function HomeScreen() {
                     onPressRecord={onPressRecord}
                 />
             )}
+            {isSuccess && records.length == 0 && <EmptyPlannedMedications />}
         </View>
     );
 }

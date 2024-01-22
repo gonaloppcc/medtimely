@@ -12,6 +12,7 @@ import { useRecords } from '../../../../../../hooks/useRecords';
 import { RecordCards } from '../../../../../../components/RecordCards';
 import { MedicationRecord } from '../../../../../../model/medicationRecord';
 import { MedicationRecordModal } from '../../../../../../components/ModalMedicationRecord';
+import { EmptyPlannedMedications } from '../../../../../../components/EmptyPlannedMedications';
 
 const startDay = new Date();
 
@@ -142,6 +143,10 @@ export default function GroupMemberScreen() {
                             records={records}
                             onPressRecord={onPressRecord}
                         />
+                    )}
+
+                    {isSuccessRecord && records.length == 0 && (
+                        <EmptyPlannedMedications />
                     )}
                 </>
             )}
