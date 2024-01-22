@@ -12,6 +12,8 @@ import {
     doc,
     Timestamp,
     updateDoc,
+    Transaction,
+    runTransaction,
 } from 'firebase/firestore';
 
 const USERS_COLLECTION_NAME = 'users';
@@ -97,23 +99,29 @@ export const createPlannedMedication = async (
 ): Promise<void> => {
     const userRef = doc(db, USERS_COLLECTION_NAME, uid);
     try {
-        const snapshot: DocumentSnapshot = await getDoc(userRef);
-        if (!snapshot.exists()) {
-            throw new Error('User does not exist');
-        }
-        // todo: check if exists
-        const plannedMedications: PlannedMedicationsFirestore =
-            snapshot.data()?.plannedMedications || {};
-        const ownedMedicationId: string = plannedMedication.ownedMedication.id;
-        const updatedPlannedMedications: PlannedMedicationsFirestore = {
-            ...plannedMedications,
-            [ownedMedicationId]:
-                plannedMedicationViewToFirestore(plannedMedication),
-        };
-        return await updateDoc(userRef, {
-            plannedMedications: updatedPlannedMedications,
+        await runTransaction(db, async (transaction: Transaction) => {
+            const userDoc: DocumentSnapshot = await transaction.get(userRef);
+
+            if (!userDoc.exists()) {
+                throw new Error('User does not exist');
+            }
+
+            const plannedMedicationsMap: PlannedMedicationsFirestore =
+                userDoc.data()?.plannedMedications || {};
+
+            const ownedMedicationId: string =
+                plannedMedication.ownedMedication.id;
+            plannedMedicationsMap[ownedMedicationId] =
+                plannedMedicationViewToFirestore(plannedMedication);
+
+            transaction.update(userRef, {
+                plannedMedications: plannedMedicationsMap,
+            });
         });
-    } catch (e) {
+
+        console.log('Planned medication added successfully.');
+    } catch (error) {
+        console.error('Error creating planned medication:', error);
         throw new Error('Error creating planned medication');
     }
 };
