@@ -7,15 +7,31 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../../../model/routes';
 import { useMemberGroupById } from '../../../../../../hooks/useMemberGroupById';
 import { ProgressIndicator } from '../../../../../../components/ProgressIndicator';
-import { Text } from 'react-native-paper';
+import { Appbar, Portal, Text } from 'react-native-paper';
+import { useRecords } from '../../../../../../hooks/useRecords';
+import { RecordCards } from '../../../../../../components/RecordCards';
+import { MedicationRecord } from '../../../../../../model/medicationRecord';
+import { MedicationRecordModal } from '../../../../../../components/ModalMedicationRecord';
 
-// TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
 export default function GroupMemberScreen() {
     const localSearchParams = useLocalSearchParams();
     const groupId = localSearchParams.groupId as string;
     const memberId = localSearchParams.memberId as string;
+
+    const headerRight = () => (
+        <Appbar.Action
+            icon="delete"
+            onPress={() => {
+                //TODO:  DELETE MEMBER FROM GROUP
+            }}
+        />
+    );
+
+    useNavOptions({
+        headerRight,
+    });
 
     const { isSuccess, isLoading, isError, user } = useMemberGroupById(
         groupId,
@@ -25,6 +41,13 @@ export default function GroupMemberScreen() {
     const day = (localSearchParams.day as string) || new Date().toISOString();
     const initialSelectedDay = new Date(day);
     const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
+    const {
+        isSuccess: isSuccessRecord,
+        isLoading: isLoadingRecord,
+        isError: isErrorRecord,
+        records,
+        refetch,
+    } = useRecords(memberId, selectedDay);
 
     if (isSuccess && user) {
         useNavOptions({
@@ -32,16 +55,51 @@ export default function GroupMemberScreen() {
         });
     }
 
-    const onPressMemberMeds = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS });
-    };
-
     const onPressMemberRecord = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER_RECORDS });
+        router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS });
     };
 
     const selectDay = (day: Date) => {
         setSelectedDay(day);
+    };
+
+    //MODAL
+    const [visible, setVisible] = useState(false);
+    const [recordModal, setRecordModal] = useState<MedicationRecord>();
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
+    const onPressRecord = (id: string) => {
+        const record = records.find((record) => record.id === id);
+        if (record) {
+            setRecordModal(record);
+            showModal();
+        }
+    };
+
+    //RecordMedicationModa
+    const onDeleteRecord = () => {
+        //TODO: delete record from that user
+    };
+
+    const onSeeRecordMedication = () => {
+        if (recordModal) {
+            router.push({
+                pathname: ROUTE.MEDICATIONS.BY_ID,
+                params: {
+                    id: recordModal.id,
+                },
+            });
+        }
+        hideModal();
+    };
+
+    const onSkipRecordMedication = () => {
+        //TODO: delete record
+    };
+
+    const onTakeOrUntakeRecordMedication = () => {
+        //TODO: delete record
     };
 
     return (
@@ -50,12 +108,22 @@ export default function GroupMemberScreen() {
             {isError && <Text>Something went wrong</Text>}
             {isSuccess && user && (
                 <>
+                    {recordModal && (
+                        <Portal>
+                            <MedicationRecordModal
+                                onDismiss={hideModal}
+                                visible={visible}
+                                record={recordModal}
+                                onDelete={onDeleteRecord}
+                                onSeeMedication={onSeeRecordMedication}
+                                onSkip={onSkipRecordMedication}
+                                onTakeOrUnTake={onTakeOrUntakeRecordMedication}
+                            />
+                        </Portal>
+                    )}
                     <View style={styles.buttonsContainer}>
-                        <PrimaryButton onPress={onPressMemberMeds}>
-                            Records History
-                        </PrimaryButton>
                         <PrimaryButton onPress={onPressMemberRecord}>
-                            Meds
+                            See all Medications
                         </PrimaryButton>
                     </View>
                     <WeekDayPicker
@@ -63,6 +131,18 @@ export default function GroupMemberScreen() {
                         selectDay={selectDay}
                         startDay={startDay}
                     />
+                    {!isLoading && isLoadingRecord && <ProgressIndicator />}
+                    {isErrorRecord && (
+                        <Text variant="headlineMedium">Error</Text>
+                    )}
+                    {isSuccessRecord && (
+                        <RecordCards
+                            isRefreshing={isLoading}
+                            onRefresh={refetch}
+                            records={records}
+                            onPressRecord={onPressRecord}
+                        />
+                    )}
                 </>
             )}
         </View>

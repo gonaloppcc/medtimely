@@ -56,23 +56,23 @@ export default function GroupScreen() {
 
     return (
         <View style={styles.container}>
-            <Portal>
-                <Modal
-                    visible={visible}
-                    onDismiss={hideModal}
-                    onDone={deleteGroupHandler}
-                    title="Delete Group"
-                >
-                    <Text variant="bodyMedium">
-                        Are you sure you want delete group: {group.name}?
-                    </Text>
-                </Modal>
-            </Portal>
-
             {isLoading && <ProgressIndicator />}
             {isError && <Text>Something went wrong</Text>}
             {isSuccess && group && (
                 <>
+                    <Portal>
+                        <Modal
+                            visible={visible}
+                            onDismiss={hideModal}
+                            onDone={deleteGroupHandler}
+                            title="Delete Group"
+                        >
+                            <Text variant="bodyMedium">
+                                Are you sure you want delete group: {group.name}
+                                ?
+                            </Text>
+                        </Modal>
+                    </Portal>
                     <View style={styles.titleContainer}>
                         <View style={styles.titleAndButton}>
                             <Text variant="headlineMedium">{group.name}</Text>

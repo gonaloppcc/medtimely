@@ -38,7 +38,6 @@ export default function StockScreen() {
     const uid = useAuthentication().user?.uid ?? '';
 
     const {
-        isLoading: isLoadingGroups,
         isError: isErrorGroups,
         isSuccess: isSuccessGroups,
         groups,
@@ -71,7 +70,6 @@ export default function StockScreen() {
 
     return (
         <View style={styles.container}>
-            {isLoadingGroups && <ProgressIndicator />}
             {isErrorGroups && (
                 <ErrorMessage errorMessage="Could not load groups" />
             )}
