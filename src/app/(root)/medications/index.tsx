@@ -9,7 +9,6 @@ import { PlannedMedicationCards } from '../../../components/PlannedMedicationCar
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 import { router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
-import { db } from '../../../firebase';
 import { usePlannedMedications } from '../../../hooks/usePlannedMedication';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { EmptyPlannedMedications } from '../../../components/EmptyPlannedMedications';
@@ -19,9 +18,10 @@ export default function MedicationsScreen() {
 
     const { user } = useAuthentication();
     const uid = user?.uid ?? '';
+    // const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
 
     const { isSuccess, isLoading, isError, medications } =
-        usePlannedMedications(db, uid);
+        usePlannedMedications(uid);
 
     const medicationForms = Array.from(
         new Set(medications.map((value) => value.ownedMedication.form))

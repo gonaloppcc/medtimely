@@ -8,7 +8,6 @@ import { EmptyPlannedMedications } from '../../../../../../components/EmptyPlann
 import { MedicationFormFilterButtons } from '../../../../../../components/MedicationFormFilterButtons';
 import { PlannedMedicationCards } from '../../../../../../components/PlannedMedicationCards';
 import { ProgressIndicator } from '../../../../../../components/ProgressIndicator';
-import { db } from '../../../../../../firebase';
 import { usePlannedMedications } from '../../../../../../hooks/usePlannedMedication';
 import { MedicationRecordForm } from '../../../../../../model/medicationRecord';
 import { ROUTE } from '../../../../../../model/routes';
@@ -20,7 +19,7 @@ export default function GroupMemberMedicationsScreen() {
     const uid = localSearchParams.memberId as string;
 
     const { isSuccess, isLoading, isError, medications } =
-        usePlannedMedications(db, uid);
+        usePlannedMedications(uid);
 
     const medicationForms = Array.from(
         new Set(medications.map((value) => value.ownedMedication.form))
