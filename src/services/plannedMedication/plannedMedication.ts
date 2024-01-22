@@ -11,6 +11,7 @@ import {
     getDoc,
     doc,
     Timestamp,
+    updateDoc,
 } from 'firebase/firestore';
 
 const USERS_COLLECTION_NAME = 'users';
@@ -37,7 +38,7 @@ export const getPlannedMedications = async (
         //        '/users/10wFfsLJ3KTCPsW8oTU42K5x3Xt1/ownedMedications/4USkR96NecLgHItCWxFy'
         //    ].startDate
         // );
-        const planned = await plannedMedicationsObjectToArray(
+        const planned = await plannedMedicationsFirestoreToView(
             db,
             uid,
             plannedMedications
@@ -77,7 +78,7 @@ export const getPlannedMedicationById = async (
         // TODO add check
         const plannedMedication: PlannedMedicationFirestore =
             plannedMedications[ownedMedicationId];
-        return await plannedMedicationObjectToArray(
+        return await plannedMedicationFirestoreToView(
             db,
             uid,
             ownedMedicationId,
@@ -86,6 +87,50 @@ export const getPlannedMedicationById = async (
     } catch (e) {
         throw new Error('Error getting planned medication');
     }
+};
+
+// todo: move to transaction
+export const createPlannedMedication = async (
+    db: Firestore,
+    uid: string,
+    plannedMedication: PlannedMedication
+): Promise<void> => {
+    const userRef = doc(db, USERS_COLLECTION_NAME, uid);
+    try {
+        const snapshot: DocumentSnapshot = await getDoc(userRef);
+        if (!snapshot.exists()) {
+            throw new Error('User does not exist');
+        }
+        // todo: check if exists
+        const plannedMedications: PlannedMedicationsFirestore =
+            snapshot.data()?.plannedMedications || {};
+        const ownedMedicationId: string = plannedMedication.ownedMedication.id;
+        const updatedPlannedMedications: PlannedMedicationsFirestore = {
+            ...plannedMedications,
+            [ownedMedicationId]:
+                plannedMedicationViewToFirestore(plannedMedication),
+        };
+        return await updateDoc(userRef, {
+            plannedMedications: updatedPlannedMedications,
+        });
+    } catch (e) {
+        throw new Error('Error creating planned medication');
+    }
+};
+
+const plannedMedicationViewToFirestore = (
+    plannedMedication: PlannedMedication
+): PlannedMedicationFirestore => {
+    const { doseToBeTaken, schedule } = plannedMedication;
+    const plannedMedicationFirestore: PlannedMedicationFirestore = {
+        doseToBeTaken,
+        startDate: Timestamp.fromDate(schedule.startDate),
+        endDate: schedule.endDate
+            ? Timestamp.fromDate(schedule.endDate)
+            : undefined,
+        timeBetweenDosesInHours: schedule.timeBetweenDosesInHours,
+    };
+    return plannedMedicationFirestore;
 };
 
 const getSchedule = (
@@ -99,7 +144,7 @@ const getSchedule = (
     return schedule;
 };
 
-const plannedMedicationObjectToArray = async (
+const plannedMedicationFirestoreToView = async (
     db: Firestore,
     uid: string,
     ownedMedicationId: string,
@@ -118,7 +163,7 @@ const plannedMedicationObjectToArray = async (
     return plannedMedication;
 };
 
-const plannedMedicationsObjectToArray = async (
+const plannedMedicationsFirestoreToView = async (
     db: Firestore,
     uid: string,
     plannedMedications: PlannedMedicationsFirestore
@@ -130,7 +175,7 @@ const plannedMedicationsObjectToArray = async (
     )) {
         // key is OwnedMedication id and is used to fetch the OwnedMedication
         const plannedMedication: PlannedMedication =
-            await plannedMedicationObjectToArray(
+            await plannedMedicationFirestoreToView(
                 db,
                 uid,
                 ownedMedicationId,
