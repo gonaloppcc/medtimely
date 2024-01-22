@@ -5,7 +5,7 @@ export const formateDateToString = (date: Date): string => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
 
-    return `${day} at ${hours}h:${minutes}`;
+    return `${hours}:${minutes}, ${day}`;
 };
 
 export const formateDateToHoursMinutesString = (date: Date): string => {

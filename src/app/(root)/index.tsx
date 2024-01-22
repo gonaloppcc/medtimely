@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Text } from 'react-native-paper';
+import { Portal, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { WeekDayPicker } from '../../components/WeekDayPicker';
@@ -8,6 +8,8 @@ import { RecordCards } from '../../components/RecordCards';
 import { useRecords } from '../../hooks/useRecords';
 import { ProgressIndicator } from '../../components/ProgressIndicator';
 import { router, useLocalSearchParams } from 'expo-router';
+import { MedicationRecordModal } from '../../components/ModalMedicationRecord';
+import { MedicationRecord } from '../../model/medicationRecord';
 import { ROUTE } from '../../model/routes';
 
 const startDay = new Date();
@@ -35,6 +37,12 @@ export default function HomeScreen() {
         uid,
         selectedDay
     );
+    const [recordModal, setRecordModal] = useState<MedicationRecord>();
+
+    //MODAl
+    const [visible, setVisible] = useState(false);
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
 
     const userName =
         user && user.displayName ? getFormattedUserName(user.displayName) : '';
@@ -45,11 +53,53 @@ export default function HomeScreen() {
     };
 
     const onPressRecord = (id: string) => {
-        router.push({ pathname: ROUTE.RECORDS.BY_ID, params: { id } });
+        const record = records.find((record) => record.id === id);
+        if (record) {
+            setRecordModal(record);
+            showModal();
+        }
+    };
+
+    //RecordMedicationModa
+    const onDeleteRecord = () => {
+        //TODO: delete record
+    };
+
+    const onSeeRecordMedication = () => {
+        if (recordModal) {
+            router.push({
+                pathname: ROUTE.MEDICATIONS.BY_ID,
+                params: {
+                    id: recordModal.id,
+                },
+            });
+        }
+        hideModal();
+    };
+
+    const onSkipRecordMedication = () => {
+        //TODO: delete record
+    };
+
+    const onTakeOrUntakeRecordMedication = () => {
+        //TODO: delete record
     };
 
     return (
         <View style={styles.container}>
+            {recordModal && (
+                <Portal>
+                    <MedicationRecordModal
+                        onDismiss={hideModal}
+                        visible={visible}
+                        record={recordModal}
+                        onDelete={onDeleteRecord}
+                        onSeeMedication={onSeeRecordMedication}
+                        onSkip={onSkipRecordMedication}
+                        onTakeOrUnTake={onTakeOrUntakeRecordMedication}
+                    />
+                </Portal>
+            )}
             <Text variant="headlineMedium">{welcomeString}</Text>
             <WeekDayPicker
                 selectedDay={selectedDay}
