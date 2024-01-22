@@ -12,6 +12,7 @@ import { MedicationRecordModal } from '../../components/ModalMedicationRecord';
 import { MedicationRecord } from '../../model/medicationRecord';
 import { ROUTE } from '../../model/routes';
 import { EmptyPlannedMedications } from '../../components/EmptyPlannedMedications';
+import { useDeleteRecord } from '../../hooks/useDeleteRecord';
 
 const startDay = new Date();
 
@@ -40,6 +41,18 @@ export default function HomeScreen() {
     );
     const [recordModal, setRecordModal] = useState<MedicationRecord>();
 
+    const onSuccessRecord = () => {
+        hideModal();
+    };
+    const onErrorRecord = () => {};
+
+    const { deleteRecord } = useDeleteRecord(
+        uid,
+        selectedDay,
+        onSuccessRecord,
+        onErrorRecord
+    );
+
     //MODAl
     const [visible, setVisible] = useState(false);
     const showModal = () => setVisible(true);
@@ -61,9 +74,13 @@ export default function HomeScreen() {
         }
     };
 
-    //RecordMedicationModa
     const onDeleteRecord = () => {
-        //TODO: delete record
+        if (recordModal) {
+            const id = recordModal.id;
+            if (id) {
+                deleteRecord(id);
+            }
+        }
     };
 
     const onSeeRecordMedication = () => {

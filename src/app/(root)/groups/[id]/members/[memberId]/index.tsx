@@ -52,7 +52,7 @@ export default function GroupMemberScreen() {
 
     if (isSuccess && user) {
         useNavOptions({
-            headerTitle: user.firstname,
+            headerTitle: user.firstName,
         });
     }
 

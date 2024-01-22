@@ -19,7 +19,7 @@ export interface GroupCardProps {
 
 export default function GroupScreen() {
     const id = useLocalSearchParams().id as string;
-    const SHOW_USERS = 5;
+    const MAX_SHOWN_USERS = 5;
 
     const headerRight = () => (
         <Appbar.Action
@@ -53,6 +53,7 @@ export default function GroupScreen() {
         //TODO: Call function
         //TODO: Add error msg
     };
+    console.log(group);
 
     return (
         <View style={styles.container}>
@@ -100,18 +101,18 @@ export default function GroupScreen() {
                             </View>
                             <List.Section style={styles.listGroup}>
                                 {group.users
-                                    .slice(0, SHOW_USERS)
+                                    .slice(0, MAX_SHOWN_USERS)
                                     .map((user, index) => (
                                         <List.Item
                                             key={index}
-                                            title={`${user.firstname} ${user.lastname}`}
+                                            title={`${user.firstName} ${user.lastName}`}
                                             left={() => (
                                                 <List.Icon icon="account-circle" />
                                             )}
                                             style={styles.listItem}
                                         />
                                     ))}
-                                {group.users.length > SHOW_USERS && (
+                                {group.users.length > MAX_SHOWN_USERS && (
                                     <List.Item
                                         key="others"
                                         title={'...'}

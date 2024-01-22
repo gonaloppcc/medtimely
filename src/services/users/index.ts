@@ -20,16 +20,16 @@ export const createUserDoc = async (
     if (hasOptionalInfo) {
         userData = {
             id: id,
-            firstname: firstname,
-            lastname: lastname,
+            firstName: firstname,
+            lastName: lastname,
             groups: [],
             optionalInfo: optionalValues,
         };
     } else {
         userData = {
             id: id,
-            firstname: firstname,
-            lastname: lastname,
+            firstName: firstname,
+            lastName: lastname,
             groups: [],
         };
     }

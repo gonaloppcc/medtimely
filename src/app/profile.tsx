@@ -36,12 +36,12 @@ export default function ProfileScreen() {
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}>First Name: </Text>
-                <Text>{userDoc?.firstname}</Text>
+                <Text>{userDoc?.firstName}</Text>
             </View>
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}> Last Name: </Text>
-                <Text>{userDoc?.lastname}</Text>
+                <Text>{userDoc?.lastName}</Text>
             </View>
 
             <View style={styles.profileInfo}>
