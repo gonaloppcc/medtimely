@@ -2,28 +2,19 @@ import React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MedicationIcon } from './MedicationIcon';
-import { Medication } from '../model/medication';
+import { PlannedMedication } from '../model/ownedMedication';
 
-type MedicationCardProps = Medication & {
+type MedicationCardProps = PlannedMedication & {
     onPressMedication: (id: string) => void;
     // Add any extra props here
 };
-export const MedicationCard = ({
-    id,
-    name,
-    activeSubstance,
-    form,
-    dosage,
-    aimTitular,
-    commercialisation,
-    isGeneric,
-    administration,
-    presentations,
+export const PlannedMedicationCard = ({
+    ownedMedication,
     onPressMedication,
 }: MedicationCardProps) => {
     const theme = useTheme();
 
-    const title = name;
+    const title = ownedMedication.name;
 
     const backgroundColor = theme.colors.surface;
 
@@ -33,17 +24,17 @@ export const MedicationCard = ({
         borderColor: theme.colors.outline,
     };
 
-    const subtitle = `${form}, ${dosage}`;
+    const subtitle = `${ownedMedication.form}, ${ownedMedication.dosage}`;
 
     const onPress = () => {
-        onPressMedication(id);
+        onPressMedication(ownedMedication.id);
     };
 
     // FIXME: Improve the UI of this component
 
     return (
         <TouchableOpacity onPress={onPress} style={style}>
-            <MedicationIcon form={form} />
+            <MedicationIcon form={ownedMedication.form} />
             <View style={styles.innerStyle}>
                 <Text
                     variant="labelLarge"
@@ -61,45 +52,45 @@ export const MedicationCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {activeSubstance}
+                    {ownedMedication.activeSubstance}
                 </Text>
-                {aimTitular && (
+                {ownedMedication.aimTitular && (
                     <Text
                         variant="labelMedium"
                         style={{ color: theme.colors.onSurface }}
                     >
-                        {aimTitular}
+                        {ownedMedication.aimTitular}
                     </Text>
                 )}
-                {commercialisation && (
+                {ownedMedication.commercialisation && (
                     <Text
                         variant="labelMedium"
                         style={{ color: theme.colors.onSurface }}
                     >
-                        {commercialisation}
+                        {ownedMedication.commercialisation}
                     </Text>
                 )}
-                {isGeneric && (
+                {ownedMedication.isGeneric && (
                     <Text
                         variant="labelMedium"
                         style={{ color: theme.colors.onSurface }}
                     >
-                        {isGeneric}
+                        {ownedMedication.isGeneric}
                     </Text>
                 )}
-                {administration && (
+                {ownedMedication.administration && (
                     <Text
                         variant="labelMedium"
                         style={{ color: theme.colors.onSurface }}
                     >
-                        {administration}
+                        {ownedMedication.administration}
                     </Text>
                 )}
                 <Text
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {presentations.length} presentations
+                    {ownedMedication.presentations.length} presentations
                 </Text>
             </View>
         </TouchableOpacity>

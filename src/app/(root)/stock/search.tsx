@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { MedicationCards } from '../../../components/MedicationCards';
+import { PlannedMedicationCards } from '../../../components/PlannedMedicationCards';
 import { useMedicationsByName } from '../../../hooks/useMedicationsByName';
 import * as React from 'react';
 import { useState } from 'react';
@@ -41,7 +41,7 @@ export default function SearchModal() {
                 {search === '' ? (
                     <Text>Search for a medication to use</Text>
                 ) : (
-                    <MedicationCards
+                    <PlannedMedicationCards
                         medications={medications}
                         onPressMedication={(id) => {
                             router.push({

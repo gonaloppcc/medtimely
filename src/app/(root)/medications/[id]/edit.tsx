@@ -1,13 +1,14 @@
 import React from 'react';
-import { ActivityIndicator, Button, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { useMedication } from '../../../../hooks/useMedication';
-import { MedicationCard } from '../../../../components/MedicationCard';
+// import { useMedication } from '../../../../hooks/useMedication';
+// import { PlannedMedicationCard } from '../../../../components/PlannedMedicationCard';
 
 export default function EditMedicationRecord() {
     const id = (useLocalSearchParams().id as string) || '';
-    const { isLoading, isSuccess, medication } = useMedication(id);
+    console.log(id);
+    // const { isLoading, isSuccess, medication } = useMedication(id);
 
     const onPressHandler = () => {};
 
@@ -15,16 +16,7 @@ export default function EditMedicationRecord() {
         <View style={{ paddingTop: 20 }}>
             <Text variant="labelLarge">EDIT MEDICATIONN</Text>
 
-            {isLoading && <ActivityIndicator />}
-
-            {/* Replace this with a different medication view */}
-            {isSuccess && medication !== null && (
-                <MedicationCard
-                    {...medication}
-                    id="1"
-                    onPressMedication={() => {}}
-                />
-            )}
+            {/* {isLoading && <ActivityIndicator />} */}
 
             {/* TODO: Add a form to edit the medication */}
 

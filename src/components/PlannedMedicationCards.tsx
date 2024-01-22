@@ -1,14 +1,14 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { MedicationCard } from './MedicationCard';
-import { Medication } from '../model/medication';
+import { PlannedMedicationCard } from './PlannedMedicationCard';
+import { PlannedMedication } from '../model/ownedMedication';
 
 interface MedicationCardsProps {
-    medications: Medication[];
+    medications: PlannedMedication[];
     onPressMedication: (id: string) => void;
 }
 
-export const MedicationCards = ({
+export const PlannedMedicationCards = ({
     medications,
     onPressMedication,
 }: MedicationCardsProps) => {
@@ -19,11 +19,11 @@ export const MedicationCards = ({
         >
             {medications.map((medication, index) => {
                 const onPressMedicationHandler = () => {
-                    onPressMedication(medication.id);
+                    onPressMedication(medication.ownedMedication.id);
                 };
 
                 return (
-                    <MedicationCard
+                    <PlannedMedicationCard
                         key={index}
                         {...medication}
                         onPressMedication={onPressMedicationHandler}

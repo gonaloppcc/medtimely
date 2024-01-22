@@ -5,26 +5,34 @@ import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { MedicationRecordForm } from '../../../model/medicationRecord';
 import { MedicationFormFilterButtons } from '../../../components/MedicationFormFilterButtons';
-import { useMedications } from '../../../hooks/useMedications';
-import { MedicationCards } from '../../../components/MedicationCards';
+import { PlannedMedicationCards } from '../../../components/PlannedMedicationCards';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 import { router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
 import { db } from '../../../firebase';
+import { usePlannedMedications } from '../../../hooks/usePlannedMedication';
+import { useAuthentication } from '../../../hooks/useAuthentication';
+import { EmptyPlannedMedications } from '../../../components/EmptyPlannedMedications';
 
 export default function MedicationsScreen() {
     const [selectForm, setSelectForm] = useState<MedicationRecordForm | ''>('');
 
-    const { isSuccess, isLoading, isError, medications } = useMedications(db); // TODO: Replace with user's token
+    const { user } = useAuthentication();
+    const uid = user?.uid ?? '';
+
+    const { isSuccess, isLoading, isError, medications } =
+        usePlannedMedications(db, uid);
 
     const medicationForms = Array.from(
-        new Set(medications.map((value) => value.form))
+        new Set(medications.map((value) => value.ownedMedication.form))
     );
 
     const medicationsFiltered =
         selectForm === ''
             ? medications
-            : medications.filter((med) => med.form === selectForm);
+            : medications.filter(
+                  (med) => med.ownedMedication.form === selectForm
+              );
 
     const onSelectFilter = (newValue: '' | MedicationRecordForm) => {
         if (selectForm !== newValue) {
@@ -39,7 +47,6 @@ export default function MedicationsScreen() {
     };
 
     // TODO: Infinite list
-
     return (
         <View style={styles.container}>
             {medicationForms.length > 1 && (
@@ -54,10 +61,14 @@ export default function MedicationsScreen() {
             )}
             {isLoading && <ProgressIndicator />}
             {isSuccess && (
-                <MedicationCards
+                <PlannedMedicationCards
                     medications={medicationsFiltered}
                     onPressMedication={onPressMedication}
                 />
+            )}
+
+            {isSuccess && medicationsFiltered.length == 0 && (
+                <EmptyPlannedMedications />
             )}
         </View>
     );
