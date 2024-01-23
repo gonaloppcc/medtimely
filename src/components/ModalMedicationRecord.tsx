@@ -9,7 +9,7 @@ import {
 import { StyleSheet, View } from 'react-native';
 import { MedicationRecord } from '../model/medicationRecord';
 import { MedicationIcon } from './MedicationIcon';
-import { formateDateToString } from '../services/date';
+import { formatDateToString } from '../services/date';
 
 interface MedicationRecordModalProps {
     record: MedicationRecord;
@@ -31,7 +31,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
     onTakeOrUnTake,
 }) => {
     const theme = useTheme();
-    const dataRecord = formateDateToString(record.scheduledTime);
+    const dataRecord = formatDateToString(record.scheduledTime);
     const takeOrUnTakenMsg = record.missed ? 'Taken' : 'Untaken';
 
     const missedColor = record.missed

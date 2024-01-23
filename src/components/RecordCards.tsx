@@ -2,7 +2,7 @@ import React from 'react';
 import { MedicationRecord } from '../model/medicationRecord';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { RecordCard } from './RecordCard';
-import { formateDateToHoursMinutesString } from '../services/date';
+import { formatDateToHoursMinutesString } from '../services/date';
 import { Text, useTheme } from 'react-native-paper';
 
 interface MedCardsProps {
@@ -43,7 +43,7 @@ export const RecordCards = ({
                             variant="bodyMedium"
                             style={{ color: theme.colors.onSurface }}
                         >
-                            {formateDateToHoursMinutesString(
+                            {formatDateToHoursMinutesString(
                                 record.scheduledTime
                             )}
                         </Text>

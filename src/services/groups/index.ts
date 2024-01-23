@@ -101,12 +101,14 @@ export const getGroupById = async (
     db: Firestore,
     groupId: string
 ): Promise<Group> => {
+    console.log(`Fetching group with id=${groupId}`);
+
     const groupDocRef: DocumentReference = doc(
         db,
         GROUPS_COLLECTION_NAME,
         groupId
     );
-    const groupDocSnapshot: DocumentSnapshot = await getDoc(groupDocRef);
+    const groupDocSnapshot: DocumentSnapshot = await getDoc(groupDocRef); // TODO: Try and catch any errors here
 
     if (!groupDocSnapshot.exists()) {
         throw new ProjectError(
@@ -117,6 +119,8 @@ export const getGroupById = async (
 
     const userRefInGroup = groupDocSnapshot.data()?.users || [];
     const usersData: User[] = await getUsersByRef(userRefInGroup);
+
+    console.log('Group fetched successfully');
 
     return {
         id: groupDocSnapshot.id,
@@ -130,12 +134,16 @@ export const createGroup = async (
     groupData: GroupData,
     userId: string
 ): Promise<string> => {
+    console.log(`Creating group with name=${groupData.name}`);
+
     const userRef: DocumentReference = doc(db, USERS_COLLECTION_NAME, userId);
     const groupRef = await addDoc(collection(db, GROUPS_COLLECTION_NAME), {
-        ...groupData,
+        ...groupData, // TODO: Try and catch any errors here
         users: [userRef],
     });
     await updateDoc(userRef, { groups: arrayUnion(groupRef) });
+
+    console.log(`Created group with id=${groupRef.id}`);
 
     return groupRef.id;
 };
@@ -145,7 +153,11 @@ export const addUserToGroup = async (
     groupId: string,
     userId: string
 ): Promise<void> => {
+    console.log(`Adding user with id=${userId} to group with id=${groupId}`);
+
     await addOrRemoveUserFromGroup(db, groupId, userId, arrayUnion);
+
+    console.log(`User added to group successfully`);
 };
 
 export const removeUserFromGroup = async (
@@ -153,7 +165,13 @@ export const removeUserFromGroup = async (
     groupId: string,
     userId: string
 ): Promise<void> => {
+    console.log(
+        `Removing user with id=${userId} from group with id=${groupId}`
+    );
+
     await addOrRemoveUserFromGroup(db, groupId, userId, arrayRemove);
+
+    console.log(`User removed from group successfully`);
 };
 
 const addOrRemoveUserFromGroup = async (
@@ -180,29 +198,39 @@ export const updateGroup = async (
     groupId: string,
     group: GroupData
 ): Promise<void> => {
+    console.log(
+        `Updating group with id=${groupId} with data=${JSON.stringify(group)}`
+    );
+
     const groupRef: DocumentReference = doc(
         db,
         GROUPS_COLLECTION_NAME,
         groupId
     );
-    await updateDoc(groupRef, group);
+    await updateDoc(groupRef, group); // TODO: Try and catch any errors here
+
+    console.log(`Group updated successfully`);
 };
 
 export const deleteGroup = async (
     db: Firestore,
     groupId: string
 ): Promise<void> => {
+    console.log(`Deleting group with id=${groupId}`);
+
     const groupRef: DocumentReference = doc(
         db,
         GROUPS_COLLECTION_NAME,
         groupId
     );
-    const groupDocSnapshot: DocumentSnapshot = await getDoc(groupRef);
+    const groupDocSnapshot: DocumentSnapshot = await getDoc(groupRef); // TODO: Try and catch any errors here
     const userRefInGroup: DocumentReference[] = groupDocSnapshot.data()?.users;
     await Promise.all(
         userRefInGroup.map((userRef) => {
             updateDoc(userRef, { groups: arrayRemove(groupRef) });
         })
     );
-    await deleteDoc(groupRef);
+    await deleteDoc(groupRef); // TODO: Try and catch any errors here
+
+    console.log(`Group deleted successfully`);
 };

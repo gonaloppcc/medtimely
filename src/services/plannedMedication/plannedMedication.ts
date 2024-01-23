@@ -6,13 +6,13 @@ import {
 
 import { getOwnedMedication } from '../ownedMedication';
 import {
+    doc,
     DocumentSnapshot,
     Firestore,
     getDoc,
-    doc,
+    runTransaction,
     Timestamp,
     Transaction,
-    runTransaction,
 } from 'firebase/firestore';
 
 const USERS_COLLECTION_NAME = 'users';
@@ -21,6 +21,8 @@ export const getPlannedMedications = async (
     db: Firestore,
     uid: string
 ): Promise<PlannedMedication[]> => {
+    console.log(`Fetching planned medications for user with id=${uid}`);
+
     const userRef = doc(db, USERS_COLLECTION_NAME, uid);
 
     try {
@@ -102,6 +104,10 @@ export const createPlannedMedication = async (
     uid: string,
     plannedMedication: PlannedMedication
 ): Promise<void> => {
+    console.log(
+        `Creating plannedMedication=${plannedMedication} for user with id=${uid}`
+    );
+
     const userRef = doc(db, USERS_COLLECTION_NAME, uid);
     try {
         await runTransaction(db, async (transaction: Transaction) => {
@@ -124,7 +130,7 @@ export const createPlannedMedication = async (
             });
         });
 
-        console.log('Planned medication added successfully.');
+        console.log('Planned medication created successfully.');
     } catch (error) {
         console.error('Error creating planned medication:', error);
         throw new Error('Error creating planned medication');
