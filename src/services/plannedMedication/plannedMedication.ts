@@ -21,7 +21,7 @@ export const getPlannedMedications = async (
     db: Firestore,
     uid: string
 ): Promise<PlannedMedication[]> => {
-    console.log(`Fetching planned medications for user with id=${uid}`);
+    console.log(`Fetching all planned medications for user with id=${uid}`);
 
     const userRef = doc(db, USERS_COLLECTION_NAME, uid);
 
@@ -36,20 +36,14 @@ export const getPlannedMedications = async (
         if (!plannedMedications) {
             return [];
         }
-        // console.log(
-        //    plannedMedications[
-        //        '/users/10wFfsLJ3KTCPsW8oTU42K5x3Xt1/ownedMedications/4USkR96NecLgHItCWxFy'
-        //    ].startDate
-        // );
         const planned = await plannedMedicationsFirestoreToView(
             db,
             uid,
             plannedMedications
         );
-        console.log(planned);
         return planned;
     } catch (e) {
-        throw new Error('Error getting planned medications');
+        throw new Error(e);
     }
 };
 
@@ -64,18 +58,17 @@ interface PlannedMedicationFirestore {
     endDate?: Timestamp;
     timeBetweenDosesInHours: number;
 }
+function addSlashIfMissing(inputString) {
+    return inputString.startsWith('/') ? inputString : '/' + inputString;
+}
 
 export const getPlannedMedicationById = async (
     db: Firestore,
     uid: string,
     ownedMedicationId: string
 ): Promise<PlannedMedication> => {
-    console.log(
-        'Fetching planned medication with id ',
-        ownedMedicationId,
-        ' for userId ',
-        uid
-    );
+    console.log('Fetching planned medication with id ', ownedMedicationId, uid);
+    ownedMedicationId = addSlashIfMissing(ownedMedicationId);
     const userRef = doc(db, USERS_COLLECTION_NAME, uid);
     try {
         const snapshot: DocumentSnapshot = await getDoc(userRef);
@@ -87,14 +80,15 @@ export const getPlannedMedicationById = async (
         // TODO add check
         const plannedMedication: PlannedMedicationFirestore =
             plannedMedications[ownedMedicationId];
-        return await plannedMedicationFirestoreToView(
+        const s = await plannedMedicationFirestoreToView(
             db,
             uid,
             ownedMedicationId,
             plannedMedication
         );
+        return s;
     } catch (e) {
-        throw new Error('Error getting planned medication');
+        throw new Error(e);
     }
 };
 
