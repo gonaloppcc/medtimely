@@ -7,9 +7,10 @@ import {
     SecondaryButton,
 } from './Button';
 import { StyleSheet, View } from 'react-native';
-import { MedicationRecord } from '../model/medicationRecord';
+import { MedicationRecord, RecordState } from '../model/medicationRecord';
 import { MedicationIcon } from './MedicationIcon';
 import { formatDateToString } from '../services/date';
+import { getRecordState } from '../services/records';
 
 interface MedicationRecordModalProps {
     record: MedicationRecord;
@@ -32,12 +33,15 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 }) => {
     const theme = useTheme();
     const dataRecord = formatDateToString(record.scheduledTime);
-    // TODO replace by backend call
-    const takeOrUnTakenMsg = record.isTaken ? 'Untake' : 'Take';
 
-    const missedColor = record.isTaken
-        ? theme.colors.onSurface
-        : theme.colors.errorContainer;
+    const stateRecord = getRecordState(record);
+    const takeOrUnTakenMsg =
+        stateRecord == RecordState.TAKEN ? 'Untake' : 'Taken';
+
+    const missedColor =
+        stateRecord == RecordState.MISSED
+            ? theme.colors.errorContainer
+            : theme.colors.onSurface;
 
     return (
         <Dialog visible={visible} onDismiss={onDismiss}>
@@ -82,7 +86,9 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
                 </View>
             </Dialog.Content>
             <Dialog.Actions style={styles.buttonsContainer}>
-                <PrimaryButton onPress={onSkip}>Skip</PrimaryButton>
+                {stateRecord == RecordState.UNTAKEN && (
+                    <PrimaryButton onPress={onSkip}>Skip</PrimaryButton>
+                )}
                 <SecondaryButton onPress={onTakeOrUnTake}>
                     {takeOrUnTakenMsg}
                 </SecondaryButton>

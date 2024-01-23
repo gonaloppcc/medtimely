@@ -13,6 +13,7 @@ import { MedicationRecord } from '../../model/medicationRecord';
 import { ROUTE } from '../../model/routes';
 import { EmptyPlannedMedications } from '../../components/EmptyPlannedMedications';
 import { useDeleteRecord } from '../../hooks/useDeleteRecord';
+import { useToggleRecordTake } from '../../hooks/useToggleRecordTaken';
 
 const startDay = new Date();
 
@@ -88,19 +89,33 @@ export default function HomeScreen() {
             router.push({
                 pathname: ROUTE.MEDICATIONS.BY_ID,
                 params: {
-                    id: recordModal.id,
+                    id: recordModal.ownedMedicationRef,
                 },
             });
         }
         hideModal();
     };
 
+    const onSuccessToggleRecord = () => {
+        hideModal();
+    };
+    const onErrorToggleRecord = () => {
+        hideModal();
+    };
+
+    const { toggleRecordTake } = useToggleRecordTake(
+        uid,
+        selectedDay,
+        onSuccessToggleRecord,
+        onErrorToggleRecord
+    );
+
     const onSkipRecordMedication = () => {
-        //TODO: Skip record medication
+        if (recordModal) toggleRecordTake(recordModal);
     };
 
     const onTakeOrUntakeRecordMedication = () => {
-        //TODO: Taken or Untaken record medication
+        if (recordModal) toggleRecordTake(recordModal);
     };
 
     return (
