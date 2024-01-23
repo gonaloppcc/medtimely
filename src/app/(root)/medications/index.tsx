@@ -20,7 +20,7 @@ export default function MedicationsScreen() {
     const uid = user?.uid ?? '';
     // const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
 
-    const { isSuccess, isLoading, isError, medications } =
+    const { isSuccess, isLoading, isError, medications, refetch } =
         usePlannedMedications(uid);
 
     const medicationForms = Array.from(
@@ -64,6 +64,8 @@ export default function MedicationsScreen() {
             {isLoading && <ProgressIndicator />}
             {isSuccess && (
                 <PlannedMedicationCards
+                    isRefreshing={isLoading}
+                    onRefresh={refetch}
                     medications={medicationsFiltered}
                     onPressMedication={onPressMedication}
                 />
