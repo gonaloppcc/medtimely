@@ -74,11 +74,11 @@ export default function HomeScreen() {
         }
     };
 
-    const onDeleteRecord = () => {
+    const onDeleteRecord = async () => {
         if (recordModal) {
             const id = recordModal.id;
             if (id) {
-                deleteRecord(id);
+                await deleteRecord(id);
             }
         }
     };

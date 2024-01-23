@@ -43,10 +43,8 @@ export default function StockScreen() {
         groups,
     } = useGroups(uid);
 
-    const { isSuccess, isLoading, isError, ownedMedications } = useStock(
-        uid,
-        stockFilterSelected
-    );
+    const { isSuccess, isLoading, isError, ownedMedications, refetch } =
+        useStock(uid, stockFilterSelected);
 
     const stockFilters: { label: string; value: string }[] = groups.map(
         (group) => {
@@ -86,6 +84,8 @@ export default function StockScreen() {
                 <StockCards
                     ownedMedications={ownedMedications}
                     onPressOwnedMedication={onPressPersonalStockHandler}
+                    isRefreshing={isLoading}
+                    onRefresh={refetch}
                 />
             )}
             {isSuccess && ownedMedications && ownedMedications.length == 0 && (

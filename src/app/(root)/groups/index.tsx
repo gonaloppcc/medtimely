@@ -28,7 +28,7 @@ export default function GroupsScreen() {
         headerRight,
     });
 
-    const { isSuccess, isLoading, isError, groups } = useGroups(
+    const { isSuccess, isLoading, isError, groups, refetch } = useGroups(
         user?.uid ?? ''
     );
 
@@ -42,7 +42,12 @@ export default function GroupsScreen() {
             {isError && <Text>Something went wrong</Text>}
             {isLoading && <ProgressIndicator />}
             {isSuccess && groups.length > 0 && (
-                <GroupCards groups={groups} onPressGroup={onPressGroup} />
+                <GroupCards
+                    groups={groups}
+                    onPressGroup={onPressGroup}
+                    isRefreshing={isLoading}
+                    onRefresh={refetch}
+                />
             )}
         </View>
     );

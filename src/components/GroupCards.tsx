@@ -1,16 +1,29 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { GroupCard } from './GroupCard';
 import { Group } from '../model/group';
 
 interface GroupProps {
     groups: Group[];
     onPressGroup: (id: string) => void;
+    isRefreshing: boolean;
+    onRefresh?: () => void;
 }
 
-export const GroupCards = ({ groups, onPressGroup }: GroupProps) => {
+export const GroupCards = ({
+    groups,
+    onPressGroup,
+    isRefreshing,
+    onRefresh,
+}: GroupProps) => {
     return (
         <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={onRefresh}
+                ></RefreshControl>
+            }
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >

@@ -1,19 +1,29 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { StockCard } from './StockCard';
 import { OwnedMedication } from '../model/ownedMedication';
 
 interface OwnedMedicationCardsProps {
     ownedMedications: OwnedMedication[];
     onPressOwnedMedication: (id: string) => void;
+    isRefreshing: boolean;
+    onRefresh?: () => void;
 }
 
 export const StockCards = ({
     ownedMedications,
     onPressOwnedMedication,
+    isRefreshing,
+    onRefresh,
 }: OwnedMedicationCardsProps) => {
     return (
         <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={onRefresh}
+                ></RefreshControl>
+            }
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >
