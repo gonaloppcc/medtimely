@@ -97,15 +97,18 @@ const RECORDS: PopulateMedicationRecords[] = [
 
 console.log(`Creating ${RECORDS.length} records for userId=${userId}`);
 
-(async () => {
+const populateRecords = async (
+    startDate: Date,
+    interval: number = INTERVAL
+) => {
     const batch = writeBatch(db);
 
     await Promise.all(
         RECORDS.map(async (populateRecord, index) => {
             // @ts-expect-error I'm using a method I added to Date
             // Dynamically creating the scheduledTime
-            populateRecord.scheduledTime = new Date(START_DATE).addHours(
-                index * INTERVAL
+            populateRecord.scheduledTime = new Date(startDate).addHours(
+                index * interval
             );
 
             return await createRecordWithMedicationId(
@@ -120,6 +123,19 @@ console.log(`Creating ${RECORDS.length} records for userId=${userId}`);
     );
 
     await batch.commit();
+};
+
+const START_DATES: Date[] = [
+    // @ts-expect-error I'm using a method I added to Date
+    new Date().addHours(-96),
+    // @ts-expect-error I'm using a method I added to Date
+    new Date().addHours(-48),
+];
+
+(async () => {
+    for (const startDate of START_DATES) {
+        await populateRecords(startDate);
+    }
 })()
     .then(() => {
         console.log(`All done!`);

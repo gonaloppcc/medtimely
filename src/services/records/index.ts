@@ -296,9 +296,10 @@ const snapshotToRecord = (doc: DocumentSnapshot): MedicationRecord => {
             ...data,
             scheduledTime,
             id: doc.id,
-            ownedMedicationRef: data.ownedMedicationRef.path,
+            ownedMedicationRef: data.ownedMedicationRef?.path,
         } as MedicationRecord;
     } else {
+        console.error('Could not find document');
         throw new Error('Document does not exist');
     }
 };
