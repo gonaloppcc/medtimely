@@ -19,8 +19,8 @@ export default function MedicationScreen() {
 
     const theme = useAppTheme();
     const { user } = useAuthentication();
-    const uid = user?.uid ?? '';
-    // const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
+    // const uid = user?.uid ?? '';
+    const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
 
     const { isSuccess, isLoading, isError, error, medication } =
         usePlannedMedicationsById(uid, medicationID);
@@ -90,14 +90,7 @@ export default function MedicationScreen() {
                     </View>
 
                     <View style={styles.textContainer}>
-                        <Text variant="headlineLarge">Stock</Text>
-                        {/* Add ownedMedication info */}
-                    </View>
-
-                    <View style={styles.textContainer}>
                         <Text variant="headlineLarge">History</Text>
-
-                        <Text variant="headlineSmall">Today</Text>
                         {isLoadingRecords && <ProgressIndicator />}
                         {isErrorRecords && (
                             <Text variant="headlineMedium">Error</Text>

@@ -48,7 +48,6 @@ export default function MedicationsScreen() {
             params: { id: medicationId },
         });
     };
-    console.log(medicationsFiltered.length);
 
     return (
         <View style={styles.container}>
