@@ -18,7 +18,7 @@ export const useDeleteGroupMember = (
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({
-                queryKey: ['groups'],
+                queryKey: ['group', groupId],
             });
             onSuccess();
         },

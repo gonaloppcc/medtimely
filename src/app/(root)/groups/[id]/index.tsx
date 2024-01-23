@@ -56,7 +56,7 @@ export default function GroupScreen() {
     };
 
     const onErrorGroup = () => {
-        //TODO: Add error group msg
+        //FIXME: Add error group msg
     };
 
     const { deleteGroup } = useDeleteGroup(onSuccessGroup, onErrorGroup);

@@ -58,7 +58,7 @@ export default function MedicationScreen() {
 
     const onPressRecord = (id: string) => {
         console.log(id);
-        //TODO: Add modal like the homepage
+        //TODO: Add modal like the homepage with calendar???
     };
 
     return (

@@ -118,11 +118,12 @@ export default function NewStockScreen() {
         };
 
         if (values.groupId && values.groupId !== '') {
-            // TODO
+            // TODO: fix this
         } else {
-            // TODO: Navigate to medication page
             await createOwnedMedication(db, uid, med);
-            router.replace('/stock');
+            router.push({
+                pathname: ROUTE.STOCK.HOME,
+            });
         }
     };
 
