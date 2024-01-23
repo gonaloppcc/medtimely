@@ -86,7 +86,9 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
                 </View>
             </Dialog.Content>
             <Dialog.Actions style={styles.buttonsContainer}>
-                <PrimaryButton onPress={onSkip}>Skip</PrimaryButton>
+                {stateRecord == RecordState.UNTAKEN && (
+                    <PrimaryButton onPress={onSkip}>Skip</PrimaryButton>
+                )}
                 <SecondaryButton onPress={onTakeOrUnTake}>
                     {takeOrUnTakenMsg}
                 </SecondaryButton>
