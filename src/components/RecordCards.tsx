@@ -4,6 +4,7 @@ import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { RecordCard } from './RecordCard';
 import { formatDateToHoursMinutesString } from '../services/date';
 import { Text, useTheme } from 'react-native-paper';
+import { getRecordState } from '../services/records';
 
 interface MedCardsProps {
     records: MedicationRecord[];
@@ -47,7 +48,11 @@ export const RecordCards = ({
                                 record.scheduledTime
                             )}
                         </Text>
-                        <RecordCard {...record} onPress={onPressRecord} />
+                        <RecordCard
+                            state={getRecordState(record)}
+                            {...record}
+                            onPress={onPressRecord}
+                        />
                     </View>
                 );
             })}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { MedicationRecord } from '../model/medicationRecord';
+import { MedicationRecord, RecordState } from '../model/medicationRecord';
 import { MedicationIcon } from './MedicationIcon';
 
 type MedCardProps = MedicationRecord & {
-    // Added any extra props here
+    state: RecordState;
     onPress: (id: string) => void;
 };
 export const RecordCard = ({
@@ -13,17 +13,20 @@ export const RecordCard = ({
     units,
     dosage,
     form,
-    isTaken,
     name,
+    state,
     onPress,
 }: MedCardProps) => {
     const theme = useTheme();
 
     const title = units == null || units == 1 ? name : `${name} (x${units})`;
 
-    const backgroundColor = isTaken
-        ? theme.colors.surface
-        : theme.colors.errorContainer;
+    const backgroundColor =
+        state == RecordState.MISSED
+            ? theme.colors.errorContainer
+            : theme.colors.surface;
+
+    const isTaken = state == RecordState.TAKEN;
 
     const style = {
         ...styles.container,
