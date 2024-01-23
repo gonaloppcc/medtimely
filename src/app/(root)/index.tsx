@@ -96,11 +96,11 @@ export default function HomeScreen() {
     };
 
     const onSkipRecordMedication = () => {
-        //TODO: delete record
+        //TODO: Skip record medication
     };
 
     const onTakeOrUntakeRecordMedication = () => {
-        //TODO: delete record
+        //TODO: Taken or Untaken record medication
     };
 
     return (

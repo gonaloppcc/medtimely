@@ -120,11 +120,11 @@ export default function GroupMemberScreen() {
     };
 
     const onSkipRecordMedication = () => {
-        //TODO: delete record
+        //TODO: Skip record medication
     };
 
     const onTakeOrUntakeRecordMedication = () => {
-        //TODO: delete record
+        //TODO: Take or untake record medication
     };
 
     //HANDLER to delete group member

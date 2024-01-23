@@ -12,6 +12,7 @@ import { useNavOptions } from '../../../../hooks/useNavOptions';
 import { useGroupById } from '../../../../hooks/useGroupById';
 import { ProgressIndicator } from '../../../../components/ProgressIndicator';
 import { Modal } from '../../../../components/Modal';
+import { useDeleteGroup } from '../../../../hooks/useDeleteGroup';
 
 export interface GroupCardProps {
     onPress: (id: string) => void;
@@ -49,11 +50,20 @@ export default function GroupScreen() {
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });
     };
 
-    const deleteGroupHandler = async () => {
-        //TODO: Call function
-        //TODO: Add error msg
+    const onSuccessGroup = () => {
+        hideModal();
+        router.push({ pathname: ROUTE.GROUPS.BASE_NAME });
     };
-    console.log(group);
+
+    const onErrorGroup = () => {
+        //FIXME: Add error group msg
+    };
+
+    const { deleteGroup } = useDeleteGroup(onSuccessGroup, onErrorGroup);
+
+    const deleteGroupHandler = () => {
+        if (group && group.id) deleteGroup(group.id);
+    };
 
     return (
         <View style={styles.container}>

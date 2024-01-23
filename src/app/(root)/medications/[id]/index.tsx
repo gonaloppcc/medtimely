@@ -19,8 +19,8 @@ export default function MedicationScreen() {
 
     const theme = useAppTheme();
     const { user } = useAuthentication();
-    // const uid = user?.uid ?? '';
-    const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
+    const uid = user?.uid ?? '';
+    // const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
 
     const { isSuccess, isLoading, isError, error, medication } =
         usePlannedMedicationsById(uid, medicationID);
@@ -58,7 +58,7 @@ export default function MedicationScreen() {
 
     const onPressRecord = (id: string) => {
         console.log(id);
-        //TODO: Add modal like the homepage
+        //TODO: Add modal like the homepage with calendar???
     };
 
     return (
