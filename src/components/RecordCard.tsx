@@ -55,7 +55,9 @@ export const RecordCard = ({
                     >
                         {title}
                     </Text>
-                    {isTaken && <Icon size={20} source="check-all" />}
+                    {isTaken && (
+                        <Icon color="green" size={20} source="check-all" />
+                    )}
                 </View>
                 <Text
                     variant="labelMedium"
