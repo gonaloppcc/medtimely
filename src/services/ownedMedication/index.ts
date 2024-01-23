@@ -2,6 +2,7 @@ import { MedicationRecordForm } from '../../model/medicationRecord';
 import {
     OwnedMedication,
     OwnedMedicationData,
+    OwnedMedicationWithoutMedicationFields,
 } from '../../model/ownedMedication';
 import {
     addDoc,
@@ -156,6 +157,47 @@ export const getUserGroupOwnedMedications = async (
             resolve(Array(10).fill(OWNED_MEDICATION));
         }, 1000);
     });
+};
+
+export const createOwnedMedicationWithMedicationId = async (
+    db: Firestore,
+    uid: string,
+    ownedMedication: OwnedMedicationWithoutMedicationFields
+): Promise<string> => {
+    console.log(
+        `creating owned medication for user with id=${uid} with ownedMedicationWithoutMedicationFields=${JSON.stringify(
+            ownedMedication
+        )}`
+    );
+
+    const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
+
+    try {
+        const medication = await getMedication(
+            db,
+            ownedMedication.medicationId
+        );
+
+        const ownedMedicationWithMedication: OwnedMedicationData = {
+            ...medication,
+            ...ownedMedication,
+        };
+
+        const docRef = await addDoc(
+            ownedMedicationCollection,
+            ownedMedicationWithMedication
+        );
+
+        console.log(`created ownedMedication with id=${docRef.id}`);
+
+        return docRef.path;
+    } catch (err) {
+        console.error('Error creating document: ', err);
+        throw new ProjectError(
+            'CREATING_OWNED_MEDICATION_ERROR',
+            `Error creating document on path=${OWNED_MEDICATIONS_COLLECTION}`
+        );
+    }
 };
 
 export const createOwnedMedication = async (

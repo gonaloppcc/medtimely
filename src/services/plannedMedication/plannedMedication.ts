@@ -58,6 +58,7 @@ interface PlannedMedicationFirestore {
     endDate?: Timestamp;
     timeBetweenDosesInHours: number;
 }
+
 function addSlashIfMissing(inputString) {
     return inputString.startsWith('/') ? inputString : '/' + inputString;
 }
@@ -96,10 +97,13 @@ export const getPlannedMedicationById = async (
 export const createPlannedMedication = async (
     db: Firestore,
     uid: string,
-    plannedMedication: PlannedMedication
+    plannedMedication: Omit<PlannedMedication, 'ownedMedication'>,
+    ownedMedicationId: string
 ): Promise<void> => {
     console.log(
-        `Creating plannedMedication=${plannedMedication} for user with id=${uid}`
+        `Creating plannedMedication=${JSON.stringify(
+            plannedMedication
+        )} for user with id=${uid} and ownedMedicationId=${ownedMedicationId}`
     );
 
     const userRef = doc(db, USERS_COLLECTION_NAME, uid);
@@ -114,8 +118,6 @@ export const createPlannedMedication = async (
             const plannedMedicationsMap: PlannedMedicationsFirestore =
                 userDoc.data()?.plannedMedications || {};
 
-            const ownedMedicationId: string =
-                plannedMedication.ownedMedication.id;
             plannedMedicationsMap[ownedMedicationId] =
                 plannedMedicationViewToFirestore(plannedMedication);
 
@@ -132,8 +134,8 @@ export const createPlannedMedication = async (
 };
 
 const plannedMedicationViewToFirestore = (
-    plannedMedication: PlannedMedication
-): PlannedMedicationFirestore => {
+    plannedMedication: Omit<PlannedMedication, 'ownedMedication'>
+),: PlannedMedicationFirestore => {
     const { doseToBeTaken, schedule } = plannedMedication;
     const plannedMedicationFirestore: PlannedMedicationFirestore = {
         doseToBeTaken,

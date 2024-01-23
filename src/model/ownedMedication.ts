@@ -8,6 +8,10 @@ export interface OwnedMedication extends Medication {
 
 export type OwnedMedicationData = Omit<OwnedMedication, 'id'>;
 
+export type OwnedMedicationWithoutMedicationFields = Required<
+    Pick<OwnedMedication, 'stock' | 'medicationId'>
+>;
+
 export interface PlannedMedication {
     ownedMedication: OwnedMedication;
     doseToBeTaken: number;

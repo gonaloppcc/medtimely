@@ -12,6 +12,7 @@ export interface MedicationRecord {
 
 export interface MedicationRecordWithoutMedication {
     isPlanned: boolean;
+    ownedMedicationRef?: string;
     units?: number;
     missed?: boolean;
     scheduledTime: Date;

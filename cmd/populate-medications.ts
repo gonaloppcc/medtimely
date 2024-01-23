@@ -8,18 +8,12 @@ import { Medication } from '../src/model/medication';
 import { createMedication } from '../src/services/medications';
 import { createReadStream } from 'fs';
 import parse from 'csv-parser';
+import { randomChoice, randomNumber } from './random';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const MEDICATIONS_FILE_PATH = './data/lista_infomed.csv';
-
-const randomNumber = (min: number, max: number): number =>
-    Math.floor(Math.random() * (max - min + 1)) + min;
-
-const randomChoice = <T>(choices: T[]): T =>
-    choices[randomNumber(0, choices.length - 1)];
-
 interface InfarmedMedication {
     ' Substância Ativa/DCI': string;
     'Nome do Medicamento': string;
