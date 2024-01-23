@@ -59,39 +59,6 @@ export const getUserGroups = async (
 };
 
 //TODO: Change
-export const getGroupById = async (
-    db: Firestore,
-    groupId: string
-): Promise<Group> => {
-    console.log(`Fetching group with id=${groupId}`);
-
-    const group = {
-        id: 'testId',
-        name: 'Family',
-        description: 'Something about family blbabalbalba',
-        users: [
-            {
-                id: 'testUserId',
-                firstname: 'João',
-                lastname: 'Pedro',
-                groups: [],
-            },
-            {
-                id: 'testUserId2',
-                firstname: 'Maria',
-                lastname: 'Carolina',
-                groups: [],
-            },
-        ],
-        sharedMeds: ['med1', 'med2', 'med3'],
-        treatmentPermissions: 'view',
-        hasSharedStock: true,
-    } as Group;
-
-    return Promise.resolve(group);
-};
-
-//TODO: Change
 export const getMemberGroupById = async (
     db: Firestore,
     groupId: string,
@@ -130,7 +97,7 @@ const getUsersByRef = async (
     );
 };
 
-export const getGroup = async (
+export const getGroupById = async (
     db: Firestore,
     groupId: string
 ): Promise<Group> => {

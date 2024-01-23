@@ -9,8 +9,8 @@ export interface GroupMemberCardProps extends User {
 
 export const GroupMember = ({
     id,
-    firstname,
-    lastname,
+    firstName: firstname,
+    lastName: lastname,
     onPressGroupMember,
 }: GroupMemberCardProps) => {
     const theme = useTheme();
