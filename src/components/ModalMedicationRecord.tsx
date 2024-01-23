@@ -37,7 +37,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 
     const missedColor = record.isTaken
         ? theme.colors.onSurface
-            : theme.colors.errorContainer;
+        : theme.colors.errorContainer;
 
     return (
         <Dialog visible={visible} onDismiss={onDismiss}>
@@ -62,7 +62,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 
                     <View style={styles.titleStyle}>
                         <Text variant="headlineMedium">{record.name}</Text>
-                        {record.isTaken &&(
+                        {record.isTaken && (
                             <Icon color="green" size={20} source="check-all" />
                         )}
                     </View>

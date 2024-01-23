@@ -20,6 +20,12 @@ export interface MedicationRecordWithoutMedication {
 
 export type MedicationRecordData = Omit<MedicationRecord, 'id'>;
 
+export enum RecordState {
+    TAKEN,
+    UNTAKEN,
+    MISSED,
+}
+
 export enum MedicationRecordForm {
     TABLET = 'Tablet',
     CAPSULE = 'Capsule',
