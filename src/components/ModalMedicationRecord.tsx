@@ -32,7 +32,8 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 }) => {
     const theme = useTheme();
     const dataRecord = formatDateToString(record.scheduledTime);
-    const takeOrUnTakenMsg = record.missed ? 'Taken' : 'Untaken';
+    // TODO replace by backend call
+    const takeOrUnTakenMsg = record.missed ? 'Take' : 'Untake';
 
     const missedColor = record.missed
         ? theme.colors.errorContainer
@@ -72,7 +73,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
                         <Text
                             style={{ color: missedColor }}
                             variant="bodyMedium"
-                        >{`Schedule for ${dataRecord}`}</Text>
+                        >{`Scheduled for ${dataRecord}`}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
                         <Icon size={20} source="file-document" />
