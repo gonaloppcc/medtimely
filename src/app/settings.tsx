@@ -63,40 +63,6 @@ export default function SettingsScreen() {
 
     return (
         <View style={styles.container}>
-            {/* TODO: Erase the buttons below when the design is ready and applied
-            USE THEM INSTEAD OF THE DEFAULT BUT ADD THE ICONS*/}
-            {/*
-            <PrimaryButton
-                onPress={() => router.push({ pathname: '/groups/1/members/1' })}
-            >
-                Primary Button
-            </PrimaryButton>
-
-            <SecondaryButton
-                onPress={() => router.push({ pathname: '/groups/1/members/1' })}
-            >
-                Secondary Button
-            </SecondaryButton>
-
-            <OutlineButton onPress={() => router.push({ pathname: '/groups' })}>
-                Outline Button
-            </OutlineButton>
-
-            <GhostButton onPress={() => router.push({ pathname: '/groups' })}>
-                Ghost Button
-            </GhostButton>
-
-            <DestructiveButton
-                onPress={() => router.push({ pathname: '/groups/1/members/1' })}
-            >
-                Destructive Button
-            </DestructiveButton>
-
-            <DestructiveButton onPress={onPressHandlerLogOut}>
-                Logout
-            </DestructiveButton>
-            */}
-
             <Button
                 icon="pencil"
                 onPress={onPressHandlerEditProfile}
