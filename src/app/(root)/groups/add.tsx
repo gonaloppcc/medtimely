@@ -3,7 +3,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
-import { Input } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
 import { ErrorMessage } from '../../../components/ErrorMessage';
 import { createGroup } from '../../../services/groups';
@@ -12,6 +11,7 @@ import { useAuthentication } from '../../../hooks/useAuthentication';
 import { GroupData } from '../../../model/group';
 import { router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
+import { TextInput } from 'react-native-paper';
 
 interface Values {
     name: string;
@@ -59,11 +59,12 @@ export default function GroupMemberScreen() {
                 }) => (
                     <>
                         <View style={styles.field}>
-                            <Input
+                            <TextInput
+                                placeholder="Group Name"
                                 value={values.name}
                                 onChangeText={handleChange('name')}
                                 onBlur={handleBlur('name')}
-                                label="Name"
+                                label="Group Name"
                             />
 
                             {touched.name && errors.name && (
@@ -72,7 +73,8 @@ export default function GroupMemberScreen() {
                         </View>
 
                         <View style={styles.field}>
-                            <Input
+                            <TextInput
+                                placeholder="Description"
                                 value={values.description}
                                 onChangeText={handleChange('description')}
                                 onBlur={handleBlur('description')}
