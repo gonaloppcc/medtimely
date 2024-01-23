@@ -88,7 +88,7 @@ const populatePlannedMedications = async (ownedMedicationIds: string[]) => {
             db,
             userId,
             plannedMedication,
-            ownedMedicationId
+            `/${ownedMedicationId}`
         );
     }
 
@@ -105,7 +105,7 @@ const populateRecords = async (
         const medicationId = medicationIds[i];
         const ownedMedicationId = ownedMedicationIds[i];
 
-        const ownedMedicationRef = `users/${userId}/ownedMedications/${ownedMedicationId}`;
+        const ownedMedicationRef = ownedMedicationId;
         const record: MedicationRecordWithoutMedication = {
             isPlanned: true,
             ownedMedicationRef,

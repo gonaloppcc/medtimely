@@ -6,14 +6,14 @@ import { PlannedMedication } from '../model/ownedMedication';
 interface MedicationCardsProps {
     medications: PlannedMedication[];
     onPressMedication: (id: string) => void;
-    isRefreshing: boolean;
+    isRefreshing?: boolean;
     onRefresh?: () => void;
 }
 
 export const PlannedMedicationCards = ({
     medications,
     onPressMedication,
-    isRefreshing,
+    isRefreshing = false,
     onRefresh,
 }: MedicationCardsProps) => {
     return (

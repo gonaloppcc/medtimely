@@ -15,11 +15,11 @@ export const useDeleteGroup = (
         mutationFn: async (groupId: string) => {
             return await deleteGroup(db, groupId);
         },
-        onSuccess: async (groupId: string) => {
+        onSuccess: async (_, variables) => {
             await queryClient.invalidateQueries({
                 queryKey: ['groups'],
             });
-            onSuccess(groupId);
+            onSuccess(variables);
         },
         onError,
     });
