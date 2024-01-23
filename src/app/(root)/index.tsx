@@ -89,7 +89,7 @@ export default function HomeScreen() {
             router.push({
                 pathname: ROUTE.MEDICATIONS.BY_ID,
                 params: {
-                    id: recordModal.id,
+                    id: recordModal.ownedMedicationRef,
                 },
             });
         }

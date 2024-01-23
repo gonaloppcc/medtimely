@@ -113,7 +113,7 @@ export default function GroupMemberScreen() {
             router.push({
                 pathname: ROUTE.MEDICATIONS.BY_ID,
                 params: {
-                    id: recordModal.id,
+                    id: recordModal.ownedMedicationRef,
                 },
             });
         }
