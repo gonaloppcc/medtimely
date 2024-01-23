@@ -14,7 +14,9 @@ import { useRecordsByMedication } from '../../../../hooks/useRecordsByMedication
 import { usePlannedMedicationsById } from '../../../../hooks/usePlannedMedicationById';
 
 export default function MedicationScreen() {
-    const medicationID = useLocalSearchParams()!.id as string;
+    const medicationIdEnconde = useLocalSearchParams()!.id as string;
+    const medicationID = decodeURIComponent(medicationIdEnconde);
+
     const theme = useAppTheme();
     const { user } = useAuthentication();
     const uid = user?.uid ?? '';

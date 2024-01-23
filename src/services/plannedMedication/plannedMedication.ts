@@ -83,7 +83,7 @@ export const getPlannedMedicationById = async (
             throw new Error('User does not exist');
         }
         const plannedMedications: PlannedMedicationsFirestore =
-            snapshot.data()?.plannedMedications;
+            snapshot.data().plannedMedications;
         // TODO add check
         const plannedMedication: PlannedMedicationFirestore =
             plannedMedications[ownedMedicationId];
