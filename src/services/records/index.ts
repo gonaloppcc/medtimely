@@ -16,18 +16,24 @@ import {
     where,
 } from 'firebase/firestore';
 
-import { MedicationRecord } from '../../model/medicationRecord';
+import {
+    MedicationRecord,
+    MedicationRecordData,
+    MedicationRecordWithoutMedication,
+} from '../../model/medicationRecord';
 
 import dayjs from 'dayjs';
 import { ProjectError } from '../error';
+import { Medication } from '../../model/medication';
+import { getMedication } from '../medications';
 
 type Day = `${number}/${number}/${number}`;
 
 interface FirestoreMedicationRecord
-    extends Omit<MedicationRecord, 'scheduledTime' | 'ownedMedicationRef'> {
+    extends Omit<MedicationRecordData, 'scheduledTime' | 'ownedMedicationRef'> {
     day: Day;
     scheduledTime: Timestamp;
-    ownedMedicationRef: DocumentReference;
+    ownedMedicationRef?: DocumentReference;
 }
 
 const getUserRecordCollection = (db: Firestore, userId: string) => {
@@ -144,7 +150,7 @@ export const getRecord = async (
 export const createRecord = async (
     db: Firestore,
     userId: string,
-    record: MedicationRecord
+    record: MedicationRecordData
 ): Promise<string> => {
     console.log(
         `Creating record=${JSON.stringify(record)} for user with id=${userId}`
@@ -169,8 +175,58 @@ export const createRecord = async (
         console.log(`Created record with id=${docRef.id}`);
 
         return docRef.id;
-        // @ts-expect-error TODO: fix this error
-    } catch (err: FirestoreError) {
+    } catch (err) {
+        console.error('Error adding document: ', err.message);
+        throw new ProjectError(
+            'ADDING_RECORD_ERROR',
+            `Error adding document on path=${getUserRecordCollectionString(
+                userId
+            )} with data=${JSON.stringify(record)}`
+        );
+    }
+};
+
+export const createRecordWithMedicationId = async (
+    db: Firestore,
+    userId: string,
+    record: MedicationRecordWithoutMedication,
+    medicationId: string
+): Promise<string> => {
+    console.log(
+        `Creating record=${JSON.stringify(record)} for user with id=${userId}`
+    );
+
+    const userRecordCollection = getUserRecordCollection(db, userId);
+
+    let medication: Medication;
+    try {
+        medication = await getMedication(db, medicationId);
+    } catch (err) {
+        console.error('Error calling getMedication: ', err.message);
+        throw new ProjectError(
+            'ADDING_RECORD_ERROR',
+            `Error calling getMedication on path=${getUserRecordCollectionString(
+                userId
+            )} with data=${JSON.stringify(record)}`
+        );
+    }
+
+    const firestoreRecord: FirestoreMedicationRecord = {
+        ...record,
+        day: dayjs(record.scheduledTime).format('D/M/YYYY') as Day,
+        scheduledTime: Timestamp.fromDate(record.scheduledTime),
+        name: medication.name,
+        dosage: medication.dosage,
+        form: medication.form,
+    };
+
+    try {
+        const docRef = await addDoc(userRecordCollection, firestoreRecord);
+
+        console.log(`Created record with id=${docRef.id}`);
+
+        return docRef.id;
+    } catch (err) {
         console.error('Error adding document: ', err.message);
         throw new ProjectError(
             'ADDING_RECORD_ERROR',
@@ -185,8 +241,8 @@ export const updateRecord = async (
     db: Firestore,
     userId: string,
     recordId: string,
-    record: MedicationRecord
-): Promise<void> => {
+    record: MedicationRecordData
+): Pr,omise<void> => {
     console.log(`Updating record=${record} for token=${userId}`);
 
     const userRecordCollection = getUserRecordCollection(db, userId);
@@ -207,7 +263,7 @@ export const updateRecord = async (
             )}/${recordId} with data=${JSON.stringify(record)}`
         );
     }
-};
+}
 
 export const deleteRecord = async (
     db: Firestore,

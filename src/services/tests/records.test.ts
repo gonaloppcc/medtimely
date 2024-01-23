@@ -6,7 +6,7 @@ import {
     updateRecord,
 } from '../records';
 import {
-    MedicationRecord,
+    MedicationRecordData,
     MedicationRecordForm,
 } from '../../model/medicationRecord';
 import { firebaseConfig } from '../../../firebaseConfig';
@@ -25,7 +25,7 @@ afterAll(async () => {
 });
 
 test('createRecord&getRecord: should create a record and retrieve it', async () => {
-    const RECORD: MedicationRecord = {
+    const RECORD: MedicationRecordData = {
         name: 'Fluoxetine',
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
@@ -38,15 +38,17 @@ test('createRecord&getRecord: should create a record and retrieve it', async () 
 
     const recordId = await createRecord(db, USER_ID, RECORD);
 
-    const recordRetrieved = await getRecord(db, recordId, USER_ID);
-
-    RECORD.id = recordId; // add the id to the record to compare
+    const recordRetrieved = (await getRecord(
+        db,
+        recordId,
+        USER_ID
+    )) as MedicationRecordData;
 
     expect(recordRetrieved).toEqual(RECORD);
 });
 
 test('deleteRecord: should delete a record', async () => {
-    const RECORD: MedicationRecord = {
+    const RECORD: MedicationRecordData = {
         name: 'Fluoxetine',
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
@@ -61,16 +63,20 @@ test('deleteRecord: should delete a record', async () => {
 
     await deleteRecord(db, USER_ID, recordId);
 
-    let recordRetrieved: MedicationRecord | undefined;
+    let recordRetrieved: MedicationRecordData | undefined;
     try {
-        recordRetrieved = await getRecord(db, recordId, USER_ID);
+        recordRetrieved = (await getRecord(
+            db,
+            recordId,
+            USER_ID
+        )) as MedicationRecordData;
     } catch (err) {
         expect(recordRetrieved).toBeUndefined();
     }
 });
 
 test('updateRecord: should update a record', async () => {
-    const RECORD: MedicationRecord = {
+    const RECORD: MedicationRecordData = {
         name: 'Fluoxetine',
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
@@ -83,7 +89,7 @@ test('updateRecord: should update a record', async () => {
 
     const recordId = await createRecord(db, USER_ID, RECORD);
 
-    const UPDATED_RECORD: MedicationRecord = {
+    const UPDATED_RECORD: MedicationRecordData = {
         name: 'Fluoxetine',
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
@@ -97,8 +103,6 @@ test('updateRecord: should update a record', async () => {
     await updateRecord(db, USER_ID, recordId, UPDATED_RECORD);
 
     const recordRetrieved = await getRecord(db, recordId, USER_ID);
-
-    UPDATED_RECORD.id = recordId; // add the id to the record to compare
 
     expect(recordRetrieved).toEqual(UPDATED_RECORD);
 });
