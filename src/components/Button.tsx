@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button as PaperButton } from 'react-native-paper';
-import { Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useAppTheme } from '../theme';
 
 interface ButtonProps {

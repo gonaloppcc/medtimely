@@ -2,23 +2,12 @@ import { Formik } from 'formik';
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
-import {
-    Text,
-    Button,
-    Checkbox,
-    ToggleButton,
-    Switch,
-} from 'react-native-paper';
+import { Text, Button, Switch } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import { PrimaryButton } from '../../../components/Button';
 import { Input } from '../../../components/Input';
 import { ErrorMessage } from '../../../components/ErrorMessage';
-import {
-    DatePickerInput,
-    DatePickerModal,
-    TimePickerModal,
-} from 'react-native-paper-dates';
-import { CalendarDate } from 'react-native-paper-dates/lib/typescript/Date/Calendar';
+import { DatePickerInput, TimePickerModal } from 'react-native-paper-dates';
 
 /// Requirements:
 /// Ask for:
@@ -69,7 +58,8 @@ export default function NewPlannedMedicationScreen() {
 
     const onSubmit = () => {};
     const [startTimeVisible, setStartTimeVisible] = React.useState(false);
-    const [intervalVisible, setIntervalVisible] = React.useState(false);
+    // TODO: Use time picker for interval too
+    // const [intervalVisible, setIntervalVisible] = React.useState(false);
 
     return (
         <Formik

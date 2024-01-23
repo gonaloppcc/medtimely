@@ -19,7 +19,7 @@ export const EmptyPlannedMedications = () => {
 
             <Button
                 onPress={() => {
-                    router.push('/medications/new');
+                    router.push({ pathname: '/medications/new' });
                 }}
             >
                 Add a planned medication
