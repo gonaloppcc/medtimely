@@ -135,7 +135,7 @@ export const createPlannedMedication = async (
 
 const plannedMedicationViewToFirestore = (
     plannedMedication: Omit<PlannedMedication, 'ownedMedication'>
-),: PlannedMedicationFirestore => {
+): PlannedMedicationFirestore => {
     const { doseToBeTaken, schedule } = plannedMedication;
     const plannedMedicationFirestore: PlannedMedicationFirestore = {
         doseToBeTaken,

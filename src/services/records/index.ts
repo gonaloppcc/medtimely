@@ -211,8 +211,13 @@ export const createRecordWithMedicationId = async (
         );
     }
 
+    const ownedMedicationRef = record.ownedMedicationRef
+        ? doc(db, record.ownedMedicationRef)
+        : undefined;
+
     const firestoreRecord: FirestoreMedicationRecord = {
         ...record,
+        ownedMedicationRef,
         day: dayjs(record.scheduledTime).format('D/M/YYYY') as Day,
         scheduledTime: Timestamp.fromDate(record.scheduledTime),
         name: medication.name,
