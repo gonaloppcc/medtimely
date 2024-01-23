@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        gap: 10,
+        gap: 15,
         alignItems: 'center',
         borderRadius: 5,
         padding: 12,
@@ -76,5 +76,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
+        gap: 4,
     },
 });
