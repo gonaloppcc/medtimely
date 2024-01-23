@@ -13,7 +13,7 @@ export const RecordCard = ({
     units,
     dosage,
     form,
-    missed,
+    isTaken,
     name,
     onPress,
 }: MedCardProps) => {
@@ -21,9 +21,9 @@ export const RecordCard = ({
 
     const title = units == null || units == 1 ? name : `${name} (x${units})`;
 
-    const backgroundColor = missed
-        ? theme.colors.errorContainer
-        : theme.colors.surface;
+    const backgroundColor = isTaken
+        ? theme.colors.surface
+        : theme.colors.errorContainer;
 
     const style = {
         ...styles.container,
@@ -52,7 +52,7 @@ export const RecordCard = ({
                     >
                         {title}
                     </Text>
-                    {missed !== null && !missed && (
+                    {isTaken && (
                         <Icon size={20} source="check-all" />
                     )}
                 </View>

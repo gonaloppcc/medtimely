@@ -33,11 +33,11 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
     const theme = useTheme();
     const dataRecord = formatDateToString(record.scheduledTime);
     // TODO replace by backend call
-    const takeOrUnTakenMsg = record.missed ? 'Take' : 'Untake';
+    const takeOrUnTakenMsg = record.isTaken ? 'Untake' : 'Take';
 
-    const missedColor = record.missed
-        ? theme.colors.errorContainer
-        : theme.colors.onSurface;
+    const missedColor = record.isTaken
+        ? theme.colors.onSurface
+            : theme.colors.errorContainer;
 
     return (
         <Dialog visible={visible} onDismiss={onDismiss}>
@@ -62,7 +62,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 
                     <View style={styles.titleStyle}>
                         <Text variant="headlineMedium">{record.name}</Text>
-                        {record.missed !== null && !record.missed && (
+                        {record.isTaken &&(
                             <Icon color="green" size={20} source="check-all" />
                         )}
                     </View>

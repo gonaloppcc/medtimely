@@ -6,7 +6,7 @@ export interface MedicationRecord {
     dosage: string;
     form: MedicationRecordForm;
     units?: number;
-    missed?: boolean;
+    isTaken?: boolean;
     scheduledTime: Date;
 }
 
@@ -14,7 +14,7 @@ export interface MedicationRecordWithoutMedication {
     isPlanned: boolean;
     ownedMedicationRef?: string;
     units?: number;
-    missed?: boolean;
+    isTaken?: boolean;
     scheduledTime: Date;
 }
 
