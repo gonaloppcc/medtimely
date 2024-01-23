@@ -242,7 +242,7 @@ export const updateRecord = async (
     userId: string,
     recordId: string,
     record: MedicationRecordData
-): Pr,omise<void> => {
+): Promise<void> => {
     console.log(`Updating record=${record} for token=${userId}`);
 
     const userRecordCollection = getUserRecordCollection(db, userId);
@@ -263,7 +263,7 @@ export const updateRecord = async (
             )}/${recordId} with data=${JSON.stringify(record)}`
         );
     }
-}
+};
 
 export const deleteRecord = async (
     db: Firestore,
