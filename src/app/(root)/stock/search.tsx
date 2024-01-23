@@ -16,7 +16,7 @@ export default function SearchModal() {
     return (
         <View style={styles.form}>
             <View style={styles.searchBar}>
-                <View style={styles.inputContainer}>
+                <View style={styles.input}>
                     <Input
                         value={search}
                         onChangeText={setSearch}
@@ -24,17 +24,15 @@ export default function SearchModal() {
                         placeholder="Search"
                     />
                 </View>
-                <View style={styles.cancelContainer}>
-                    <GhostButton
-                        onPress={() => {
-                            router.push({
-                                pathname: ROUTE.STOCK.ADD,
-                            });
-                        }}
-                    >
-                        Cancel
-                    </GhostButton>
-                </View>
+                <GhostButton
+                    onPress={() => {
+                        router.push({
+                            pathname: ROUTE.STOCK.ADD,
+                        });
+                    }}
+                >
+                    Cancel
+                </GhostButton>
             </View>
 
             <View style={styles.medicationsCards}>
@@ -75,9 +73,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        gap: 8,
     },
-    inputContainer: {
-        width: '80%',
+    input: {
+        flex: 1,
     },
     cancelContainer: {},
     medicationsCards: {

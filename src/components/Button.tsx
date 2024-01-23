@@ -112,7 +112,11 @@ export const GhostButton = ({
     onPress: () => void;
     disabled?: boolean;
 }) => {
-    return <Button onPress={onPress} disabled={disabled} title={children} />;
+    return (
+        <PaperButton onPress={onPress} disabled={disabled} mode="text">
+            {children}
+        </PaperButton>
+    );
 };
 
 export const DestructiveButton = ({

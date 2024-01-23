@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack, router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-paper';
+import { Appbar, Icon } from 'react-native-paper';
 import { ROUTE } from '../../../model/routes';
 
 export default function MedicationsLayout() {
@@ -24,6 +24,14 @@ export default function MedicationsLayout() {
                 options={{
                     headerLeft: () => <></>,
                     title: 'Medications',
+                    headerRight: () => (
+                        <Appbar.Action
+                            onPress={() => {
+                                router.push('/medications/new');
+                            }}
+                            icon="plus"
+                        />
+                    ),
                 }}
             />
             <Stack.Screen
@@ -31,6 +39,12 @@ export default function MedicationsLayout() {
                 options={{
                     headerLeft: () => <CustomBackButton />,
                     title: 'Medication',
+                }}
+            />
+            <Stack.Screen
+                name="new"
+                options={{
+                    title: 'New',
                 }}
             />
         </Stack>
