@@ -76,7 +76,7 @@ function SelectMedication({
         isLoading ? (
             <ProgressBar />
         ) : isSuccess && medication ? (
-            <View>
+            <View style={{ width: '100%' }}>
                 <Text variant="labelLarge">Currently selected medication:</Text>
                 <MiniMedicationCard
                     medication={medication}

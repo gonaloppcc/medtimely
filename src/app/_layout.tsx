@@ -11,6 +11,9 @@ import deepmerge from 'ts-deepmerge';
 import { CombinedDarkTheme, CombinedDefaultTheme, themeFonts } from '../theme';
 import { PaperProvider } from 'react-native-paper';
 import { useAuthentication } from '../hooks/useAuthentication';
+import { en, registerTranslation } from 'react-native-paper-dates';
+
+registerTranslation('en', en);
 
 // noinspection JSIgnoredPromiseFromCall
 SplashScreen.preventAutoHideAsync();

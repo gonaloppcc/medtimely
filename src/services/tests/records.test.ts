@@ -30,7 +30,7 @@ test('createRecord&getRecord: should create a record and retrieve it', async () 
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
         units: 3,
-        missed: true,
+        isTaken: true,
         scheduledTime: new Date(),
         ownedMedicationRef: '', // FIXME
         isPlanned: false,
@@ -53,7 +53,7 @@ test('deleteRecord: should delete a record', async () => {
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
         units: 3,
-        missed: true,
+        isTaken: true,
         scheduledTime: new Date(),
         ownedMedicationRef: '', // FIXME
         isPlanned: true,
@@ -81,7 +81,7 @@ test('updateRecord: should update a record', async () => {
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
         units: 3,
-        missed: true,
+        isTaken: true,
         scheduledTime: new Date(),
         ownedMedicationRef: '', // FIXME
         isPlanned: true,
@@ -94,7 +94,7 @@ test('updateRecord: should update a record', async () => {
         dosage: '400mg',
         form: MedicationRecordForm.TABLET,
         units: 3,
-        missed: false,
+        isTaken: false,
         scheduledTime: new Date(),
         ownedMedicationRef: '', // FIXME
         isPlanned: true,

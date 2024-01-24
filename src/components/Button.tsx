@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button as PaperButton } from 'react-native-paper';
-import { Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useAppTheme } from '../theme';
 
 interface ButtonProps {
@@ -112,7 +112,11 @@ export const GhostButton = ({
     onPress: () => void;
     disabled?: boolean;
 }) => {
-    return <Button onPress={onPress} disabled={disabled} title={children} />;
+    return (
+        <PaperButton onPress={onPress} disabled={disabled} mode="text">
+            {children}
+        </PaperButton>
+    );
 };
 
 export const DestructiveButton = ({

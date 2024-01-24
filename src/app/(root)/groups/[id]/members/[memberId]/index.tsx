@@ -16,6 +16,7 @@ import { EmptyPlannedMedications } from '../../../../../../components/EmptyPlann
 import { useDeleteRecord } from '../../../../../../hooks/useDeleteRecord';
 import { Modal } from '../../../../../../components/Modal';
 import { useDeleteGroupMember } from '../../../../../../hooks/useDeleteGroupMember';
+import { useToggleRecordTake } from '../../../../../../hooks/useToggleRecordTaken';
 
 const startDay = new Date();
 
@@ -112,19 +113,33 @@ export default function GroupMemberScreen() {
             router.push({
                 pathname: ROUTE.MEDICATIONS.BY_ID,
                 params: {
-                    id: recordModal.id,
+                    id: recordModal.ownedMedicationRef,
                 },
             });
         }
         hideModalRecordInfo();
     };
 
+    const onSuccessToggleRecord = () => {
+        hideModalRecordInfo();
+    };
+    const onErrorToggleRecord = () => {
+        hideModalRecordInfo();
+    };
+
+    const { toggleRecordTake } = useToggleRecordTake(
+        memberId,
+        selectedDay,
+        onSuccessToggleRecord,
+        onErrorToggleRecord
+    );
+
     const onSkipRecordMedication = () => {
-        //TODO: Skip record medication
+        if (recordModal) toggleRecordTake(recordModal);
     };
 
     const onTakeOrUntakeRecordMedication = () => {
-        //TODO: Take or untake record medication
+        if (recordModal) toggleRecordTake(recordModal);
     };
 
     //HANDLER to delete group member

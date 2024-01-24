@@ -111,6 +111,7 @@ const populateRecords = async (
             ownedMedicationRef,
             units: randomNumber(MIN_DOSE_TO_BE_TAKEN, MAX_DOSE_TO_BE_TAKEN),
             scheduledTime: new Date(),
+            isTaken: Math.random() < 0.7, // get a true boolean with higher probability
         };
 
         await createRecordWithMedicationId(db, userId, record, medicationId);

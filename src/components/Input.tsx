@@ -18,5 +18,12 @@ export const Input = (props: TextInputProps) => {
         },
     });
 
-    return <TextInput style={styles.input} mode="outlined" {...props} />;
+    return (
+        <TextInput
+            style={styles.input}
+            mode="outlined"
+            {...props}
+            placeholderTextColor={theme.colors.outline}
+        />
+    );
 };

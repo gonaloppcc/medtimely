@@ -40,56 +40,55 @@ const RECORDS: PopulateMedicationRecords[] = [
     {
         medicationId: '09rSXLXqy0OwsDHC3Egc', // FIXME: Should not be a constant id
         units: 1,
-        missed: true,
         scheduledTime: START_DATE,
         isPlanned: true,
     },
     {
         medicationId: '0CsThHCMy7XhgIYx8xHc', // FIXME: Should not be a constant id
         units: 1,
-        missed: false,
+        isTaken: true,
         scheduledTime: START_DATE,
         isPlanned: true,
     },
     {
         medicationId: '0F9ioSdBtzgTWhazX1x1', // FIXME: Should not be a constant id
         units: 1,
-        missed: false,
+        isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
         medicationId: '0NCgZ8rwy5hYlofTcdti', // FIXME: Should not be a constant id
         units: 1,
-        missed: false,
+        isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
         medicationId: '0Oki6PCG2TNtgBcy5ssk', // FIXME: Should not be a constant id
         units: 1,
-        missed: false,
+        isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
         medicationId: '0TyK8G22TJtIaKjbTlno', // FIXME: Should not be a constant id
         units: 1,
-        missed: false,
+        isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
         medicationId: '0YKlXbETmX2bwUkrsrOO', // FIXME: Should not be a constant id
         units: 1,
-        missed: false,
+        isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
         medicationId: '0cReGFUnV5jcj6S01jZE', // FIXME: Should not be a constant id
         units: 1,
-        missed: false,
+        isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },

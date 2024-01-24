@@ -7,9 +7,10 @@ import {
     SecondaryButton,
 } from './Button';
 import { StyleSheet, View } from 'react-native';
-import { MedicationRecord } from '../model/medicationRecord';
+import { MedicationRecord, RecordState } from '../model/medicationRecord';
 import { MedicationIcon } from './MedicationIcon';
 import { formatDateToString } from '../services/date';
+import { getRecordState } from '../services/records';
 
 interface MedicationRecordModalProps {
     record: MedicationRecord;
@@ -32,11 +33,15 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 }) => {
     const theme = useTheme();
     const dataRecord = formatDateToString(record.scheduledTime);
-    const takeOrUnTakenMsg = record.missed ? 'Taken' : 'Untaken';
 
-    const missedColor = record.missed
-        ? theme.colors.errorContainer
-        : theme.colors.onSurface;
+    const stateRecord = getRecordState(record);
+    const takeOrUnTakenMsg =
+        stateRecord == RecordState.TAKEN ? 'Untake' : 'Take';
+
+    const missedColor =
+        stateRecord == RecordState.MISSED
+            ? theme.colors.errorContainer
+            : theme.colors.onSurface;
 
     return (
         <Dialog visible={visible} onDismiss={onDismiss}>
@@ -61,7 +66,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 
                     <View style={styles.titleStyle}>
                         <Text variant="headlineMedium">{record.name}</Text>
-                        {record.missed !== null && !record.missed && (
+                        {record.isTaken && (
                             <Icon color="green" size={20} source="check-all" />
                         )}
                     </View>
@@ -72,7 +77,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
                         <Text
                             style={{ color: missedColor }}
                             variant="bodyMedium"
-                        >{`Schedule for ${dataRecord}`}</Text>
+                        >{`Scheduled for ${dataRecord}`}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
                         <Icon size={20} source="file-document" />
@@ -81,7 +86,9 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
                 </View>
             </Dialog.Content>
             <Dialog.Actions style={styles.buttonsContainer}>
-                <PrimaryButton onPress={onSkip}>Skip</PrimaryButton>
+                {stateRecord == RecordState.UNTAKEN && (
+                    <PrimaryButton onPress={onSkip}>Skip</PrimaryButton>
+                )}
                 <SecondaryButton onPress={onTakeOrUnTake}>
                     {takeOrUnTakenMsg}
                 </SecondaryButton>

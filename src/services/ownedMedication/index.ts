@@ -19,6 +19,7 @@ import {
 import { ProjectError } from '../error';
 import { USERS_COLLECTION_NAME } from '../users';
 import { getMedication } from '../medications';
+import { GROUPS_COLLECTION_NAME } from '../groups';
 
 export const OWNED_MEDICATION: OwnedMedication = {
     activeSubstance: '',
@@ -35,7 +36,7 @@ export const OWNED_MEDICATION: OwnedMedication = {
     stock: 12,
 };
 
-const OWNED_MEDICATIONS_COLLECTION = 'ownedMedications';
+export const OWNED_MEDICATIONS_COLLECTION = 'ownedMedications';
 const getUserOwnedMedicationCollection = (db: Firestore, uid: string) => {
     return collection(
         db,
@@ -43,14 +44,30 @@ const getUserOwnedMedicationCollection = (db: Firestore, uid: string) => {
     );
 };
 
+export function getOwnedMedicationPath({
+    userId,
+    groupId,
+    ownedMedicationId,
+}: {
+    userId?: string;
+    groupId?: string;
+    ownedMedicationId: string;
+}): string {
+    return groupId
+        ? `${GROUPS_COLLECTION_NAME}/${groupId}/${OWNED_MEDICATIONS_COLLECTION}/${ownedMedicationId}`
+        : `${USERS_COLLECTION_NAME}/${userId}/${OWNED_MEDICATIONS_COLLECTION}/${ownedMedicationId}`;
+}
+
 // ownedMedicationId is a full document reference path!!
 export const getOwnedMedication = async (
     db: Firestore,
-    uid: string,
-    ownedMedicationId: string
-): Promise<OwnedMedication> => {
+    ownedMedicationId?: string
+): Promise<OwnedMedication | undefined> => {
+    if (ownedMedicationId === undefined || ownedMedicationId === '')
+        return undefined;
+
     console.log(
-        `Fetching stock for user with id=${uid} and ownedMedicationId=${ownedMedicationId}`
+        `Fetching owned medication with ownedMedicationId=${ownedMedicationId}`
     );
 
     const ownedMedicationDoc = doc(db, ownedMedicationId);
@@ -113,23 +130,9 @@ export const getUserOwnedMedications = async (
             querySnapshot.docs.map(async (doc) => {
                 const ownedMedication = doc.data() as OwnedMedication;
 
-                // full path as id
                 ownedMedication.id = doc.ref.path;
 
-                // console.log('ownedMedication', JSON.stringify(ownedMedication));
-
                 return ownedMedication;
-
-                // Fetch the medication document data too and merge it with the owned medication
-                // const medication = await getMedication(
-                //     db,
-                //     ownedMedication.medicationId
-                // );
-
-                // return {
-                //     ...medication,
-                //     ...ownedMedication,
-                // };
             })
         );
     } catch (err) {

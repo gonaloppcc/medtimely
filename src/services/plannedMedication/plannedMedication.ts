@@ -140,11 +140,13 @@ const plannedMedicationViewToFirestore = (
     const plannedMedicationFirestore: PlannedMedicationFirestore = {
         doseToBeTaken,
         startDate: Timestamp.fromDate(schedule.startDate),
-        endDate: schedule.endDate
-            ? Timestamp.fromDate(schedule.endDate)
-            : undefined,
         timeBetweenDosesInHours: schedule.timeBetweenDosesInHours,
     };
+
+    if (schedule.endDate)
+        plannedMedicationFirestore.endDate = Timestamp.fromDate(
+            schedule.endDate
+        );
     return plannedMedicationFirestore;
 };
 
@@ -165,11 +167,10 @@ const plannedMedicationFirestoreToView = async (
     ownedMedicationId: string,
     plannedMedicationObj: PlannedMedicationFirestore
 ): Promise<PlannedMedication> => {
-    const ownedMedication: OwnedMedication = await getOwnedMedication(
+    const ownedMedication: OwnedMedication = (await getOwnedMedication(
         db,
-        uid,
         ownedMedicationId
-    );
+    ))!;
     const plannedMedication: PlannedMedication = {
         ownedMedication: ownedMedication,
         doseToBeTaken: plannedMedicationObj.doseToBeTaken,

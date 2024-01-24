@@ -1,6 +1,7 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Icon, Text, useTheme } from 'react-native-paper';
+import { Button, Icon, Text, useTheme } from 'react-native-paper';
 
 export const EmptyPlannedMedications = () => {
     const theme = useTheme();
@@ -15,6 +16,14 @@ export const EmptyPlannedMedications = () => {
             <Text variant="labelLarge" style={{ color: theme.colors.error }}>
                 You dont have any planned medications
             </Text>
+
+            <Button
+                onPress={() => {
+                    router.push({ pathname: '/medications/new' });
+                }}
+            >
+                Add a planned medication
+            </Button>
         </View>
     );
 };

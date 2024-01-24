@@ -20,6 +20,7 @@ import {
     MedicationRecord,
     MedicationRecordData,
     MedicationRecordWithoutMedication,
+    RecordState,
 } from '../../model/medicationRecord';
 
 import dayjs from 'dayjs';
@@ -108,6 +109,29 @@ export const getRecordsByDate = async (
             )} with query=${JSON.stringify(q)}`
         );
     }
+};
+
+export const getRecordState = (record: MedicationRecord): RecordState => {
+    let state: RecordState = RecordState.MISSED;
+    if (record.isTaken) {
+        state = RecordState.TAKEN;
+    } else if (record.scheduledTime > new Date()) {
+        state = RecordState.UNTAKEN;
+    }
+    return state;
+};
+
+// Toggles between taken and (untaken or missed)
+export const toggleRecordTake = async (
+    db: Firestore,
+    userId: string,
+    record: MedicationRecord
+): Promise<RecordState> => {
+    await updateRecord(db, userId, record.id, {
+        ...record,
+        isTaken: !record.isTaken,
+    });
+    return getRecordState(record);
 };
 
 export const getRecord = async (
