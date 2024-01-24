@@ -15,6 +15,7 @@ import {
     getDocs,
     limit,
     query,
+    updateDoc,
 } from 'firebase/firestore';
 import { ProjectError } from '../error';
 import { USERS_COLLECTION_NAME } from '../users';
@@ -147,19 +148,39 @@ export const getUserOwnedMedications = async (
 export const getUserGroupOwnedMedications = async (
     db: Firestore,
     uid: string,
-    groupId: string
+    groupId: string,
+    maxNumber: number = 10
 ): Promise<OwnedMedication[]> => {
     console.log(
         `Fetching stock for user with id=${uid} and groupId=${groupId}`
     );
 
-    // TODO: Implement this
+    const ownedMedicationCollection = collection(
+        db,
+        `${GROUPS_COLLECTION_NAME}/${groupId}/${OWNED_MEDICATIONS_COLLECTION}`
+    );
 
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(Array(10).fill(OWNED_MEDICATION));
-        }, 1000);
-    });
+    const q = query(ownedMedicationCollection, limit(maxNumber));
+
+    try {
+        const querySnapshot = await getDocs(q);
+
+        return Promise.all(
+            querySnapshot.docs.map(async (doc) => {
+                const ownedMedication = doc.data() as OwnedMedication;
+
+                ownedMedication.id = doc.ref.path;
+
+                return ownedMedication;
+            })
+        );
+    } catch (err) {
+        console.error('Error performing firebase query: ', err);
+        throw new ProjectError(
+            'GETTING_OWNED_MEDICATIONS_ERROR',
+            `Error getting document on path=${OWNED_MEDICATIONS_COLLECTION}`
+        );
+    }
 };
 
 export const createOwnedMedicationWithMedicationId = async (
@@ -234,24 +255,29 @@ export const createOwnedMedication = async (
     }
 };
 
-export const updateOwnedMedication = async (
+export const updateOwnedMedicationStock = async (
     db: Firestore,
     uid: string,
-    ownedMedication: OwnedMedicationData
-): Promise<OwnedMedication> => {
+    ownedMedicationId: string,
+    stock: number
+): Promise<void> => {
     console.log(
-        `Updating owned medication for user with id=${uid} with data=${JSON.stringify(
-            ownedMedication
-        )}`
+        `Updating owned medication for user with id=${uid} and ownedMedicationId=${ownedMedicationId} with stock=${stock}`
     );
 
-    // TODO: Implement this
+    const ownedMedicationRef = doc(db, ownedMedicationId);
 
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(OWNED_MEDICATION);
-        }, 1000);
-    });
+    try {
+        await updateDoc(ownedMedicationRef, {
+            stock: stock,
+        });
+    } catch (err) {
+        console.error('Error updating document: ', err);
+        throw new ProjectError(
+            'UPDATING_OWNED_MEDICATION_ERROR',
+            `Error updating document on path=${OWNED_MEDICATIONS_COLLECTION}`
+        );
+    }
 };
 
 // TODO check if id should be full path

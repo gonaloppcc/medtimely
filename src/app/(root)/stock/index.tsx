@@ -14,6 +14,7 @@ import { useNavOptions } from '../../../hooks/useNavOptions';
 import { ROUTE } from '../../../model/routes';
 import { OwnedMedication } from '../../../model/ownedMedication';
 import { ModalStock } from '../../../components/ModalStock';
+import { useUpdateStock } from '../../../hooks/useUpdateStock';
 
 const PERSONAL_VALUE = 'Personal';
 
@@ -90,8 +91,21 @@ export default function StockScreen() {
         }
     };
 
-    const onConsumeStock = () => {
-        //TODO: call function
+    const onSuccessUpdateStock = () => {
+        hideModal();
+    };
+    const onErrorUpdateStock = () => {
+        hideModal();
+    };
+
+    const { updateStock } = useUpdateStock(
+        uid,
+        onSuccessUpdateStock,
+        onErrorUpdateStock
+    );
+
+    const onUpdateStockHandler = (value: number) => {
+        if (ownedMedicationModal) updateStock(ownedMedicationModal.id, value);
     };
 
     return (
@@ -102,7 +116,7 @@ export default function StockScreen() {
                         ownedMedication={ownedMedicationModal}
                         visible={visible}
                         onSeeMedication={onSeeMedication}
-                        onConsume={onConsumeStock}
+                        onUpdateStock={onUpdateStockHandler}
                         onDismiss={hideModal}
                     />
                 </Portal>

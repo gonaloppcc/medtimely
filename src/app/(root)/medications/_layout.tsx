@@ -27,6 +27,7 @@ export default function MedicationsLayout() {
                 name="index"
                 options={{
                     title: 'Medications',
+                    headerLeft: () => <></>,
                     headerRight: () => (
                         <Appbar.Action
                             onPress={() => {
