@@ -73,7 +73,22 @@ const MedicationCard = () => {
         else setFieldValue('ownedMedicationId', undefined);
     }, [selectedMedicationId, isSuccess]);
 
-    if (isSuccess) {
+    if (!selectedMedicationId) {
+        return (
+            <Button
+                icon="magnify"
+                mode="contained"
+                style={{ alignSelf: 'center', borderRadius: 5 }}
+                onPress={() => {
+                    router.push('/medications/search');
+                }}
+            >
+                Search for a medication
+            </Button>
+        );
+    }
+
+    if (isSuccess && ownedMedication) {
         return (
             <MiniMedicationCard
                 medication={ownedMedication}

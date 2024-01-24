@@ -8,14 +8,51 @@ import { GhostButton } from '../../../components/Button';
 import { ROUTE } from '../../../model/routes';
 import { MedicationCards } from '../../../components/MedicationCards';
 import { useOwnedMedicationsByName } from '../../../hooks/useOwnedMedicationsByName';
+import { useAuthentication } from '../../../hooks/useAuthentication';
+import { useGroups } from '../../../hooks/useGroups';
+import { ErrorMessage } from '../../../components/ErrorMessage';
+import { ValuePicker } from '../../../components/ValuePicker';
 
 export default function SearchModal() {
+    const [stockFilterSelected, setStockFilterSelected] = useState('Personal');
     const [search, setSearch] = useState('');
     // TODO: mudar isto
-    const { ownedMedications } = useOwnedMedicationsByName(search, 'algo');
+    const uid = useAuthentication().user!.uid;
+    const { ownedMedications } = useOwnedMedicationsByName(
+        uid,
+        search,
+        stockFilterSelected == 'Personal' ? undefined : stockFilterSelected
+    );
+
+    const {
+        isError: isErrorGroups,
+        isSuccess: isSuccessGroups,
+        groups,
+    } = useGroups(uid);
+
+    const stockFilters: { label: string; value: string }[] = groups.map(
+        (group) => {
+            return {
+                label: group.name,
+                value: group.id,
+            };
+        }
+    );
+
+    stockFilters.unshift({ label: 'Personal', value: 'Personal' });
 
     return (
         <View style={styles.form}>
+            {isErrorGroups && (
+                <ErrorMessage errorMessage="Could not load groups" />
+            )}
+            {isSuccessGroups && (
+                <ValuePicker
+                    values={stockFilters}
+                    selectValueHandler={setStockFilterSelected}
+                    selectedValue={stockFilterSelected}
+                />
+            )}
             <View style={styles.searchBar}>
                 <View style={styles.input}>
                     <Input
@@ -28,7 +65,7 @@ export default function SearchModal() {
                 <GhostButton
                     onPress={() => {
                         router.push({
-                            pathname: ROUTE.STOCK.ADD,
+                            pathname: '/medications/new',
                         });
                     }}
                 >
@@ -44,9 +81,9 @@ export default function SearchModal() {
                         medications={ownedMedications}
                         onPressMedication={(id) => {
                             router.push({
-                                pathname: ROUTE.STOCK.ADD,
+                                pathname: '/medications/new',
                                 params: {
-                                    medicationId: id,
+                                    selectedMedicationId: id,
                                 },
                             });
                         }}
