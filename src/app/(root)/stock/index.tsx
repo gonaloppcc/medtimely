@@ -90,8 +90,9 @@ export default function StockScreen() {
         }
     };
 
-    const onConsumeStock = () => {
-        //TODO: call function
+    const onUpdateStockHandler = (value: number) => {
+        //TODO: add handler
+        console.log(value);
     };
 
     return (
@@ -102,7 +103,7 @@ export default function StockScreen() {
                         ownedMedication={ownedMedicationModal}
                         visible={visible}
                         onSeeMedication={onSeeMedication}
-                        onConsume={onConsumeStock}
+                        onUpdateStock={onUpdateStockHandler}
                         onDismiss={hideModal}
                     />
                 </Portal>
