@@ -1,11 +1,6 @@
 import React from 'react';
 import { Dialog, Icon, Text, useTheme } from 'react-native-paper';
-import {
-    DestructiveButton,
-    OutlineButton,
-    PrimaryButton,
-    SecondaryButton,
-} from './Button';
+import { DestructiveButton, OutlineButton, PrimaryButton } from './Button';
 import { StyleSheet, View } from 'react-native';
 import { MedicationRecord, RecordState } from '../model/medicationRecord';
 import { MedicationIcon } from './MedicationIcon';
