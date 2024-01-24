@@ -37,22 +37,17 @@ export const GroupCard = ({
             />
             <View style={styles.innerStyle}>
                 <Text
-                    variant="labelLarge"
+                    variant="bodyLarge"
                     style={{ color: theme.colors.onSurface }}
                 >
                     {name}
                 </Text>
+                <Text variant="bodyMedium">{description}</Text>
                 <Text
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
                     {users.length} member{users.length != 1 && 's'}
-                </Text>
-                <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.error }}
-                >
-                    {description}
                 </Text>
             </View>
         </TouchableOpacity>
