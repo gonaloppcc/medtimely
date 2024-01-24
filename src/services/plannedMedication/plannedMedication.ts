@@ -4,6 +4,7 @@ import {
     PlannedMedicationSchedule,
 } from '../../model/ownedMedication';
 
+import { createRecord } from '../records';
 import { getOwnedMedication } from '../ownedMedication';
 import {
     doc,
@@ -14,6 +15,7 @@ import {
     Timestamp,
     Transaction,
 } from 'firebase/firestore';
+import { MedicationRecordData } from '../../model/medicationRecord';
 
 const USERS_COLLECTION_NAME = 'users';
 
@@ -95,7 +97,6 @@ export const getPlannedMedicationById = async (
     // }
 };
 
-// todo: move to transaction
 export const createPlannedMedication = async (
     db: Firestore,
     uid: string,
@@ -128,14 +129,54 @@ export const createPlannedMedication = async (
             transaction.update(userRef, {
                 plannedMedications: plannedMedicationsMap,
             });
-        });
 
+        await createRecordsForPlannedMedication(db, uid, plannedMedication, ownedMedicationId);
+        });
         console.log('Planned medication created successfully.');
     } catch (error) {
         console.error('Error creating planned medication:', error);
         throw new Error('Error creating planned medication');
     }
 };
+
+const buildRecordForPlanned = (
+    plannedMedication: PlannedMedication,
+    scheduledTime: Date
+    ): MedicationRecordData => {
+        const { name, dosage, form, id } = plannedMedication.ownedMedication;
+        return {
+            isPlanned : true,
+            ownedMedicationRef: id,
+            name: name,
+            dosage: dosage,
+            form: form,
+            units: plannedMedication.doseToBeTaken,
+            isTaken: false,
+            scheduledTime: scheduledTime,
+        }
+    }
+
+const createRecordsForPlannedMedication = async (
+    db: Firestore,
+    uid: string,
+    plannedMedication: Omit<PlannedMedication, 'ownedMedication'>,
+    ownedMedicationId: string
+    ): Promise<void> => {
+        // Up to 5 days after startDate  
+        const ownedMedication: OwnedMedication= (await getOwnedMedication(db, ownedMedicationId))!;
+        const plannedWithMedication: PlannedMedication = {
+            ownedMedication, ...plannedMedication}
+            
+        let i = 0;
+        const { schedule } = plannedMedication;
+        const startDate = schedule.startDate
+        for (let date = new Date(startDate); i < 5;  i++) {
+            const record: MedicationRecordData = buildRecordForPlanned(plannedWithMedication, date);
+            await createRecord(db, uid, record);
+            // sets datetime to next scheduled time
+            date.setHours(date.getHours()+schedule.timeBetweenDosesInHours)
+        }
+    }
 
 const plannedMedicationViewToFirestore = (
     plannedMedication: Omit<PlannedMedication, 'ownedMedication'>
