@@ -36,7 +36,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 
     const stateRecord = getRecordState(record);
     const takeOrUnTakenMsg =
-        stateRecord == RecordState.TAKEN ? 'Untake' : 'Taken';
+        stateRecord == RecordState.TAKEN ? 'Untake' : 'Take';
 
     const missedColor =
         stateRecord == RecordState.MISSED
