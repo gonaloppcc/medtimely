@@ -16,7 +16,13 @@ export const useToggleRecordTake = (
     const queryClient = useQueryClient();
     const toggleRecordTakeMutation = useMutation({
         mutationFn: async (record: MedicationRecord) => {
-            return await toggleRecordTake(db, userId, record);
+            console.log('isTaken: ', record.isTaken);
+            return await toggleRecordTake(
+                db,
+                userId,
+                record.id,
+                !record.isTaken
+            );
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({

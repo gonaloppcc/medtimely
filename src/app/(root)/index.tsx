@@ -109,12 +109,12 @@ export default function HomeScreen() {
         onErrorToggleRecord
     );
 
-    const onSkipRecordMedication = () => {
-        if (recordModal) toggleRecordTake(recordModal);
+    const onSkipRecordMedication = async () => {
+        if (recordModal) await toggleRecordTake(recordModal);
     };
 
-    const onTakeOrUntakeRecordMedication = () => {
-        if (recordModal) toggleRecordTake(recordModal);
+    const onTakeOrUntakeRecordMedication = async () => {
+        if (recordModal) await toggleRecordTake(recordModal);
     };
 
     return (

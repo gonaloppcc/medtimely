@@ -36,7 +36,6 @@ const loginWithEmailAndPassword = async (
 const onAuthStateChanged = (
     callback: (user: UserFirebase) => void
 ): (() => void) => {
-    // TODO: Transform this type of callback to the one used by the firebase auth
     return onAuthStateChangedFirebase(auth, callback);
 };
 
