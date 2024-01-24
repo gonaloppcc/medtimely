@@ -7,14 +7,14 @@ import { useLocalSearchParams } from 'expo-router';
 
 export default function EditMedicationRecord() {
     const id = (useLocalSearchParams().id as string) || '';
-    console.log(id);
+    console.log('id: ', id);
     // const { isLoading, isSuccess, medication } = useMedication(id);
 
     const onPressHandler = () => {};
 
     return (
         <View style={{ paddingTop: 20 }}>
-            <Text variant="labelLarge">EDIT MEDICATIONN</Text>
+            <Text variant="labelLarge">EDIT MEDICATION</Text>
 
             {/* {isLoading && <ActivityIndicator />} */}
 

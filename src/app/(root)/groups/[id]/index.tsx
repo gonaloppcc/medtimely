@@ -12,16 +12,27 @@ import { useGroupById } from '../../../../hooks/useGroupById';
 import { ProgressIndicator } from '../../../../components/ProgressIndicator';
 import { Modal } from '../../../../components/Modal';
 import { useDeleteGroup } from '../../../../hooks/useDeleteGroup';
+import { useGroupOwnedMedications } from '../../../../hooks/useGroupOwnedMedications';
+import { MedicationIcon } from '../../../../components/MedicationIcon';
 
 export interface GroupCardProps {
     onPress: (id: string) => void;
 }
 
+const MAX_SHOWN_USERS = 5;
+
 export default function GroupScreen() {
     const id = useLocalSearchParams().id as string;
-    const MAX_SHOWN_USERS = 5;
 
     const { isSuccess, isLoading, isError, group } = useGroupById(id);
+
+    // Group OwnedMedications
+    const {
+        isSuccess: isOwnedMedicationsSuccess,
+        isLoading: isOwnedMedicationsLoading,
+        isError: isOwnedMedicationsError,
+        ownedMedications,
+    } = useGroupOwnedMedications(id);
 
     //MODAl
     const [visible, setVisible] = React.useState(false);
@@ -44,8 +55,8 @@ export default function GroupScreen() {
 
     const { deleteGroup } = useDeleteGroup(onSuccessGroup, onErrorGroup);
 
-    const deleteGroupHandler = () => {
-        if (group && group.id) deleteGroup(group.id);
+    const deleteGroupHandler = async () => {
+        if (group && group.id) await deleteGroup(group.id);
     };
 
     return (
@@ -78,10 +89,6 @@ export default function GroupScreen() {
                     </View>
 
                     <View style={styles.bodyContainer}>
-                        <Text variant="titleMedium">
-                            {group.sharedMeds.length} shared medications
-                        </Text>
-
                         <View style={styles.groupContainer}>
                             <View style={styles.titleAndButton}>
                                 <Text variant="titleMedium">
@@ -118,10 +125,33 @@ export default function GroupScreen() {
                             </List.Section>
                         </View>
 
-                        {group.hasSharedStock && (
-                            <Text variant="titleMedium">
-                                The group has shared stock.
-                            </Text>
+                        <View style={styles.titleAndButton}>
+                            <Text variant="titleMedium">Owned Medications</Text>
+                            <OutlineButton>See all</OutlineButton>
+                        </View>
+                        {isOwnedMedicationsLoading && <ProgressIndicator />}
+                        {isOwnedMedicationsError && (
+                            <Text>Something went wrong</Text>
+                        )}
+                        {isOwnedMedicationsSuccess && (
+                            <View style={styles.groupContainer}>
+                                <List.Section style={styles.listGroup}>
+                                    {ownedMedications.map(
+                                        (medication, index) => (
+                                            <List.Item
+                                                key={index}
+                                                title={medication.name}
+                                                left={() => (
+                                                    <MedicationIcon
+                                                        form={medication.form}
+                                                    />
+                                                )}
+                                                style={styles.listItem}
+                                            />
+                                        )
+                                    )}
+                                </List.Section>
+                            </View>
                         )}
                     </View>
                 </>
@@ -161,11 +191,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     listGroup: {
-        padding: 10,
+        padding: 5,
         gap: 10,
     },
     listItem: {
-        paddingBottom: 0,
-        paddingTop: 0,
+        padding: 5,
     },
 });

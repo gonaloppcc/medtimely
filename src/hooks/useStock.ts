@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { db } from '../firebase';
 import { FetcherProps } from './Fetcher';
 import {
-    getUserGroupOwnedMedications,
+    getGroupOwnedMedications,
     getUserOwnedMedications,
 } from '../services/ownedMedication';
 
@@ -35,8 +35,7 @@ export const useStock = (
               }
             : {
                   queryKey: ['ownedMedications', userId, stockFilter],
-                  queryFn: () =>
-                      getUserGroupOwnedMedications(db, userId, stockFilter),
+                  queryFn: () => getGroupOwnedMedications(db, stockFilter),
               }
     );
 

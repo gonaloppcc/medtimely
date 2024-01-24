@@ -7,7 +7,6 @@ export interface Group {
     name: string;
     description: string;
     users: User[];
-    sharedMeds: string[];
     treatmentPermissions: Permissions;
     hasSharedStock: boolean;
 }
