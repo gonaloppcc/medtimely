@@ -81,17 +81,16 @@ export const getPlannedMedicationById = async (
 
     const plannedMedications: PlannedMedicationsFirestore =
         snapshot.data().plannedMedications;
-    // TODO add check
+
     const plannedMedication: PlannedMedicationFirestore =
         plannedMedications[ownedMedicationId];
-    console.log('Planned medication: ', plannedMedications);
-    const s = await plannedMedicationFirestoreToView(
+
+    return await plannedMedicationFirestoreToView(
         db,
         uid,
         ownedMedicationId,
         plannedMedication
     );
-    return s;
     // } catch (e) {
     //     throw new Error(e);
     // }

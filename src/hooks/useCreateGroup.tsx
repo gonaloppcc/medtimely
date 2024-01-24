@@ -1,33 +1,33 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Group } from '../model/group';
+import { GroupData } from '../model/group';
 import { createGroup } from '../services/groups';
 import { db } from '../firebase';
 
 interface UseCreateGroupReturn {
-    createGroup: (group: Group) => Promise<string>;
+    createGroup: (group: GroupData) => Promise<string>;
 }
 
 export const useCreateGroup = (
     userid: string,
-    onSuccess: () => void,
+    onSuccess: (groupId: string) => void,
     onError: (error: Error) => void
 ): UseCreateGroupReturn => {
     const queryClient = useQueryClient();
     const createGroupMutation = useMutation({
-        mutationFn: async (group: Group) => {
+        mutationFn: async (group: GroupData) => {
             return await createGroup(db, group, userid);
         },
-        onSuccess: async () => {
+        onSuccess: async (data) => {
             await queryClient.invalidateQueries({
                 queryKey: ['groups'],
             });
-            onSuccess();
+            onSuccess(data);
         },
         onError,
     });
 
     return {
-        createGroup: async (group: Group) =>
+        createGroup: async (group: GroupData) =>
             await createGroupMutation.mutateAsync(group),
     };
 };

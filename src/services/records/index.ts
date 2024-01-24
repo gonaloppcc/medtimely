@@ -125,13 +125,36 @@ export const getRecordState = (record: MedicationRecord): RecordState => {
 export const toggleRecordTake = async (
     db: Firestore,
     userId: string,
-    record: MedicationRecord
+    recordId: string,
+    isTaken: boolean
 ): Promise<RecordState> => {
-    await updateRecord(db, userId, record.id, {
-        ...record,
-        isTaken: !record.isTaken,
-    });
-    return getRecordState(record);
+    console.log(
+        `Toggling the isTaken field of the record with id=${recordId} for user with id=${userId} to ${isTaken}`
+    );
+
+    const recordDocRef = doc(
+        db,
+        getUserRecordCollectionString(userId),
+        recordId
+    );
+
+    try {
+        await updateDoc(recordDocRef, {
+            isTaken: isTaken,
+        });
+    } catch (e) {
+        console.error(
+            `Error updating the field isTaken of the record with id=${recordId} for user with id=${userId}`
+        );
+        throw new ProjectError(
+            'UPDATING_RECORD_ERROR',
+            `Error updating document on path=${getUserRecordCollectionString(
+                userId
+            )}/${recordId}`
+        );
+    }
+
+    return isTaken ? RecordState.TAKEN : RecordState.UNTAKEN;
 };
 
 export const getRecord = async (
@@ -272,7 +295,9 @@ export const updateRecord = async (
     recordId: string,
     record: MedicationRecordData
 ): Promise<void> => {
-    console.log(`Updating record=${record} for token=${userId}`);
+    console.log(
+        `Updating record=${JSON.stringify(record)} for user with id=${userId}`
+    );
 
     const userRecordCollection = getUserRecordCollection(db, userId);
 

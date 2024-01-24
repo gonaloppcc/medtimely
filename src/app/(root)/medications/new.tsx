@@ -148,7 +148,7 @@ export default function NewPlannedMedicationScreen() {
     };
 
     const [startTimeVisible, setStartTimeVisible] = React.useState(false);
-    const [intervalVisible, setIntervalVisible] = React.useState(false);
+    // const [intervalVisible, setIntervalVisible] = React.useState(false);
 
     return (
         <Formik
