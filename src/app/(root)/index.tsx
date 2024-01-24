@@ -14,6 +14,7 @@ import { ROUTE } from '../../model/routes';
 import { EmptyPlannedMedications } from '../../components/EmptyPlannedMedications';
 import { useDeleteRecord } from '../../hooks/useDeleteRecord';
 import { useToggleRecordTake } from '../../hooks/useToggleRecordTaken';
+import { scheduleNotificationsForUser, setNotificationHandler } from '../../services/notifications';
 
 const startDay = new Date();
 
@@ -29,6 +30,7 @@ const getFormattedUserName = (userName: string): string => {
     return userName;
 };
 
+
 export default function HomeScreen() {
     const { user } = useAuthentication();
     const uid = user?.uid ?? '';
@@ -41,6 +43,9 @@ export default function HomeScreen() {
         selectedDay
     );
     const [recordModal, setRecordModal] = useState<MedicationRecord>();
+
+    setNotificationHandler();
+    scheduleNotificationsForUser(records);
 
     const onSuccessRecord = () => {
         hideModal();
