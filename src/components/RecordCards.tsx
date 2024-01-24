@@ -5,6 +5,7 @@ import { RecordCard } from './RecordCard';
 import { formatDateToHoursMinutesString } from '../services/date';
 import { Text, useTheme } from 'react-native-paper';
 import { getRecordState } from '../services/records';
+import { EmptyPlannedMedications } from './EmptyPlannedMedications';
 
 interface MedCardsProps {
     records: MedicationRecord[];
@@ -37,6 +38,7 @@ export const RecordCards = ({
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >
+            {records.length == 0 && <EmptyPlannedMedications />}
             {records.map((record, index) => {
                 return (
                     <View key={index}>
