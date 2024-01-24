@@ -28,7 +28,10 @@ export const useOwnedMedication = (
         refetch,
     } = useQuery({
         queryKey: ['ownedMedication', docId],
-        queryFn: () => getOwnedMedication(db, docId),
+        queryFn: () => {
+            if (docId) return getOwnedMedication(db, docId);
+            return undefined;
+        },
     });
 
     return {

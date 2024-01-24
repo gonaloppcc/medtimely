@@ -69,11 +69,8 @@ export function getOwnedMedicationPath({
 // ownedMedicationId is a full document reference path!!
 export const getOwnedMedication = async (
     db: Firestore,
-    ownedMedicationId?: string
-): Promise<OwnedMedication | undefined> => {
-    if (ownedMedicationId === undefined || ownedMedicationId === '')
-        return undefined;
-
+    ownedMedicationId: string
+): Promise<OwnedMedication> => {
     console.log(
         `Fetching owned medication with ownedMedicationId=${ownedMedicationId}`
     );
