@@ -10,9 +10,11 @@ import { useAuthentication } from '../../../hooks/useAuthentication';
 import { useStock } from '../../../hooks/useStock';
 import { ErrorMessage } from '../../../components/ErrorMessage';
 import { router } from 'expo-router';
-import { Appbar } from 'react-native-paper';
+import { Appbar, Portal } from 'react-native-paper';
 import { useNavOptions } from '../../../hooks/useNavOptions';
 import { ROUTE } from '../../../model/routes';
+import { OwnedMedication } from '../../../model/ownedMedication';
+import { ModalStock } from '../../../components/ModalStock';
 
 const PERSONAL_VALUE = 'Personal';
 
@@ -46,6 +48,13 @@ export default function StockScreen() {
     const { isSuccess, isLoading, isError, ownedMedications, refetch } =
         useStock(uid, stockFilterSelected);
 
+    const [ownedMedicationModal, setOwnedMedicationModal] =
+        useState<OwnedMedication>();
+    //MODAl
+    const [visible, setVisible] = useState(false);
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
     const stockFilters: { label: string; value: string }[] = groups.map(
         (group) => {
             return {
@@ -58,24 +67,47 @@ export default function StockScreen() {
     stockFilters.unshift({ label: PERSONAL_VALUE, value: PERSONAL_VALUE });
 
     const onPressPersonalStockHandler = (id: string) => {
-        //TODO: do something
-        console.log(id);
-
-        // ISTO faz sentido sequer?????????????
-        router.push({
-            pathname: '/medications/new',
-            params: {
-                selectedMedicationId: id,
-            },
-        });
+        const medication = ownedMedications.find((med) => med.id === id);
+        if (medication) {
+            setOwnedMedicationModal(medication);
+            showModal();
+        }
     };
 
     const selectValueHandler = (value: string) => {
         setStockFilterSelected(value);
     };
 
+    //Modal handler
+    const onSeeMedication = () => {
+        if (ownedMedicationModal) {
+            router.push({
+                pathname: ROUTE.MEDICATIONS.BY_ID,
+                params: {
+                    id: ownedMedicationModal.id,
+                },
+            });
+            hideModal();
+        }
+    };
+
+    const onConsumeStock = () => {
+        //TODO: call function
+    };
+
     return (
         <View style={styles.container}>
+            {ownedMedicationModal && (
+                <Portal>
+                    <ModalStock
+                        ownedMedication={ownedMedicationModal}
+                        visible={visible}
+                        onSeeMedication={onSeeMedication}
+                        onConsume={onConsumeStock}
+                        onDismiss={hideModal}
+                    />
+                </Portal>
+            )}
             {isErrorGroups && (
                 <ErrorMessage errorMessage="Could not load groups" />
             )}

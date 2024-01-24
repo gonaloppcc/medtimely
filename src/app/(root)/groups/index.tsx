@@ -13,6 +13,10 @@ import { useNavOptions } from '../../../hooks/useNavOptions';
 export default function GroupsScreen() {
     const { user } = useAuthentication();
 
+    const { isSuccess, isLoading, isError, groups, refetch } = useGroups(
+        user!.uid
+    );
+
     const headerRight = () => (
         <Appbar.Action
             icon="plus"
@@ -27,10 +31,6 @@ export default function GroupsScreen() {
     useNavOptions({
         headerRight,
     });
-
-    const { isSuccess, isLoading, isError, groups, refetch } = useGroups(
-        user!.uid
-    );
 
     const onPressGroup = (id: string) => {
         router.push({ pathname: ROUTE.GROUPS.BY_ID, params: { id } });
