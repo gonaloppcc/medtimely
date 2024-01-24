@@ -354,7 +354,6 @@ export const updateOwnedMedicationStock = async (
     }
 };
 
-// TODO check if id should be full path
 export const deleteOwnedMedication = async (
     db: Firestore,
     uid: string,

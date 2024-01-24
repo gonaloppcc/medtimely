@@ -18,8 +18,6 @@ export default function EditMedicationRecord() {
 
             {/* {isLoading && <ActivityIndicator />} */}
 
-            {/* TODO: Add a form to edit the medication */}
-
             <Button onPress={onPressHandler}>Click me!</Button>
         </View>
     );

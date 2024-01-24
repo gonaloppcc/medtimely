@@ -32,7 +32,7 @@ test('createRecord&getRecord: should create a record and retrieve it', async () 
         units: 3,
         isTaken: true,
         scheduledTime: new Date(),
-        ownedMedicationRef: '', // FIXME
+        ownedMedicationRef: '',
         isPlanned: false,
     };
 
@@ -55,7 +55,7 @@ test('deleteRecord: should delete a record', async () => {
         units: 3,
         isTaken: true,
         scheduledTime: new Date(),
-        ownedMedicationRef: '', // FIXME
+        ownedMedicationRef: '',
         isPlanned: true,
     };
 
@@ -83,7 +83,7 @@ test('updateRecord: should update a record', async () => {
         units: 3,
         isTaken: true,
         scheduledTime: new Date(),
-        ownedMedicationRef: '', // FIXME
+        ownedMedicationRef: '',
         isPlanned: true,
     };
 
@@ -96,7 +96,7 @@ test('updateRecord: should update a record', async () => {
         units: 3,
         isTaken: false,
         scheduledTime: new Date(),
-        ownedMedicationRef: '', // FIXME
+        ownedMedicationRef: '',
         isPlanned: true,
     };
 

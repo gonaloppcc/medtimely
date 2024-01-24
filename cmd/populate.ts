@@ -119,9 +119,7 @@ const populateRecords = async (
 
     await batch.commit();
 };
-const populateGroups = async () => {
-    // TODO
-};
+const populateGroups = async () => {};
 
 const DEFAULT_NUMBER_OF_MEDICATIONS = 10;
 const numberOfMedications =

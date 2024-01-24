@@ -11,7 +11,6 @@ export const ProfileHeader = () => {
             await signOut();
 
             router.push('/Login');
-            // FIXME: This should be automatic as it is said in the react native navigation docs: https://reactnavigation.org/docs/auth-flow
         };
 
         return <Appbar.Action icon="account-circle" onPress={onProfilePress} />;

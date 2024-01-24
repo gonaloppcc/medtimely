@@ -49,9 +49,7 @@ export default function GroupScreen() {
         router.push({ pathname: ROUTE.GROUPS.BASE_NAME });
     };
 
-    const onErrorGroup = () => {
-        //FIXME: Add error group msg
-    };
+    const onErrorGroup = () => {};
 
     const { deleteGroup } = useDeleteGroup(onSuccessGroup, onErrorGroup);
 

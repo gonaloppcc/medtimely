@@ -30,8 +30,6 @@ export const PlannedMedicationCard = ({
         onPressMedication(ownedMedication.id);
     };
 
-    // FIXME: Improve the UI of this component
-
     return (
         <TouchableOpacity onPress={onPress} style={style}>
             <MedicationIcon form={ownedMedication.form} />

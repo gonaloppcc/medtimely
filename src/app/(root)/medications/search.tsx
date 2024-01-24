@@ -15,7 +15,6 @@ import { ValuePicker } from '../../../components/ValuePicker';
 export default function SearchModal() {
     const [stockFilterSelected, setStockFilterSelected] = useState('Personal');
     const [search, setSearch] = useState('');
-    // TODO: mudar isto
     const uid = useAuthentication().user!.uid;
     const { ownedMedications } = useOwnedMedicationsByName(
         uid,

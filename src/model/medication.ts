@@ -10,7 +10,7 @@ export interface Medication {
     aimTitular?: string; // Titular de AIM
     commercialisation?: boolean; // Comercialização
     isGeneric?: boolean; // Genérico
-    administration?: string; // Via de Administração TODO: Create enum for this
+    administration?: string;
 
     /*
     // https://www.nhs.uk/medicines/alogliptin/about-alogliptin/
@@ -19,8 +19,6 @@ export interface Medication {
     */
 
     presentations: MedicationPresentation[];
-
-    // TODO: Add scanning codes here
 }
 
 export type MedicationData = Omit<Medication, 'id'>;
@@ -40,14 +38,13 @@ export interface MedicationPricing {
 
 export interface MedicationStorageConditions {
     presentationType: MedicationPresentationType;
-    shelfLife: number; // Validade (meses) // TODO: Make sure that months is a duable unit
+    shelfLife: number; // Validade (meses) //
     temperature: number | null; // Temperatura (ºC)
     conditions: string | null; // Condições
 }
 
 export type MedicationPresentationType = 'Unopened' | 'Opened';
 
-//FIXME: Check the MedicationRecordForm and decide which onew we will use
 // see list https://callstack.github.io/react-native-paper/docs/guides/icons/
 export const medicationFormToIconName = (form: MedicationRecordForm) => {
     let iconName = 'pill';

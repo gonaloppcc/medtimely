@@ -18,7 +18,6 @@ if (process.argv.length !== 3) {
 }
 
 const userId = process.argv[2];
-// TODO: Por buscopan, levocetirizina, antihistmanico, gripe
 // Usar algum exemplo que não seja comprimido
 const incompleteOwnedMedications = [
     // Paracetamol + Caffeine

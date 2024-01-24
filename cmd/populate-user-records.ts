@@ -35,58 +35,57 @@ type PopulateMedicationRecords = MedicationRecordWithoutMedication & {
     medicationId: string;
 };
 
-// TODO corrigir os ids
 const RECORDS: PopulateMedicationRecords[] = [
     {
-        medicationId: '09rSXLXqy0OwsDHC3Egc', // FIXME: Should not be a constant id
+        medicationId: '09rSXLXqy0OwsDHC3Egc',
         units: 1,
         scheduledTime: START_DATE,
         isPlanned: true,
     },
     {
-        medicationId: '0CsThHCMy7XhgIYx8xHc', // FIXME: Should not be a constant id
+        medicationId: '0CsThHCMy7XhgIYx8xHc',
         units: 1,
         isTaken: true,
         scheduledTime: START_DATE,
         isPlanned: true,
     },
     {
-        medicationId: '0F9ioSdBtzgTWhazX1x1', // FIXME: Should not be a constant id
+        medicationId: '0F9ioSdBtzgTWhazX1x1',
         units: 1,
         isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
-        medicationId: '0NCgZ8rwy5hYlofTcdti', // FIXME: Should not be a constant id
+        medicationId: '0NCgZ8rwy5hYlofTcdti',
         units: 1,
         isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
-        medicationId: '0Oki6PCG2TNtgBcy5ssk', // FIXME: Should not be a constant id
+        medicationId: '0Oki6PCG2TNtgBcy5ssk',
         units: 1,
         isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
-        medicationId: '0TyK8G22TJtIaKjbTlno', // FIXME: Should not be a constant id
+        medicationId: '0TyK8G22TJtIaKjbTlno',
         units: 1,
         isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
-        medicationId: '0YKlXbETmX2bwUkrsrOO', // FIXME: Should not be a constant id
+        medicationId: '0YKlXbETmX2bwUkrsrOO',
         units: 1,
         isTaken: true,
         isPlanned: false,
         scheduledTime: START_DATE,
     },
     {
-        medicationId: '0cReGFUnV5jcj6S01jZE', // FIXME: Should not be a constant id
+        medicationId: '0cReGFUnV5jcj6S01jZE',
         units: 1,
         isTaken: true,
         isPlanned: false,

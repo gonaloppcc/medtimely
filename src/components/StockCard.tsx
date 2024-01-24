@@ -53,7 +53,7 @@ export const StockCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {0 /* TODO: Finish migrating this */} days to run out
+                    {0} days to run out
                 </Text>
             </View>
         </TouchableOpacity>

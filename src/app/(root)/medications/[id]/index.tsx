@@ -56,10 +56,7 @@ export default function MedicationScreen() {
         refetch: refetchRecords,
     } = useRecordsByMedication(uid, medicationID);
 
-    const onPressRecord = (id: string) => {
-        console.log(id);
-        //TODO: Add modal like the homepage with calendar???
-    };
+    const onPressRecord = () => {};
 
     return (
         <View style={styles.container}>

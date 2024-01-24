@@ -7,7 +7,7 @@ export const AddRecordHeader = () => {
     return (
         <Appbar.Action
             icon="plus"
-            // @ts-expect-error FIXME: Fix this if possible
+            // @ts-expect-error Fix this if possible
             onPress={() => navigation.navigate('CreateRecord')}
         />
     );

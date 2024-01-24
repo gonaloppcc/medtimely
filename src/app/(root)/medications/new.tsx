@@ -106,7 +106,6 @@ const MedicationCard = () => {
 };
 
 export default function NewPlannedMedicationScreen() {
-    // todo: get datetime for the default start time, we only want this to run on the function start though
     const initialValues: Values = {
         numberOfDoses: '1',
         runIndefinitely: true,
@@ -119,9 +118,7 @@ export default function NewPlannedMedicationScreen() {
         router.replace('/medications');
     };
 
-    const onErrorCreate = () => {
-        // FIXME: Add error msg
-    };
+    const onErrorCreate = () => {};
 
     const { createPlannedMedication } = useCreatePlannedMedication(
         uid,
@@ -149,7 +146,6 @@ export default function NewPlannedMedicationScreen() {
 
         console.log(schedule);
 
-        // TODO: this needs to return the medication id
         await createPlannedMedication(
             { schedule, doseToBeTaken },
             ownedMedicationId
@@ -200,7 +196,6 @@ export default function NewPlannedMedicationScreen() {
                     <View>
                         <Text variant="labelLarge">Start date</Text>
 
-                        {/* TODO: this looks bad */}
                         <DatePickerInput
                             locale="en"
                             value={values.startDate}
@@ -223,7 +218,6 @@ export default function NewPlannedMedicationScreen() {
                     <View>
                         <Text variant="labelLarge">Start hour</Text>
 
-                        {/* TODO: this looks bad, need to format the clock properly */}
                         <Button
                             onPress={() => setStartTimeVisible(true)}
                             mode="contained-tonal"
