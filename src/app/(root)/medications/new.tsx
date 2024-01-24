@@ -13,8 +13,7 @@ import { useAuthentication } from '../../../hooks/useAuthentication';
 import { useOwnedMedication } from '../../../hooks/useOwnedMedication';
 import { MiniMedicationCard } from '../../../components/MiniMedicationCard';
 import { PlannedMedicationSchedule } from '../../../model/ownedMedication';
-import { createPlannedMedication } from '../../../services/plannedMedication/plannedMedication';
-import { db } from '../../../firebase';
+import { useCreatePlannedMedication } from '../../../hooks/useCreatePlannedMedication';
 
 /// Requirements:
 /// Ask for:
@@ -116,6 +115,20 @@ export default function NewPlannedMedicationScreen() {
 
     const uid = useAuthentication().user!.uid;
 
+    const onSuccessCreate = () => {
+        router.replace('/medications');
+    };
+
+    const onErrorCreate = () => {
+        // FIXME: Add error msg
+    };
+
+    const { createPlannedMedication } = useCreatePlannedMedication(
+        uid,
+        onSuccessCreate,
+        onErrorCreate
+    );
+
     const onSubmit = async (values: Values) => {
         const ownedMedicationId = values.ownedMedicationId!;
         const doseToBeTaken = Number.parseInt(values.numberOfDoses!);
@@ -138,13 +151,9 @@ export default function NewPlannedMedicationScreen() {
 
         // TODO: this needs to return the medication id
         await createPlannedMedication(
-            db,
-            uid,
             { schedule, doseToBeTaken },
             ownedMedicationId
         );
-
-        router.replace('/medications');
     };
 
     const [startTimeVisible, setStartTimeVisible] = React.useState(false);

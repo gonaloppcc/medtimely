@@ -13,7 +13,10 @@ import { MedicationRecord } from '../../model/medicationRecord';
 import { ROUTE } from '../../model/routes';
 import { useDeleteRecord } from '../../hooks/useDeleteRecord';
 import { useToggleRecordTake } from '../../hooks/useToggleRecordTaken';
-import { scheduleNotificationsForUser, setNotificationHandler } from '../../services/notifications';
+import {
+    scheduleNotificationsForUser,
+    setNotificationHandler,
+} from '../../services/notifications';
 
 const startDay = new Date();
 
@@ -28,7 +31,6 @@ const getFormattedUserName = (userName: string): string => {
         userName.length > 8 ? userName.substring(0, 6) + '...' : userName;
     return userName;
 };
-
 
 export default function HomeScreen() {
     const { user } = useAuthentication();
