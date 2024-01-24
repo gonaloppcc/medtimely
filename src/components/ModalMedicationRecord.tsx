@@ -40,11 +40,15 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
 
     const missedColor =
         stateRecord == RecordState.MISSED
-            ? theme.colors.errorContainer
+            ? theme.colors.error
             : theme.colors.onSurface;
 
     return (
-        <Dialog visible={visible} onDismiss={onDismiss}>
+        <Dialog
+            visible={visible}
+            onDismiss={onDismiss}
+            style={{ ...styles.dialog, backgroundColor: theme.colors.surface }}
+        >
             <Dialog.Actions style={styles.titleContainer}>
                 <OutlineButton onPress={onDismiss}>
                     <Icon size={20} source="close" />
@@ -61,7 +65,7 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
                     <MedicationIcon
                         form={record.form}
                         size={60}
-                        color={theme.colors.background}
+                        color={theme.colors.onSurface}
                     />
 
                     <View style={styles.titleStyle}>
@@ -89,9 +93,9 @@ export const MedicationRecordModal: React.FC<MedicationRecordModalProps> = ({
                 {stateRecord == RecordState.UNTAKEN && (
                     <PrimaryButton onPress={onSkip}>Skip</PrimaryButton>
                 )}
-                <SecondaryButton onPress={onTakeOrUnTake}>
+                <PrimaryButton onPress={onTakeOrUnTake}>
                     {takeOrUnTakenMsg}
-                </SecondaryButton>
+                </PrimaryButton>
             </Dialog.Actions>
         </Dialog>
     );
@@ -128,5 +132,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
+    },
+    dialog: {
+        borderRadius: 8,
     },
 });

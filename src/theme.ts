@@ -31,6 +31,7 @@ export const customThemeColors = {
             onBrandContainer: 'rgb(65, 0, 4)',
             inverseBrand: 'rgb(255, 179, 174)',
             mainContrast: 'rgb(255, 255, 255)', // FIXME: Not sure if this is correct according to the design
+            error: 'rgb(255, 0, 0)',
         },
     },
     dark: {
@@ -42,6 +43,7 @@ export const customThemeColors = {
             onBrandContainer: 'rgb(255, 218, 215)',
             inverseBrand: 'rgb(187, 21, 34)',
             mainContrast: 'rgb(0, 0, 0)', // FIXME: Not sure if this is correct according to the design
+            error: 'rgb(255, 0, 0)',
         },
     },
 };
