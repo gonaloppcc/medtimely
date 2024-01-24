@@ -45,6 +45,13 @@ const getUserOwnedMedicationCollection = (db: Firestore, uid: string) => {
     );
 };
 
+const getGroupOwnedMedicationCollection = (db: Firestore, groupId: string) => {
+    return collection(
+        db,
+        `${GROUPS_COLLECTION_NAME}/${groupId}/${OWNED_MEDICATIONS_COLLECTION}`
+    );
+};
+
 export function getOwnedMedicationPath({
     userId,
     groupId,
@@ -96,8 +103,6 @@ export const getOwnedMedication = async (
 
     ownedMedication.id = docSnapshot.ref.path;
 
-    console.log('ownedMedication', JSON.stringify(ownedMedication));
-
     // Fetch the medication document data too and merge it with the owned medication
     const medication = ownedMedication.medicationId
         ? await getMedication(db, ownedMedication.medicationId)
@@ -145,15 +150,12 @@ export const getUserOwnedMedications = async (
     }
 };
 
-export const getUserGroupOwnedMedications = async (
+export const getGroupOwnedMedications = async (
     db: Firestore,
-    uid: string,
     groupId: string,
     maxNumber: number = 10
 ): Promise<OwnedMedication[]> => {
-    console.log(
-        `Fetching stock for user with id=${uid} and groupId=${groupId}`
-    );
+    console.log(`Fetching stock for group with id=${groupId}`);
 
     const ownedMedicationCollection = collection(
         db,
@@ -189,7 +191,7 @@ export const createOwnedMedicationWithMedicationId = async (
     ownedMedication: OwnedMedicationWithoutMedicationFields
 ): Promise<string> => {
     console.log(
-        `creating owned medication for user with id=${uid} with ownedMedicationWithoutMedicationFields=${JSON.stringify(
+        `Creating owned medication for user with id=${uid} with ownedMedicationWithoutMedicationFields=${JSON.stringify(
             ownedMedication
         )}`
     );
@@ -229,9 +231,12 @@ export const createOwnedMedication = async (
     uid: string,
     ownedMedication: OwnedMedicationData
 ): Promise<string> => {
-    console.log(`creating owned medication for user with id=${uid}`);
+    console.log(`Creating owned medication for user with id=${uid}`);
 
-    const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
+    const ownedMedicationCollection = getGroupOwnedMedicationCollection(
+        db,
+        uid
+    );
 
     if (
         ownedMedication.medicationId === undefined ||
@@ -244,6 +249,40 @@ export const createOwnedMedication = async (
         const docRef = await addDoc(ownedMedicationCollection, ownedMedication);
 
         console.log(`created ownedMedication with id=${docRef.id}`);
+
+        return docRef.path;
+    } catch (err) {
+        console.error('Error creating document: ', err);
+        throw new ProjectError(
+            'CREATING_OWNED_MEDICATION_ERROR',
+            `Error creating document on path=${OWNED_MEDICATIONS_COLLECTION}`
+        );
+    }
+};
+
+export const createOwnedMedicationOnGroup = async (
+    db: Firestore,
+    groupId: string,
+    ownedMedication: OwnedMedicationData
+): Promise<string> => {
+    console.log(`Creating owned medication for group with id=${groupId}`);
+
+    const ownedMedicationCollection = getGroupOwnedMedicationCollection(
+        db,
+        groupId
+    );
+
+    if (
+        ownedMedication.medicationId === undefined ||
+        ownedMedication.medicationId === ''
+    ) {
+        delete ownedMedication.medicationId;
+    }
+
+    try {
+        const docRef = await addDoc(ownedMedicationCollection, ownedMedication);
+
+        console.log(`Created ownedMedication with id=${docRef.id}`);
 
         return docRef.path;
     } catch (err) {

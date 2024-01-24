@@ -34,7 +34,6 @@ export default function GroupMemberScreen() {
         const group: GroupData = {
             name: values.name,
             description: values.description,
-            sharedMeds: [],
             hasSharedStock: true,
             treatmentPermissions: 'manage',
         };

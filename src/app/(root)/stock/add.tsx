@@ -12,7 +12,10 @@ import { useMedication } from '../../../hooks/useMedication';
 import { MiniMedicationCard } from '../../../components/MiniMedicationCard';
 import { GroupPicker } from '../../../components/GroupPicker';
 import { PrimaryButton } from '../../../components/Button';
-import { createOwnedMedication } from '../../../services/ownedMedication';
+import {
+    createOwnedMedication,
+    createOwnedMedicationOnGroup,
+} from '../../../services/ownedMedication';
 import { db } from '../../../firebase';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { OwnedMedicationData } from '../../../model/ownedMedication';
@@ -118,7 +121,11 @@ export default function NewStockScreen() {
         };
 
         if (values.groupId && values.groupId !== '') {
-            // TODO: fix this
+            await createOwnedMedicationOnGroup(db, values.groupId, med);
+            router.push({
+                pathname: ROUTE.GROUPS.BY_ID,
+                params: { id: values.groupId },
+            });
         } else {
             await createOwnedMedication(db, uid, med);
             router.push({
