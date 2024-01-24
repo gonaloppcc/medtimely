@@ -111,7 +111,7 @@ const populateRecords = async (
             ownedMedicationRef,
             units: randomNumber(MIN_DOSE_TO_BE_TAKEN, MAX_DOSE_TO_BE_TAKEN),
             scheduledTime: new Date(),
-            isTaken: Math.random() < 0.7, // get a true boolean with higher probability
+            isTaken: Math.random() < 0.8, // get a true boolean with higher probability
         };
 
         await createRecordWithMedicationId(db, userId, record, medicationId);
@@ -127,9 +127,13 @@ const DEFAULT_NUMBER_OF_MEDICATIONS = 10;
 const numberOfMedications =
     parseInt(numberOfMedicationsArg) || DEFAULT_NUMBER_OF_MEDICATIONS;
 const populate = async () => {
-    const medicationIds = (await getMedications(db, numberOfMedications)).map(
+    let medicationIds = (await getMedications(db, 300)).map(
         (medication) => medication.id
     );
+    // choose DEFAULT_NUMBER_OF_MEDICATIONS random medications
+    medicationIds = medicationIds
+        .sort(() => Math.random() - 0.5)
+        .slice(0, numberOfMedications);
 
     const ownedMedicationsPopulated =
         await populateOwnedMedications(medicationIds);
