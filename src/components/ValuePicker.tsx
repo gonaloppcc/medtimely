@@ -29,6 +29,7 @@ export const ValuePicker = ({
     values,
     selectValueHandler,
 }: ValuePickerProps) => {
+    const theme = useAppTheme();
     return (
         <View style={style.picker}>
             {[
@@ -39,7 +40,6 @@ export const ValuePicker = ({
                         selectValueHandler(value.value);
                     };
 
-                    const theme = useAppTheme();
                     const stylePicker: StyleProp<ViewStyle> = {
                         display: 'flex',
                         flexDirection: 'column',

@@ -21,7 +21,7 @@ export const usePlannedMedicationsById = (
         error,
         refetch,
     } = useQuery({
-        queryKey: ['plannedMedicationsById'],
+        queryKey: ['plannedMedicationsById', medicationId],
         queryFn: () => getPlannedMedicationById(db, userId, medicationId),
     });
 
