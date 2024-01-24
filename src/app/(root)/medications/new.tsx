@@ -29,7 +29,7 @@ interface Values {
     numberOfDoses?: string;
     startDate?: Date;
     startTime?: { hours: number; minutes: number };
-    timeBetweenDoses?: { hours: number; minutes: number };
+    timeBetweenDoses?: string;
     endDate?: Date;
     runIndefinitely: boolean;
 }
@@ -38,12 +38,18 @@ const validationSchema = Yup.object<Values>({
     ownedMedicationId: Yup.string().required('Owned medication is required'),
     numberOfDoses: Yup.number()
         .min(1, 'Number of doses must be at least 1')
+        .integer('Number of doses must be whole')
         .required('Number of doses is required'),
-    startDate: Yup.date().required('Start date is required'),
-    endDate: Yup.date().when('runIndefinitely', (runIndefinitely, schema) => {
-        if (!runIndefinitely) return schema.required('End date is required');
-        return schema;
-    }),
+    startDate: Yup.date()
+        .required('Start date is required')
+        .typeError('Invalid date'),
+    endDate: Yup.date()
+        .when('runIndefinitely', (runIndefinitely, schema) => {
+            if (!runIndefinitely)
+                return schema.required('End date is required');
+            return schema;
+        })
+        .typeError('Invalid date'),
     startTime: Yup.object()
         .shape({
             hours: Yup.number().min(0),
@@ -51,11 +57,8 @@ const validationSchema = Yup.object<Values>({
         })
         .required('Start time is required'),
 
-    timeBetweenDoses: Yup.object()
-        .shape({
-            hours: Yup.number().min(0).max(23),
-            minutes: Yup.number().min(0).max(59),
-        })
+    timeBetweenDoses: Yup.number()
+        .positive()
         .required('Time between doses is required'),
     runIndefinitely: Yup.boolean(),
 });
@@ -108,7 +111,7 @@ export default function NewPlannedMedicationScreen() {
     const initialValues: Values = {
         numberOfDoses: '1',
         runIndefinitely: true,
-        timeBetweenDoses: { hours: 24, minutes: 0 },
+        timeBetweenDoses: '24',
     };
 
     const uid = useAuthentication().user!.uid;
@@ -120,9 +123,7 @@ export default function NewPlannedMedicationScreen() {
         date?.setHours(values.startTime!.hours);
         date?.setMinutes(values.startTime!.minutes);
 
-        const intervalHours =
-            values.timeBetweenDoses!.hours +
-            values.timeBetweenDoses!.minutes / 60;
+        const intervalHours = Number.parseFloat(values.timeBetweenDoses!);
 
         const schedule: PlannedMedicationSchedule = {
             startDate: date,
@@ -296,39 +297,15 @@ export default function NewPlannedMedicationScreen() {
                     )}
 
                     <View>
-                        <Text variant="labelLarge">Time between doses</Text>
+                        <Text variant="labelLarge">
+                            Time between doses (in hours)
+                        </Text>
 
-                        {/* TODO: Isto não funciona porque não deixa por tempos > 24h! */}
-                        <Button
-                            onPress={() => setIntervalVisible(true)}
-                            mode="contained-tonal"
-                        >
-                            {values.timeBetweenDoses
-                                ? `${values.timeBetweenDoses.hours
-                                      .toString()
-                                      .padStart(
-                                          2,
-                                          '0'
-                                      )}:${values.timeBetweenDoses.minutes
-                                      .toString()
-                                      .padStart(2, '0')}`
-                                : 'Set time'}
-                        </Button>
-                        <TimePickerModal
-                            visible={intervalVisible}
-                            hours={values.timeBetweenDoses?.hours}
-                            minutes={values.timeBetweenDoses?.minutes}
-                            onDismiss={() => {
-                                setIntervalVisible(false);
-                            }}
-                            onConfirm={({ hours, minutes }) => {
-                                setFieldTouched('timeBetweenDoses', true);
-                                setFieldValue('timeBetweenDoses', {
-                                    hours,
-                                    minutes,
-                                });
-                                setIntervalVisible(false);
-                            }}
+                        <Input
+                            label="Time between doses"
+                            keyboardType="numeric"
+                            onChangeText={handleChange('timeBetweenDoses')}
+                            onBlur={handleBlur('timeBetweenDoses')}
                         />
 
                         {touched.timeBetweenDoses &&

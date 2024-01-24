@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Input } from '../../../components/Input';
 import { router } from 'expo-router';
 import { GhostButton } from '../../../components/Button';
-import { ROUTE } from '../../../model/routes';
 import { MedicationCards } from '../../../components/MedicationCards';
 import { useOwnedMedicationsByName } from '../../../hooks/useOwnedMedicationsByName';
 import { useAuthentication } from '../../../hooks/useAuthentication';
