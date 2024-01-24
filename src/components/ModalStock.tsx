@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, Icon, Text, useTheme } from 'react-native-paper';
 import { OutlineButton, PrimaryButton, SecondaryButton } from './Button';
 import { StyleSheet, View } from 'react-native';
@@ -32,6 +32,10 @@ export const ModalStock: React.FC<StockModalProps> = ({
     //TODO: fixme
     const daysToRunOut = 0;
 
+    useEffect(() => {
+        setValue(ownedMedication.stock);
+    }, [ownedMedication.stock]);
+
     const onIncrement = () => {
         setValue(value + 1);
     };
@@ -51,7 +55,7 @@ export const ModalStock: React.FC<StockModalProps> = ({
                     <Icon size={20} source="close" />
                 </OutlineButton>
                 <OutlineButton onPress={onSeeMedication}>
-                    <Text variant="bodySmall">See Medication</Text>
+                    <Text variant="bodySmall">Create plan</Text>
                 </OutlineButton>
             </Dialog.Actions>
             <Dialog.Content>
