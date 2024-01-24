@@ -44,6 +44,22 @@ const randomUnits2 = (): number => randomChoice([28, 30, 56, 60]);
 
 const randomUnits3 = (): number => randomChoice([56, 60, 90, 100, 120]);
 
+const randomMedicationForm = (): MedicationRecordForm =>
+    randomChoice([
+        MedicationRecordForm.TABLET,
+        MedicationRecordForm.CAPSULE,
+        MedicationRecordForm.SYRUP,
+        MedicationRecordForm.DROPS,
+        MedicationRecordForm.POWDER,
+        MedicationRecordForm.GEL,
+        MedicationRecordForm.CREAM,
+        MedicationRecordForm.SUPPOSITORY,
+        MedicationRecordForm.SOLUTION,
+        MedicationRecordForm.SUSPENSION,
+        MedicationRecordForm.SPRAY,
+        MedicationRecordForm.PASTE,
+    ]);
+
 const parseInfarmedMedicationToMedication = (
     infarmedMedication: InfarmedMedication
 ): Medication => {
@@ -56,7 +72,7 @@ const parseInfarmedMedicationToMedication = (
         id: '',
         name: infarmedMedication['Nome do Medicamento'],
         activeSubstance: infarmedMedication['﻿Substância Ativa/DCI'],
-        form: MedicationRecordForm.TABLET, // TODO: Add mo
+        form: randomMedicationForm(),
         dosage: infarmedMedication.Dosagem,
         aimTitular: infarmedMedication['Titular de AIM'],
         commercialisation: infarmedMedication.Comercialização === 'Sim',
