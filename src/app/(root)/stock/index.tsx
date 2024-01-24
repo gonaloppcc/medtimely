@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 import { StockCards } from '../../../components/StockCards';
 import { ValuePicker } from '../../../components/ValuePicker';
-import { EmptyStockMsg } from '../../../components/EmptyStockMsg';
 import { useGroups } from '../../../hooks/useGroups';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { useStock } from '../../../hooks/useStock';
@@ -120,16 +119,13 @@ export default function StockScreen() {
             )}
             {isError && <ErrorMessage errorMessage="Could not load stock" />}
             {isLoading && <ProgressIndicator />}
-            {isSuccess && ownedMedications && ownedMedications.length > 0 && (
+            {isSuccess && ownedMedications && (
                 <StockCards
                     ownedMedications={ownedMedications}
                     onPressOwnedMedication={onPressPersonalStockHandler}
                     isRefreshing={isLoading}
                     onRefresh={refetch}
                 />
-            )}
-            {isSuccess && ownedMedications && ownedMedications.length == 0 && (
-                <EmptyStockMsg />
             )}
         </View>
     );

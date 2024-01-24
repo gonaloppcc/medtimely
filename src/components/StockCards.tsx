@@ -2,6 +2,7 @@ import React from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { StockCard } from './StockCard';
 import { OwnedMedication } from '../model/ownedMedication';
+import { EmptyStockMsg } from './EmptyStockMsg';
 
 interface OwnedMedicationCardsProps {
     ownedMedications: OwnedMedication[];
@@ -27,15 +28,19 @@ export const StockCards = ({
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}
         >
-            {ownedMedications.map((med, index) => {
-                return (
-                    <StockCard
-                        {...med}
-                        onPressStock={onPressOwnedMedication}
-                        key={index}
-                    />
-                );
-            })}
+            {ownedMedications.length > 0 ? (
+                ownedMedications.map((med, index) => {
+                    return (
+                        <StockCard
+                            {...med}
+                            onPressStock={onPressOwnedMedication}
+                            key={index}
+                        />
+                    );
+                })
+            ) : (
+                <EmptyStockMsg />
+            )}
         </ScrollView>
     );
 };
