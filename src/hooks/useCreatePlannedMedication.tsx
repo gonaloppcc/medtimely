@@ -1,6 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { GroupData } from '../model/group';
-import { createGroup } from '../services/groups';
 import { db } from '../firebase';
 import { PlannedMedication } from '../model/ownedMedication';
 import { createPlannedMedication } from '../services/plannedMedication/plannedMedication';

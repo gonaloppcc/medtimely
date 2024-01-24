@@ -13,8 +13,6 @@ import { useAuthentication } from '../../../hooks/useAuthentication';
 import { useOwnedMedication } from '../../../hooks/useOwnedMedication';
 import { MiniMedicationCard } from '../../../components/MiniMedicationCard';
 import { PlannedMedicationSchedule } from '../../../model/ownedMedication';
-import { createPlannedMedication } from '../../../services/plannedMedication/plannedMedication';
-import { db } from '../../../firebase';
 import { useCreatePlannedMedication } from '../../../hooks/useCreatePlannedMedication';
 
 /// Requirements:
