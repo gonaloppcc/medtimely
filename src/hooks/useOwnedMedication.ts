@@ -6,7 +6,7 @@ import { OwnedMedication } from '../model/ownedMedication';
 import { db } from '../firebase';
 
 export interface useOwnedMedicationProps extends FetcherProps {
-    ownedMedication: OwnedMedication;
+    ownedMedication: OwnedMedication | null;
 }
 
 export const useOwnedMedication = (
@@ -27,10 +27,11 @@ export const useOwnedMedication = (
         error,
         refetch,
     } = useQuery({
-        queryKey: ['ownedMedication', docId],
-        queryFn: () => {
-            if (docId) return getOwnedMedication(db, docId);
-            return undefined;
+        queryKey: ['ownedMedication', docId || ''],
+        queryFn: async () => {
+            if (docId && docId != '')
+                return await getOwnedMedication(db, docId);
+            return null;
         },
     });
 
@@ -38,7 +39,7 @@ export const useOwnedMedication = (
         isSuccess,
         isLoading,
         isError,
-        ownedMedication: ownedMedication as unknown as OwnedMedication,
+        ownedMedication: ownedMedication as unknown as OwnedMedication | null,
         error: error as AxiosError,
         refetch,
     };

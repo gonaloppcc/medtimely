@@ -1,17 +1,16 @@
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 import { PrimaryButton } from '../../../components/Button';
 import { ErrorMessage } from '../../../components/ErrorMessage';
-import { createGroup } from '../../../services/groups';
-import { db } from '../../../firebase';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { GroupData } from '../../../model/group';
 import { router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
-import { TextInput } from 'react-native-paper';
+import { Text, TextInput, useTheme } from 'react-native-paper';
+import { useCreateGroup } from '../../../hooks/useCreateGroup';
 
 interface Values {
     name: string;
@@ -30,6 +29,19 @@ const validationSchema = Yup.object().shape({
 
 export default function GroupMemberScreen() {
     const uid = useAuthentication().user?.uid || '';
+    const theme = useTheme();
+    const [errorCreate, setErroCreate] = useState(false);
+
+    const onSuccess = (groupId: string) => {
+        router.push({ pathname: ROUTE.GROUPS.BY_ID, params: { id: groupId } });
+    };
+
+    const onError = () => {
+        setErroCreate(true);
+    };
+
+    const { createGroup } = useCreateGroup(uid, onSuccess, onError);
+
     const onSubmit = async (values: Values) => {
         const group: GroupData = {
             name: values.name,
@@ -37,8 +49,7 @@ export default function GroupMemberScreen() {
             hasSharedStock: true,
             treatmentPermissions: 'manage',
         };
-        const groupId = await createGroup(db, group, uid);
-        router.push({ pathname: ROUTE.GROUPS.BY_ID, params: { id: groupId } });
+        await createGroup(group);
     };
 
     return (
@@ -85,6 +96,19 @@ export default function GroupMemberScreen() {
                                     errorMessage={errors.description}
                                 />
                             )}
+
+                            {errorCreate && (
+                                <View style={styles.ErrorMessage}>
+                                    <Text
+                                        variant="bodyLarge"
+                                        style={{
+                                            color: theme.colors.errorContainer,
+                                        }}
+                                    >
+                                        Something went wrong
+                                    </Text>
+                                </View>
+                            )}
                         </View>
 
                         <PrimaryButton onPress={handleSubmit}>
@@ -109,5 +133,8 @@ const styles = StyleSheet.create({
     },
     field: {
         width: '100%',
+    },
+    ErrorMessage: {
+        marginTop: 20,
     },
 });

@@ -16,6 +16,7 @@ import {
     limit,
     query,
     updateDoc,
+    where,
 } from 'firebase/firestore';
 import { ProjectError } from '../error';
 import { USERS_COLLECTION_NAME } from '../users';
@@ -59,11 +60,12 @@ export function getOwnedMedicationPath({
 }: {
     userId?: string;
     groupId?: string;
-    ownedMedicationId: string;
+    ownedMedicationId?: string;
 }): string {
-    return groupId
-        ? `${GROUPS_COLLECTION_NAME}/${groupId}/${OWNED_MEDICATIONS_COLLECTION}/${ownedMedicationId}`
-        : `${USERS_COLLECTION_NAME}/${userId}/${OWNED_MEDICATIONS_COLLECTION}/${ownedMedicationId}`;
+    const pt1 = groupId
+        ? `/${GROUPS_COLLECTION_NAME}/${groupId}/${OWNED_MEDICATIONS_COLLECTION}`
+        : `/${USERS_COLLECTION_NAME}/${userId}/${OWNED_MEDICATIONS_COLLECTION}`;
+    return ownedMedicationId ? `${pt1}/${ownedMedicationId}` : `${pt1}`;
 }
 
 // ownedMedicationId is a full document reference path!!
@@ -178,6 +180,45 @@ export const getGroupOwnedMedications = async (
         throw new ProjectError(
             'GETTING_OWNED_MEDICATIONS_ERROR',
             `Error getting document on path=${OWNED_MEDICATIONS_COLLECTION}`
+        );
+    }
+};
+
+export const getOwnedMedicationsByName = async (
+    db: Firestore,
+    userId: string,
+    name: string,
+    groupId?: string,
+    maxDocuments: number = 5
+): Promise<OwnedMedication[]> => {
+    const collectionPath = getOwnedMedicationPath({ userId, groupId });
+    const ownedMedicationCollection = collection(db, collectionPath);
+    const q = query(
+        ownedMedicationCollection,
+        where('name', '>=', name),
+        where('name', '<=', name + '\uf8ff'), // https://stackoverflow.com/questions/46568142/google-firestore-query-on-substring-of-a-property-value-text-search
+        limit(maxDocuments)
+    );
+
+    try {
+        const medications: OwnedMedication[] = [];
+
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+            const medication: OwnedMedication = doc.data() as OwnedMedication;
+
+            medication.id = `${collectionPath}/${doc.id}`;
+
+            medications.push(medication);
+        });
+
+        return medications;
+    } catch (err) {
+        console.error('Error performing firebase query: ', err);
+        throw new ProjectError(
+            'GETTING_OWNED_MEDICATIONS_BY_NAME_ERROR',
+            `Error getting document on path=${collectionPath} with substring=${name}`
         );
     }
 };
