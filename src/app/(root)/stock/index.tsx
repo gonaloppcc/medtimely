@@ -58,8 +58,12 @@ export default function StockScreen() {
     stockFilters.unshift({ label: PERSONAL_VALUE, value: PERSONAL_VALUE });
 
     const onPressPersonalStockHandler = (id: string) => {
+        router.push({
+            pathname: ROUTE.STOCK.BY_ID,
+            params: {id: id},
+        });
         //TODO: do something
-        console.log(id);
+        console.log(ROUTE.STOCK.BY_ID);
     };
 
     const selectValueHandler = (value: string) => {

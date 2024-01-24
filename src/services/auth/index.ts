@@ -16,7 +16,7 @@ const createUserWithEmailAndPassword = async (
         email,
         password
     );
-
+    console.log(userCredentials.user)
     return userCredentials.user;
 };
 

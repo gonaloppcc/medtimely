@@ -15,6 +15,7 @@ import {
     getDocs,
     limit,
     query,
+    where,
 } from 'firebase/firestore';
 import { ProjectError } from '../error';
 import { USERS_COLLECTION_NAME } from '../users';
@@ -158,6 +159,46 @@ export const getUserGroupOwnedMedications = async (
         }, 1000);
     });
 };
+
+function addSlashIfMissing(inputString) {
+    return inputString.startsWith('/') ? inputString : '/' + inputString;
+}
+
+
+export const getUserOwnedMedicationById = async (
+    db: Firestore,
+    uid: string,
+    ownedMedicationId: string
+): Promise<OwnedMedication | null> => {
+    console.log('Fetching owned medication with id ', ownedMedicationId, ' for user ', uid);
+    ownedMedicationId = addSlashIfMissing(ownedMedicationId);
+
+    const ownedMedicationRef = doc(
+        db,
+        ownedMedicationId
+    );
+
+    try {
+        const docSnapshot = await getDoc(ownedMedicationRef);
+
+        if (docSnapshot.exists()) {
+            const ownedMedication = docSnapshot.data() as OwnedMedication;
+            ownedMedication.id = docSnapshot.ref.path;
+
+            return ownedMedication;
+        } else {
+            return null;
+        }
+    } catch (err) {
+        console.error('Error performing firebase query: ', err);
+        throw new ProjectError(
+            'GETTING_OWNED_MEDICATIONS_ERROR',
+            `Error getting document on path=${ownedMedicationRef.path}`
+        );
+    }
+};
+
+
 
 export const createOwnedMedicationWithMedicationId = async (
     db: Firestore,

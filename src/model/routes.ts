@@ -34,6 +34,7 @@ const STOCK_ROUTES: Routes = {
     HOME: '/stock',
     ADD: '/stock/add',
     SEARCH: '/stock/search',
+    BY_ID: '/stock/[id]'
 };
 
 const PROFILE_ROUTES: Routes = {

@@ -12,30 +12,29 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../model/routes';
 import { useRecordsByMedication } from '../../../../hooks/useRecordsByMedication';
 import { usePlannedMedicationsById } from '../../../../hooks/usePlannedMedicationById';
+import { useStockMedById } from '../../../../hooks/useStockById';
 
-export default function MedicationScreen() {
-    const medicationIdEnconde = useLocalSearchParams()!.id as string;
-    const medicationID = decodeURIComponent(medicationIdEnconde);
+export default function StockMedicationScreen() {
 
-    console.log(useLocalSearchParams())
+    const stockMedIdEnconde = useLocalSearchParams().id as string;
+    const stockMedID = decodeURIComponent(stockMedIdEnconde);
 
     const theme = useAppTheme();
     const { user } = useAuthentication();
     const uid = user?.uid ?? '';
-    // const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
 
     const { isSuccess, isLoading, isError, error, medication } =
-        usePlannedMedicationsById(uid, medicationID);
+        useStockMedById(uid, stockMedID);
 
     console.log(error);
 
     const headerRight = () => (
-        <Appbar.Action
+       <Appbar.Action
             icon="pencil"
             onPress={() =>
                 router.push({
-                    pathname: ROUTE.MEDICATIONS.EDIT,
-                    params: { id: medicationID },
+    //                pathname: ROUTE.MEDICATIONS.EDIT,
+    //                params: { id: medicationID },
                 })
             }
         />
@@ -45,8 +44,8 @@ export default function MedicationScreen() {
         headerTitle: isLoading
             ? 'Medication is loading'
             : isSuccess && medication
-              ? medication.ownedMedication.name
-              : 'Medication not found',
+            ? medication.ownedMedication.name
+            : 'Medication not found',
         headerRight,
     });
 
@@ -56,12 +55,15 @@ export default function MedicationScreen() {
         isError: isErrorRecords,
         records,
         refetch: refetchRecords,
-    } = useRecordsByMedication(uid, medicationID);
+    } = useRecordsByMedication(uid, stockMedID);
+
 
     const onPressRecord = (id: string) => {
         console.log(id);
         //TODO: Add modal like the homepage with calendar???
     };
+
+
 
     return (
         <View style={styles.container}>
@@ -75,27 +77,27 @@ export default function MedicationScreen() {
                             size={140}
                             color={theme.colors.brandContainer}
                         />
-                        <Text variant="headlineLarge">
+                        <Text variant='headlineLarge'>
                             {medication.ownedMedication.name}
                         </Text>
                     </View>
 
                     <View style={styles.textContainer}>
-                        <Text variant="headlineLarge">Programs</Text>
-                        <Text variant="labelMedium">
+                        <Text variant='headlineLarge'>Programs</Text>
+                        <Text variant='labelMedium'>
                             {medication.ownedMedication.form.toLocaleLowerCase()}{' '}
                             every day
                         </Text>
-                        <Text variant="labelMedium">
+                        <Text variant='labelMedium'>
                             {medication.ownedMedication.dosage}{' '}
                         </Text>
                     </View>
 
                     <View style={styles.textContainer}>
-                        <Text variant="headlineLarge">History</Text>
+                        <Text variant='headlineLarge'>History</Text>
                         {isLoadingRecords && <ProgressIndicator />}
                         {isErrorRecords && (
-                            <Text variant="headlineMedium">Error</Text>
+                            <Text variant='headlineMedium'>Error</Text>
                         )}
                         {isSuccessRecords && (
                             <RecordCards
