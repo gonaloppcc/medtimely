@@ -47,14 +47,9 @@ export default function GroupMemberScreen() {
     );
 
     useNavOptions({
+        headerTitle: isSuccess && userDoc ? userDoc.firstName : 'Member',
         headerRight,
     });
-
-    if (isSuccess && userDoc) {
-        useNavOptions({
-            headerTitle: userDoc.firstName,
-        });
-    }
 
     const onPressMemberRecord = () => {
         router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS });
