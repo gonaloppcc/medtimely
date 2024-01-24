@@ -29,8 +29,6 @@ export const ModalStock: React.FC<StockModalProps> = ({
         ? theme.colors.errorContainer
         : theme.colors.onSurface;
 
-    console.log('onConsume', onConsume);
-
     //TODO: fixme
     const daysToRunOut = 0;
 
