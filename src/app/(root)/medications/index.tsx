@@ -18,7 +18,6 @@ export default function MedicationsScreen() {
 
     const { user } = useAuthentication();
     const uid = user?.uid ?? '';
-    // const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
 
     const { isSuccess, isLoading, isError, medications, refetch } =
         usePlannedMedications(uid);

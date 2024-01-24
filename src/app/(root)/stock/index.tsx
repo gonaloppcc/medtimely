@@ -81,9 +81,9 @@ export default function StockScreen() {
     const onSeeMedication = () => {
         if (ownedMedicationModal) {
             router.push({
-                pathname: ROUTE.MEDICATIONS.BY_ID,
+                pathname: '/medications/new',
                 params: {
-                    id: ownedMedicationModal.id,
+                    selectedMedicationId: ownedMedicationModal.id,
                 },
             });
             hideModal();

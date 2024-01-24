@@ -59,7 +59,7 @@ interface PlannedMedicationFirestore {
     timeBetweenDosesInHours: number;
 }
 
-function addSlashIfMissing(inputString) {
+function addSlashIfMissing(inputString: string): string {
     return inputString.startsWith('/') ? inputString : '/' + inputString;
 }
 
@@ -68,29 +68,31 @@ export const getPlannedMedicationById = async (
     uid: string,
     ownedMedicationId: string
 ): Promise<PlannedMedication> => {
-    console.log('Fetching planned medication with id ', ownedMedicationId, uid);
     ownedMedicationId = addSlashIfMissing(ownedMedicationId);
+    console.log('Fetching planned medication with id', ownedMedicationId, uid);
     const userRef = doc(db, USERS_COLLECTION_NAME, uid);
-    try {
-        const snapshot: DocumentSnapshot = await getDoc(userRef);
-        if (!snapshot.exists()) {
-            throw new Error('User does not exist');
-        }
-        const plannedMedications: PlannedMedicationsFirestore =
-            snapshot.data().plannedMedications;
-        // TODO add check
-        const plannedMedication: PlannedMedicationFirestore =
-            plannedMedications[ownedMedicationId];
-        const s = await plannedMedicationFirestoreToView(
-            db,
-            uid,
-            ownedMedicationId,
-            plannedMedication
-        );
-        return s;
-    } catch (e) {
-        throw new Error(e);
+    // try {
+    const snapshot: DocumentSnapshot = await getDoc(userRef);
+    if (!snapshot.exists()) {
+        throw new Error('User does not exist');
     }
+
+    const plannedMedications: PlannedMedicationsFirestore =
+        snapshot.data().plannedMedications;
+    // TODO add check
+    const plannedMedication: PlannedMedicationFirestore =
+        plannedMedications[ownedMedicationId];
+    console.log('Planned medication: ', plannedMedications);
+    const s = await plannedMedicationFirestoreToView(
+        db,
+        uid,
+        ownedMedicationId,
+        plannedMedication
+    );
+    return s;
+    // } catch (e) {
+    //     throw new Error(e);
+    // }
 };
 
 // todo: move to transaction
@@ -100,6 +102,8 @@ export const createPlannedMedication = async (
     plannedMedication: Omit<PlannedMedication, 'ownedMedication'>,
     ownedMedicationId: string
 ): Promise<void> => {
+    ownedMedicationId = addSlashIfMissing(ownedMedicationId);
+
     console.log(
         `Creating plannedMedication=${JSON.stringify(
             plannedMedication

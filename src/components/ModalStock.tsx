@@ -40,7 +40,7 @@ export const ModalStock: React.FC<StockModalProps> = ({
                     <Icon size={20} source="close" />
                 </OutlineButton>
                 <OutlineButton onPress={onSeeMedication}>
-                    <Text variant="bodySmall">See Medication</Text>
+                    <Text variant="bodySmall">Create plan</Text>
                 </OutlineButton>
             </Dialog.Actions>
             <Dialog.Content>
