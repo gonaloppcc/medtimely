@@ -1,10 +1,7 @@
 import { AxiosError } from 'axios';
 import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
-import {
-    getOwnedMedication,
-    getOwnedMedicationPath,
-} from '../services/ownedMedication';
+import { getOwnedMedication } from '../services/ownedMedication';
 import { OwnedMedication } from '../model/ownedMedication';
 import { db } from '../firebase';
 
@@ -13,9 +10,7 @@ export interface useOwnedMedicationProps extends FetcherProps {
 }
 
 export const useOwnedMedication = (
-    userId: string,
-    ownedMedicationId?: string,
-    groupId?: string
+    ownedMedicationId?: string
 ): useOwnedMedicationProps => {
     // const docId = getOwnedMedicationPath({
     //     userId,

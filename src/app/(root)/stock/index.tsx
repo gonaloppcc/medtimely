@@ -61,6 +61,7 @@ export default function StockScreen() {
         //TODO: do something
         console.log(id);
 
+        // ISTO faz sentido sequer?????????????
         router.push({
             pathname: '/medications/new',
             params: {

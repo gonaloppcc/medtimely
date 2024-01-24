@@ -13,6 +13,8 @@ export const useOwnedMedicationsByName = (
     userId: string,
     name: string
 ): useOwnedMedicationsProps => {
+    console.log(name);
+
     const {
         isSuccess,
         isLoading,
@@ -22,7 +24,9 @@ export const useOwnedMedicationsByName = (
         refetch,
     } = useQuery({
         queryKey: ['ownedMedication', userId],
-        queryFn: () => getUserOwnedMedicationsByName(db, userId, name),
+        //TODO: Mudar isto
+        // queryFn: () => getUserOwnedMedicationsByName(db, userId, name),
+        queryFn: () => getUserOwnedMedications(db, userId),
     });
 
     return {

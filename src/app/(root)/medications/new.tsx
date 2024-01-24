@@ -61,13 +61,13 @@ const validationSchema = Yup.object<Values>({
 });
 
 const MedicationCard = () => {
-    const uid = useAuthentication().user!.uid;
+    // const uid = useAuthentication().user!.uid;
     const { selectedMedicationId } = useLocalSearchParams<{
         selectedMedicationId: string;
     }>();
     const { isError, isLoading, isSuccess, ownedMedication, error } =
-        useOwnedMedication(uid, selectedMedicationId);
-    const { setFieldValue, errors } = useFormikContext<Values>();
+        useOwnedMedication(selectedMedicationId);
+    const { setFieldValue } = useFormikContext<Values>();
     React.useEffect(() => {
         if (isSuccess) setFieldValue('ownedMedicationId', selectedMedicationId);
         else setFieldValue('ownedMedicationId', undefined);
@@ -101,7 +101,7 @@ export default function NewPlannedMedicationScreen() {
     const onSubmit = async (values: Values) => {
         const ownedMedicationId = values.ownedMedicationId!;
         const doseToBeTaken = Number.parseInt(values.numberOfDoses!);
-        let date = values.startDate!;
+        const date = values.startDate!;
         date?.setHours(values.startTime!.hours);
         date?.setMinutes(values.startTime!.minutes);
 
