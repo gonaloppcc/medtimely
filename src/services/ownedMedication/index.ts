@@ -271,10 +271,7 @@ export const createOwnedMedication = async (
 ): Promise<string> => {
     console.log(`Creating owned medication for user with id=${uid}`);
 
-    const ownedMedicationCollection = getGroupOwnedMedicationCollection(
-        db,
-        uid
-    );
+    const ownedMedicationCollection = getUserOwnedMedicationCollection(db, uid);
 
     if (
         ownedMedication.medicationId === undefined ||
