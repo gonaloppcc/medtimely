@@ -128,21 +128,6 @@ export default function HomeLayout() {
             />
 
             <Tabs.Screen
-                name={ROUTE.RECORDS.BASE_NAME}
-                options={{
-                    title: 'Records',
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => (
-                        <Icon
-                            source="file-document-multiple"
-                            color={color}
-                            size={24}
-                        />
-                    ),
-                }}
-            />
-
-            <Tabs.Screen
                 name={ROUTE.GROUPS.BASE_NAME}
                 options={{
                     title: 'Groups',

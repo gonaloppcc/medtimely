@@ -8,6 +8,18 @@ export default function GroupIdLayout() {
                 name="index"
                 options={{ headerTitle: 'View group' }}
             />
+            <Stack.Screen
+                name="members/index"
+                options={{ headerTitle: 'View Members' }}
+            />
+            <Stack.Screen
+                name="members/[memberId]/index"
+                options={{ headerTitle: 'View Member' }}
+            />
+            <Stack.Screen
+                name="members/[memberId]/meds"
+                options={{ headerTitle: 'View Medications' }}
+            />
         </Stack>
     );
 }

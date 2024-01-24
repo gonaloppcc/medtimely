@@ -1,18 +1,20 @@
 import { AxiosError } from 'axios';
 import { FetcherProps } from './Fetcher';
 import { useQuery } from '@tanstack/react-query';
-import { getUserGroupOwnedMedications } from '../services/ownedMedication';
+import { getUserOwnedMedications } from '../services/ownedMedication';
 import { OwnedMedication } from '../model/ownedMedication';
 import { db } from '../firebase';
 
-export interface useGroupOwnedMedicationsProps extends FetcherProps {
+export interface useOwnedMedicationsProps extends FetcherProps {
     ownedMedications: OwnedMedication[];
 }
 
-export const useGroupOwnedMedications = (
+export const useOwnedMedicationsByName = (
     userId: string,
-    groupId: string
-): useGroupOwnedMedicationsProps => {
+    name: string
+): useOwnedMedicationsProps => {
+    console.log(name);
+
     const {
         isSuccess,
         isLoading,
@@ -21,8 +23,10 @@ export const useGroupOwnedMedications = (
         error,
         refetch,
     } = useQuery({
-        queryKey: ['groupOwnedMedication', groupId],
-        queryFn: () => getUserGroupOwnedMedications(db, userId, groupId),
+        queryKey: ['ownedMedication', userId],
+        //TODO: Mudar isto
+        // queryFn: () => getUserOwnedMedicationsByName(db, userId, name),
+        queryFn: () => getUserOwnedMedications(db, userId),
     });
 
     return {

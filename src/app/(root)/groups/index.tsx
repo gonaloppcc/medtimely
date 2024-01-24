@@ -1,19 +1,36 @@
 import * as React from 'react';
 
-import { FAB, Text } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { GroupCards } from '../../../components/GroupCards';
 import { useGroups } from '../../../hooks/useGroups';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { ROUTE } from '../../../model/routes';
 import { useAuthentication } from '../../../hooks/useAuthentication';
+import { useNavOptions } from '../../../hooks/useNavOptions';
 
 export default function GroupsScreen() {
     const { user } = useAuthentication();
-    const { isSuccess, isLoading, isError, groups } = useGroups(
-        user?.uid ?? ''
+
+    const { isSuccess, isLoading, isError, groups, refetch } = useGroups(
+        user!.uid
     );
+
+    const headerRight = () => (
+        <Appbar.Action
+            icon="plus"
+            onPress={() =>
+                router.push({
+                    pathname: ROUTE.GROUPS.ADD,
+                })
+            }
+        />
+    );
+
+    useNavOptions({
+        headerRight,
+    });
 
     const onPressGroup = (id: string) => {
         router.push({ pathname: ROUTE.GROUPS.BY_ID, params: { id } });
@@ -25,11 +42,13 @@ export default function GroupsScreen() {
             {isError && <Text>Something went wrong</Text>}
             {isLoading && <ProgressIndicator />}
             {isSuccess && groups.length > 0 && (
-                <GroupCards groups={groups} onPressGroup={onPressGroup} />
+                <GroupCards
+                    groups={groups}
+                    onPressGroup={onPressGroup}
+                    isRefreshing={isLoading}
+                    onRefresh={refetch}
+                />
             )}
-            <Link asChild href="/groups/new">
-                <FAB icon="plus" style={styles.fab} />
-            </Link>
         </View>
     );
 }

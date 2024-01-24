@@ -8,18 +8,12 @@ import { Medication } from '../src/model/medication';
 import { createMedication } from '../src/services/medications';
 import { createReadStream } from 'fs';
 import parse from 'csv-parser';
+import { randomChoice, randomNumber } from './random';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const MEDICATIONS_FILE_PATH = './data/lista_infomed.csv';
-
-const randomNumber = (min: number, max: number): number =>
-    Math.floor(Math.random() * (max - min + 1)) + min;
-
-const randomChoice = <T>(choices: T[]): T =>
-    choices[randomNumber(0, choices.length - 1)];
-
 interface InfarmedMedication {
     ' Substância Ativa/DCI': string;
     'Nome do Medicamento': string;
@@ -50,6 +44,22 @@ const randomUnits2 = (): number => randomChoice([28, 30, 56, 60]);
 
 const randomUnits3 = (): number => randomChoice([56, 60, 90, 100, 120]);
 
+const randomMedicationForm = (): MedicationRecordForm =>
+    randomChoice([
+        MedicationRecordForm.TABLET,
+        MedicationRecordForm.CAPSULE,
+        MedicationRecordForm.SYRUP,
+        MedicationRecordForm.DROPS,
+        MedicationRecordForm.POWDER,
+        MedicationRecordForm.GEL,
+        MedicationRecordForm.CREAM,
+        MedicationRecordForm.SUPPOSITORY,
+        MedicationRecordForm.SOLUTION,
+        MedicationRecordForm.SUSPENSION,
+        MedicationRecordForm.SPRAY,
+        MedicationRecordForm.PASTE,
+    ]);
+
 const parseInfarmedMedicationToMedication = (
     infarmedMedication: InfarmedMedication
 ): Medication => {
@@ -62,7 +72,7 @@ const parseInfarmedMedicationToMedication = (
         id: '',
         name: infarmedMedication['Nome do Medicamento'],
         activeSubstance: infarmedMedication['﻿Substância Ativa/DCI'],
-        form: MedicationRecordForm.TABLET, // TODO: Add mo
+        form: randomMedicationForm(),
         dosage: infarmedMedication.Dosagem,
         aimTitular: infarmedMedication['Titular de AIM'],
         commercialisation: infarmedMedication.Comercialização === 'Sim',

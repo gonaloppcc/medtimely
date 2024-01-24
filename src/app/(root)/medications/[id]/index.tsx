@@ -5,22 +5,27 @@ import { StyleSheet, View } from 'react-native';
 import { useNavOptions } from '../../../../hooks/useNavOptions';
 import { useAuthentication } from '../../../../hooks/useAuthentication';
 import { ProgressIndicator } from '../../../../components/ProgressIndicator';
-import { useMedication } from '../../../../hooks/useMedication';
 import { MedicationIcon } from '../../../../components/MedicationIcon';
 import { useAppTheme } from '../../../../theme';
 import { RecordCards } from '../../../../components/RecordCards';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../model/routes';
 import { useRecordsByMedication } from '../../../../hooks/useRecordsByMedication';
+import { usePlannedMedicationsById } from '../../../../hooks/usePlannedMedicationById';
 
 export default function MedicationScreen() {
-    const medicationID = useLocalSearchParams()!.id as string; // TODO: !. is not safe since it can be null?
+    const medicationIdEnconde = useLocalSearchParams()!.id as string;
+    const medicationID = decodeURIComponent(medicationIdEnconde);
+
     const theme = useAppTheme();
     const { user } = useAuthentication();
     const uid = user?.uid ?? '';
+    // const uid = '10wFfsLJ3KTCPsW8oTU42K5x3Xt1';
 
-    const { isSuccess, isLoading, isError, medication } =
-        useMedication(medicationID);
+    const { isSuccess, isLoading, isError, error, medication } =
+        usePlannedMedicationsById(uid, medicationID);
+
+    console.log(error);
 
     const headerRight = () => (
         <Appbar.Action
@@ -35,7 +40,11 @@ export default function MedicationScreen() {
     );
 
     useNavOptions({
-        headerTitle: isSuccess ? medication!.name : 'Medication not found',
+        headerTitle: isLoading
+            ? 'Medication is loading'
+            : isSuccess && medication
+              ? medication.ownedMedication.name
+              : 'Medication not found',
         headerRight,
     });
 
@@ -48,7 +57,8 @@ export default function MedicationScreen() {
     } = useRecordsByMedication(uid, medicationID);
 
     const onPressRecord = (id: string) => {
-        router.push({ pathname: ROUTE.RECORDS.BY_ID, params: { id } });
+        console.log(id);
+        //TODO: Add modal like the homepage with calendar???
     };
 
     return (
@@ -59,30 +69,28 @@ export default function MedicationScreen() {
                 <>
                     <View style={styles.iconContainer}>
                         <MedicationIcon
-                            form={medication.form}
+                            form={medication.ownedMedication.form}
                             size={140}
                             color={theme.colors.brandContainer}
                         />
-                        <Text variant="headlineLarge">{medication.name}</Text>
+                        <Text variant="headlineLarge">
+                            {medication.ownedMedication.name}
+                        </Text>
                     </View>
 
                     <View style={styles.textContainer}>
                         <Text variant="headlineLarge">Programs</Text>
                         <Text variant="labelMedium">
-                            {medication.form.toLocaleLowerCase()} every day
+                            {medication.ownedMedication.form.toLocaleLowerCase()}{' '}
+                            every day
                         </Text>
-                        <Text variant="labelMedium">{medication.dosage} </Text>
-                    </View>
-
-                    <View style={styles.textContainer}>
-                        <Text variant="headlineLarge">Stock</Text>
-                        {/* Add ownedMedication info */}
+                        <Text variant="labelMedium">
+                            {medication.ownedMedication.dosage}{' '}
+                        </Text>
                     </View>
 
                     <View style={styles.textContainer}>
                         <Text variant="headlineLarge">History</Text>
-
-                        <Text variant="headlineSmall">Today</Text>
                         {isLoadingRecords && <ProgressIndicator />}
                         {isErrorRecords && (
                             <Text variant="headlineMedium">Error</Text>

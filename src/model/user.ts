@@ -11,8 +11,8 @@ export interface OptionalInfo {
 
 export interface User {
     id?: string;
-    firstname?: string;
-    lastname?: string;
+    firstName?: string;
+    lastName?: string;
     groups: string[];
     optionalInfo?: OptionalInfo;
 

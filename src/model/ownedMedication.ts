@@ -8,6 +8,10 @@ export interface OwnedMedication extends Medication {
 
 export type OwnedMedicationData = Omit<OwnedMedication, 'id'>;
 
+export type OwnedMedicationWithoutMedicationFields = Required<
+    Pick<OwnedMedication, 'stock' | 'medicationId'>
+>;
+
 export interface PlannedMedication {
     ownedMedication: OwnedMedication;
     doseToBeTaken: number;
@@ -15,7 +19,7 @@ export interface PlannedMedication {
 }
 
 export interface PlannedMedicationSchedule {
-    startDate: string;
-    endDate?: string;
+    startDate: Date; // datetime of first time medication is scheduled
+    endDate?: Date;
     timeBetweenDosesInHours: number;
 }

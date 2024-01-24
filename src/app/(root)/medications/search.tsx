@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useMedicationsByName } from '../../../hooks/useMedicationsByName';
 import * as React from 'react';
 import { useState } from 'react';
 import { Input } from '../../../components/Input';
@@ -8,10 +7,12 @@ import { router } from 'expo-router';
 import { GhostButton } from '../../../components/Button';
 import { ROUTE } from '../../../model/routes';
 import { MedicationCards } from '../../../components/MedicationCards';
+import { useOwnedMedicationsByName } from '../../../hooks/useOwnedMedicationsByName';
 
 export default function SearchModal() {
     const [search, setSearch] = useState('');
-    const { medications } = useMedicationsByName(search);
+    // TODO: mudar isto
+    const { ownedMedications } = useOwnedMedicationsByName(search, 'algo');
 
     return (
         <View style={styles.form}>
@@ -40,7 +41,7 @@ export default function SearchModal() {
                     <Text>Search for a medication to use</Text>
                 ) : (
                     <MedicationCards
-                        medications={medications}
+                        medications={ownedMedications}
                         onPressMedication={(id) => {
                             router.push({
                                 pathname: ROUTE.STOCK.ADD,

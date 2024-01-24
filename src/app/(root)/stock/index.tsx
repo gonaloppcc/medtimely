@@ -4,13 +4,16 @@ import { StyleSheet, View } from 'react-native';
 import { ProgressIndicator } from '../../../components/ProgressIndicator';
 import { StockCards } from '../../../components/StockCards';
 import { ValuePicker } from '../../../components/ValuePicker';
-import { EmptyStockMsg } from '../../../components/EmptyStockMsg';
 import { useGroups } from '../../../hooks/useGroups';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { useStock } from '../../../hooks/useStock';
 import { ErrorMessage } from '../../../components/ErrorMessage';
-import { Link } from 'expo-router';
-import { FAB } from 'react-native-paper';
+import { router } from 'expo-router';
+import { Appbar, Portal } from 'react-native-paper';
+import { useNavOptions } from '../../../hooks/useNavOptions';
+import { ROUTE } from '../../../model/routes';
+import { OwnedMedication } from '../../../model/ownedMedication';
+import { ModalStock } from '../../../components/ModalStock';
 
 const PERSONAL_VALUE = 'Personal';
 
@@ -18,20 +21,38 @@ export default function StockScreen() {
     const [stockFilterSelected, setStockFilterSelected] =
         useState(PERSONAL_VALUE);
 
-    console.log('stockFilterSelected', stockFilterSelected);
+    const headerRight = () => (
+        <Appbar.Action
+            icon="plus"
+            onPress={() =>
+                router.push({
+                    pathname: ROUTE.STOCK.ADD,
+                })
+            }
+        />
+    );
+
+    useNavOptions({
+        headerRight,
+    });
 
     const uid = useAuthentication().user?.uid ?? '';
+
     const {
-        isLoading: isLoadingGroups,
         isError: isErrorGroups,
         isSuccess: isSuccessGroups,
         groups,
     } = useGroups(uid);
 
-    const { isSuccess, isLoading, isError, ownedMedications } = useStock(
-        uid,
-        stockFilterSelected
-    );
+    const { isSuccess, isLoading, isError, ownedMedications, refetch } =
+        useStock(uid, stockFilterSelected);
+
+    const [ownedMedicationModal, setOwnedMedicationModal] =
+        useState<OwnedMedication>();
+    //MODAl
+    const [visible, setVisible] = useState(false);
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
 
     const stockFilters: { label: string; value: string }[] = groups.map(
         (group) => {
@@ -45,17 +66,48 @@ export default function StockScreen() {
     stockFilters.unshift({ label: PERSONAL_VALUE, value: PERSONAL_VALUE });
 
     const onPressPersonalStockHandler = (id: string) => {
-        //TODO: do something
-        console.log(id);
+        const medication = ownedMedications.find((med) => med.id === id);
+        if (medication) {
+            setOwnedMedicationModal(medication);
+            showModal();
+        }
     };
 
     const selectValueHandler = (value: string) => {
         setStockFilterSelected(value);
     };
 
+    //Modal handler
+    const onSeeMedication = () => {
+        if (ownedMedicationModal) {
+            router.push({
+                pathname: ROUTE.MEDICATIONS.BY_ID,
+                params: {
+                    id: ownedMedicationModal.id,
+                },
+            });
+            hideModal();
+        }
+    };
+
+    const onUpdateStockHandler = (value: number) => {
+        //TODO: add handler
+        console.log(value);
+    };
+
     return (
         <View style={styles.container}>
-            {isLoadingGroups && <ProgressIndicator />}
+            {ownedMedicationModal && (
+                <Portal>
+                    <ModalStock
+                        ownedMedication={ownedMedicationModal}
+                        visible={visible}
+                        onSeeMedication={onSeeMedication}
+                        onUpdateStock={onUpdateStockHandler}
+                        onDismiss={hideModal}
+                    />
+                </Portal>
+            )}
             {isErrorGroups && (
                 <ErrorMessage errorMessage="Could not load groups" />
             )}
@@ -68,19 +120,14 @@ export default function StockScreen() {
             )}
             {isError && <ErrorMessage errorMessage="Could not load stock" />}
             {isLoading && <ProgressIndicator />}
-            {isSuccess && ownedMedications && ownedMedications.length > 0 && (
+            {isSuccess && ownedMedications && (
                 <StockCards
                     ownedMedications={ownedMedications}
                     onPressOwnedMedication={onPressPersonalStockHandler}
+                    isRefreshing={isLoading}
+                    onRefresh={refetch}
                 />
             )}
-            {isSuccess && ownedMedications && ownedMedications.length == 0 && (
-                <EmptyStockMsg />
-            )}
-
-            <Link asChild href="/stock/new">
-                <FAB icon="plus" style={styles.fab} />
-            </Link>
         </View>
     );
 }

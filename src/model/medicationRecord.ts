@@ -1,16 +1,30 @@
 export interface MedicationRecord {
-    id?: string; // ID only set when retrieved from db // TODO: Migrate this to not be optional, if optional, the MedicationRecordData should be used instead
+    id: string; // ID only set when retrieved from db
     isPlanned: boolean; // se for planned então pode-se ir ao plannedMeds desse user com o ownedMedicationRef
     ownedMedicationRef: string; // Reference to the medication subcollection: personal or group
     name: string;
     dosage: string;
     form: MedicationRecordForm;
     units?: number;
-    missed?: boolean;
+    isTaken?: boolean;
+    scheduledTime: Date;
+}
+
+export interface MedicationRecordWithoutMedication {
+    isPlanned: boolean;
+    ownedMedicationRef?: string;
+    units?: number;
+    isTaken?: boolean;
     scheduledTime: Date;
 }
 
 export type MedicationRecordData = Omit<MedicationRecord, 'id'>;
+
+export enum RecordState {
+    TAKEN,
+    UNTAKEN,
+    MISSED,
+}
 
 export enum MedicationRecordForm {
     TABLET = 'Tablet',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button as PaperButton } from 'react-native-paper';
-import { Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useAppTheme } from '../theme';
 
 interface ButtonProps {
@@ -61,7 +61,7 @@ export const SecondaryButton = ({
             textColor={theme.colors.main}
             style={{
                 ...styles.button,
-                backgroundColor: '#212124',
+                backgroundColor: theme.colors.surface,
                 width: fullWidth ? '100%' : undefined,
             }}
             mode={MODE}
@@ -89,11 +89,12 @@ export const OutlineButton = ({
                 ...styles.button,
                 backgroundColor: theme.colors.surface,
                 borderStyle: 'solid',
-                borderWidth: 1,
+                borderWidth: 0,
+                borderRadius: 5,
                 borderColor: theme.colors.main,
                 width: fullWidth ? '100%' : undefined,
             }}
-            mode={MODE}
+            mode="outlined"
             onPress={onPress}
             disabled={disabled}
             loading={isLoading}
@@ -112,7 +113,11 @@ export const GhostButton = ({
     onPress: () => void;
     disabled?: boolean;
 }) => {
-    return <Button onPress={onPress} disabled={disabled} title={children} />;
+    return (
+        <PaperButton onPress={onPress} disabled={disabled} mode="text">
+            {children}
+        </PaperButton>
+    );
 };
 
 export const DestructiveButton = ({

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Group } from '../model/group';
 import { FetcherProps } from './Fetcher';
-import { getGroup } from '../services/groups';
+import { getGroupById } from '../services/groups';
 import { db } from '../firebase';
 import { AxiosError } from 'axios';
 
@@ -12,7 +12,7 @@ interface useGroupProps extends FetcherProps {
 export const useGroup = (groupId: string): useGroupProps => {
     const result = useQuery({
         queryKey: ['group', groupId],
-        queryFn: () => getGroup(db, groupId),
+        queryFn: () => getGroupById(db, groupId),
     });
 
     return {

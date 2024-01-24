@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Text, Icon } from 'react-native-paper';
+import { Button, Icon, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { signOut } from '../services/auth';
 import { router } from 'expo-router';
@@ -8,18 +8,16 @@ import { useAuthentication } from '../hooks/useAuthentication';
 import { useUser } from '../hooks/useUser';
 import {
     getValueFromLabel,
-    physicalActivityOptionsMap,
-    pharmacyVisitsOptionsMap,
     medicationUseOptionsMap,
+    pharmacyVisitsOptionsMap,
+    physicalActivityOptionsMap,
     planFollowedOptionsMap,
 } from './../constants/surveyConstants';
 
 export default function ProfileScreen() {
     const { user } = useAuthentication();
 
-    const { userDoc } = useUser(
-        user?.uid ?? '' // TODO: Replace with user's token in the future
-    );
+    const { userDoc } = useUser(user?.uid ?? '');
 
     const onPressHandlerLogOut = async () => {
         await signOut();
@@ -36,12 +34,12 @@ export default function ProfileScreen() {
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}>First Name: </Text>
-                <Text>{userDoc?.firstname}</Text>
+                <Text>{userDoc?.firstName}</Text>
             </View>
 
             <View style={styles.profileInfo}>
                 <Text style={styles.labelText}> Last Name: </Text>
-                <Text>{userDoc?.lastname}</Text>
+                <Text>{userDoc?.lastName}</Text>
             </View>
 
             <View style={styles.profileInfo}>

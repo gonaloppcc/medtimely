@@ -9,7 +9,7 @@ type PersonalStockItemCardProps = OwnedMedication & {
     // Added any extra props here
 };
 export const StockCard = ({
-    medicationId,
+    id: ownedMedicationId,
     name,
     form,
     stock,
@@ -30,8 +30,7 @@ export const StockCard = ({
     const subtitle = `${form}, ${stock} left`;
 
     const onPress = () => {
-        // TODO: What if there isn't?
-        if (medicationId) onPressStock(medicationId);
+        if (ownedMedicationId) onPressStock(ownedMedicationId);
     };
 
     return (
@@ -54,7 +53,7 @@ export const StockCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {0 /* FIXME: Finish migrating this */} days to run out
+                    {0 /* TODO: Finish migrating this */} days to run out
                 </Text>
             </View>
         </TouchableOpacity>

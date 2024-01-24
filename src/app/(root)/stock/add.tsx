@@ -16,6 +16,7 @@ import { createOwnedMedication } from '../../../services/ownedMedication';
 import { db } from '../../../firebase';
 import { useAuthentication } from '../../../hooks/useAuthentication';
 import { OwnedMedicationData } from '../../../model/ownedMedication';
+import { ROUTE } from '../../../model/routes';
 
 interface Values {
     medicationId?: string;
@@ -53,7 +54,9 @@ function SelectMedication({
     const { setFieldValue } = useFormikContext();
 
     const searchMedicationAction = () => {
-        router.push('/stock/search');
+        router.push({
+            pathname: ROUTE.STOCK.SEARCH,
+        });
     };
 
     useEffect(() => {
@@ -73,7 +76,7 @@ function SelectMedication({
         isLoading ? (
             <ProgressBar />
         ) : isSuccess && medication ? (
-            <View>
+            <View style={{ width: '100%' }}>
                 <Text variant="labelLarge">Currently selected medication:</Text>
                 <MiniMedicationCard
                     medication={medication}
@@ -115,11 +118,12 @@ export default function NewStockScreen() {
         };
 
         if (values.groupId && values.groupId !== '') {
-            // TODO
+            // TODO: fix this
         } else {
-            // TODO: Navigate to medication page
             await createOwnedMedication(db, uid, med);
-            router.replace('/stock');
+            router.push({
+                pathname: ROUTE.STOCK.HOME,
+            });
         }
     };
 

@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { Appbar, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useNavOptions } from '../../../../../hooks/useNavOptions';
 import { GroupMembers } from '../../../../../components/GroupMembers';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../../model/routes';
@@ -12,18 +11,6 @@ import { useGroupById } from '../../../../../hooks/useGroupById';
 export default function GroupMembersScreen() {
     const groupId = useLocalSearchParams().id as string;
     const { isSuccess, isLoading, isError, group } = useGroupById(groupId);
-
-    const headerRight = () => (
-        <Appbar.Action
-            icon="pencil"
-            //onPress={() => navigation.navigate('EditRecord')}
-        />
-    );
-
-    useNavOptions({
-        headerTitle: 'Members',
-        headerRight,
-    });
 
     const onPressGroupMember = (id: string) => {
         if (id !== null)

@@ -4746,7 +4746,7 @@ color-string@^1.6.0, color-string@^1.9.0:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
 
-color@^3.1.2:
+color@^3.1.2, color@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/color/-/color-3.2.1.tgz#3544dc198caf4490c3ecc9a790b54fe9ff45e164"
   integrity sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==
@@ -10287,6 +10287,13 @@ react-native-infinite-pager@^0.3.13:
   version "0.3.13"
   resolved "https://registry.yarnpkg.com/react-native-infinite-pager/-/react-native-infinite-pager-0.3.13.tgz#3d96d8a53b84df72af83de372e1414e7c00d79a6"
   integrity sha512-F9o7GlHp79UQf9Nl9bMrdTN/eq9YpSESciypTMuk664vrB2HyaLdhHwAd596riHu3OE2KdmgoeLMIqNychZRqw==
+
+react-native-paper-dates@^0.21.7:
+  version "0.21.7"
+  resolved "https://registry.yarnpkg.com/react-native-paper-dates/-/react-native-paper-dates-0.21.7.tgz#44089d8022cd34e759258c3244218dda4c74a50b"
+  integrity sha512-gRAbtICp2iKXorvpnW9wZRoRxN5MozvX3wY2wkGg6uKP+eai6RiXYMCRiY2TzgDdmJkW+bXIM7t3zHZMfDBT1Q==
+  dependencies:
+    color "^3.2.1"
 
 react-native-paper-dropdown@^1.0.7:
   version "1.0.7"

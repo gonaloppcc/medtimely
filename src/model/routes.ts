@@ -7,7 +7,7 @@ type Routes = {
     MEMBERS?: string;
     MEMBER?: string;
     MEMBER_MEDS?: string;
-    MEMBER_RECORDS?: string;
+    SEARCH?: string;
 };
 
 const createRoutes = (BASE_NAME: string): Routes => ({
@@ -19,12 +19,10 @@ const createRoutes = (BASE_NAME: string): Routes => ({
     MEMBERS: `/${BASE_NAME}/[id]/members`,
     MEMBER: `/${BASE_NAME}/[id]/members/[memberId]`,
     MEMBER_MEDS: `/${BASE_NAME}/[id]/members/[memberId]/meds`,
-    MEMBER_RECORDS: `/${BASE_NAME}/[id]/members/[memberId]/records`,
 });
 
 const GROUPS_ROUTES = createRoutes('groups');
 const MEDICATIONS_ROUTES = createRoutes('medications');
-const RECORDS_ROUTES = createRoutes('records');
 
 const SETTINGS_ROUTES: Routes = {
     BASE_NAME: 'settings',
@@ -33,7 +31,9 @@ const SETTINGS_ROUTES: Routes = {
 
 const STOCK_ROUTES: Routes = {
     BASE_NAME: 'stock',
-    HOME: '/ownedMedication',
+    HOME: '/stock',
+    ADD: '/stock/add',
+    SEARCH: '/stock/search',
 };
 
 const PROFILE_ROUTES: Routes = {
@@ -49,7 +49,6 @@ const EDIT_PROFILE_ROUTES: Routes = {
 export const ROUTE = {
     GROUPS: GROUPS_ROUTES,
     MEDICATIONS: MEDICATIONS_ROUTES,
-    RECORDS: RECORDS_ROUTES,
     SETTINGS: SETTINGS_ROUTES,
     STOCK: STOCK_ROUTES,
     PROFILE: PROFILE_ROUTES,

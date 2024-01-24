@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Group } from '../model/group';
 import { createGroup } from '../services/groups';
 import { db } from '../firebase';
@@ -12,11 +12,17 @@ export const useCreateGroup = (
     onSuccess: () => void,
     onError: (error: Error) => void
 ): UseCreateGroupReturn => {
+    const queryClient = useQueryClient();
     const createGroupMutation = useMutation({
         mutationFn: async (group: Group) => {
             return await createGroup(db, group, userid);
         },
-        onSuccess,
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['groups'],
+            });
+            onSuccess();
+        },
         onError,
     });
 

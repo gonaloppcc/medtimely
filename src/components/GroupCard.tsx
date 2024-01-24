@@ -37,22 +37,17 @@ export const GroupCard = ({
             />
             <View style={styles.innerStyle}>
                 <Text
-                    variant="labelLarge"
+                    variant="bodyLarge"
                     style={{ color: theme.colors.onSurface }}
                 >
                     {name}
                 </Text>
+                <Text variant="bodyMedium">{description}</Text>
                 <Text
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {users.length} members
-                </Text>
-                <Text
-                    variant="labelLarge"
-                    style={{ color: theme.colors.error }}
-                >
-                    {description}
+                    {users.length} member{users.length != 1 && 's'}
                 </Text>
             </View>
         </TouchableOpacity>
@@ -64,7 +59,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        gap: 10,
+        gap: 15,
         alignItems: 'center',
         borderRadius: 5,
         padding: 12,
@@ -76,5 +71,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
+        gap: 4,
     },
 });

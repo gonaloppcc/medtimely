@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { MedicationCard } from './MedicationCard';
 import { Medication } from '../model/medication';
+import { MedicationCard } from './MedicationCard';
 
 interface MedicationCardsProps {
     medications: Medication[];

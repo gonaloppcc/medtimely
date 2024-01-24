@@ -18,7 +18,7 @@ const MEDICATIONS_COLLECTION_NAME = 'medications';
 
 export const getMedications = async (
     db: Firestore,
-    maxDocuments: number = 10
+    maxDocuments: number = 5
 ): Promise<Medication[]> => {
     console.log(`getting medications`);
 

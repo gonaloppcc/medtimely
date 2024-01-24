@@ -1,12 +1,9 @@
 // noinspection SpellCheckingInspection
 
 import { getFirestore, writeBatch } from 'firebase/firestore';
-import {
-    MedicationRecord,
-    MedicationRecordForm,
-} from '../src/model/medicationRecord';
+import { MedicationRecordWithoutMedication } from '../src/model/medicationRecord';
 import { initializeApp } from 'firebase/app';
-import { createRecord } from '../src/services/records';
+import { createRecordWithMedicationId } from '../src/services/records';
 import { firebaseConfig } from '../firebaseConfig';
 
 const app = initializeApp(firebaseConfig);
@@ -29,60 +26,115 @@ Date.prototype.addHours = function (h: number) {
 const INTERVAL = 4; // 4 hours
 const START_DATE = new Date();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getPathToPersonalMed = (uid: string, medId: string) => {
     return `users/${uid}/ownedMedications/${medId}`;
 };
 
+type PopulateMedicationRecords = MedicationRecordWithoutMedication & {
+    medicationId: string;
+};
+
 // TODO corrigir os ids
-const RECORDS: MedicationRecord[] = [
+const RECORDS: PopulateMedicationRecords[] = [
     {
-        name: 'Paracetamol + Caffeine',
-        ownedMedicationRef: getPathToPersonalMed(
-            userId,
-            'U2DLymP1OcHmJVbzBb0A'
-        ),
-        dosage: '400mg',
-        form: MedicationRecordForm.TABLET,
+        medicationId: '09rSXLXqy0OwsDHC3Egc', // FIXME: Should not be a constant id
         units: 1,
-        missed: true,
         scheduledTime: START_DATE,
         isPlanned: true,
     },
     {
-        name: 'Brufen',
-        ownedMedicationRef: getPathToPersonalMed(
-            userId,
-            'Vq6SYbRIep0BxlYQkGIJ'
-        ),
-        dosage: '400mg',
-        form: MedicationRecordForm.TABLET,
+        medicationId: '0CsThHCMy7XhgIYx8xHc', // FIXME: Should not be a constant id
         units: 1,
-        missed: false,
+        isTaken: true,
         scheduledTime: START_DATE,
         isPlanned: true,
+    },
+    {
+        medicationId: '0F9ioSdBtzgTWhazX1x1', // FIXME: Should not be a constant id
+        units: 1,
+        isTaken: true,
+        isPlanned: false,
+        scheduledTime: START_DATE,
+    },
+    {
+        medicationId: '0NCgZ8rwy5hYlofTcdti', // FIXME: Should not be a constant id
+        units: 1,
+        isTaken: true,
+        isPlanned: false,
+        scheduledTime: START_DATE,
+    },
+    {
+        medicationId: '0Oki6PCG2TNtgBcy5ssk', // FIXME: Should not be a constant id
+        units: 1,
+        isTaken: true,
+        isPlanned: false,
+        scheduledTime: START_DATE,
+    },
+    {
+        medicationId: '0TyK8G22TJtIaKjbTlno', // FIXME: Should not be a constant id
+        units: 1,
+        isTaken: true,
+        isPlanned: false,
+        scheduledTime: START_DATE,
+    },
+    {
+        medicationId: '0YKlXbETmX2bwUkrsrOO', // FIXME: Should not be a constant id
+        units: 1,
+        isTaken: true,
+        isPlanned: false,
+        scheduledTime: START_DATE,
+    },
+    {
+        medicationId: '0cReGFUnV5jcj6S01jZE', // FIXME: Should not be a constant id
+        units: 1,
+        isTaken: true,
+        isPlanned: false,
+        scheduledTime: START_DATE,
     },
 ];
 
 console.log(`Creating ${RECORDS.length} records for userId=${userId}`);
 
-(async () => {
+const populateRecords = async (
+    startDate: Date,
+    interval: number = INTERVAL
+) => {
     const batch = writeBatch(db);
 
     await Promise.all(
-        RECORDS.map(async (record, index) => {
+        RECORDS.map(async (populateRecord, index) => {
             // @ts-expect-error I'm using a method I added to Date
             // Dynamically creating the scheduledTime
-            record.scheduledTime = new Date(START_DATE).addHours(
-                index * INTERVAL
+            populateRecord.scheduledTime = new Date(startDate).addHours(
+                index * interval
             );
 
-            return await createRecord(db, userId, record).then((id) => {
+            return await createRecordWithMedicationId(
+                db,
+                userId,
+                populateRecord,
+                populateRecord.medicationId
+            ).then((id) => {
                 console.log(`Created record with id=${id}`);
             });
         })
     );
 
     await batch.commit();
+};
+
+const START_DATES: Date[] = [
+    // @ts-expect-error I'm using a method I added to Date
+    new Date().addHours(-96),
+    // @ts-expect-error I'm using a method I added to Date
+    new Date().addHours(-48),
+];
+
+(async () => {
+    for (const startDate of START_DATES) {
+        await populateRecords(startDate);
+    }
 })()
     .then(() => {
         console.log(`All done!`);

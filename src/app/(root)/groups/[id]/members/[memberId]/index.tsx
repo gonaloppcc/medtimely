@@ -5,57 +5,195 @@ import { useNavOptions } from '../../../../../../hooks/useNavOptions';
 import { WeekDayPicker } from '../../../../../../components/WeekDayPicker';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../../../model/routes';
-import { useMemberGroupById } from '../../../../../../hooks/useMemberGroupById';
 import { ProgressIndicator } from '../../../../../../components/ProgressIndicator';
-import { Text } from 'react-native-paper';
+import { Appbar, Portal, Text } from 'react-native-paper';
+import { useRecords } from '../../../../../../hooks/useRecords';
+import { RecordCards } from '../../../../../../components/RecordCards';
+import { MedicationRecord } from '../../../../../../model/medicationRecord';
+import { MedicationRecordModal } from '../../../../../../components/ModalMedicationRecord';
+import { EmptyPlannedMedications } from '../../../../../../components/EmptyPlannedMedications';
+import { useDeleteRecord } from '../../../../../../hooks/useDeleteRecord';
+import { Modal } from '../../../../../../components/Modal';
+import { useDeleteGroupMember } from '../../../../../../hooks/useDeleteGroupMember';
+import { useToggleRecordTake } from '../../../../../../hooks/useToggleRecordTaken';
+import { useUser } from '../../../../../../hooks/useUser';
 
-// TODO: In the future this should be changeable by the user
 const startDay = new Date();
 
 export default function GroupMemberScreen() {
     const localSearchParams = useLocalSearchParams();
     const groupId = localSearchParams.groupId as string;
     const memberId = localSearchParams.memberId as string;
-
-    const { isSuccess, isLoading, isError, user } = useMemberGroupById(
-        groupId,
-        memberId
-    );
+    const { isSuccess, isLoading, isError, userDoc } = useUser(memberId);
 
     const day = (localSearchParams.day as string) || new Date().toISOString();
     const initialSelectedDay = new Date(day);
     const [selectedDay, setSelectedDay] = useState(initialSelectedDay);
+    const {
+        isSuccess: isSuccessRecord,
+        isLoading: isLoadingRecord,
+        isError: isErrorRecord,
+        records,
+        refetch,
+    } = useRecords(memberId, selectedDay);
 
-    if (isSuccess && user) {
-        useNavOptions({
-            headerTitle: user.firstname,
-        });
-    }
+    const headerRight = () => (
+        <Appbar.Action
+            icon="delete"
+            onPress={() => {
+                showModalDeleteMember();
+            }}
+        />
+    );
 
-    const onPressMemberMeds = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS });
-    };
+    useNavOptions({
+        headerTitle: isSuccess && userDoc ? userDoc.firstName : 'Member',
+        headerRight,
+    });
 
     const onPressMemberRecord = () => {
-        router.push({ pathname: ROUTE.GROUPS.MEMBER_RECORDS });
+        router.push({ pathname: ROUTE.GROUPS.MEMBER_MEDS });
     };
 
     const selectDay = (day: Date) => {
         setSelectedDay(day);
     };
 
+    //MODAL
+    const [visibleRecord, setVisibleRecord] = useState(false);
+    const [visibleDeleteMemberModal, setVisibleDeleteMemberModal] =
+        useState(false);
+    const [recordModal, setRecordModal] = useState<MedicationRecord>();
+    const showModalRecordInfo = () => setVisibleRecord(true);
+    const hideModalRecordInfo = () => setVisibleRecord(false);
+
+    const showModalDeleteMember = () => setVisibleDeleteMemberModal(true);
+    const hideModalDeleteMember = () => setVisibleDeleteMemberModal(false);
+
+    const onPressRecord = (id: string) => {
+        const record = records.find((record) => record.id === id);
+        if (record) {
+            setRecordModal(record);
+            showModalRecordInfo();
+        }
+    };
+
+    const onSuccessRecord = () => {
+        hideModalRecordInfo();
+    };
+    const onErrorRecord = () => {};
+
+    const { deleteRecord } = useDeleteRecord(
+        memberId,
+        selectedDay,
+        onSuccessRecord,
+        onErrorRecord
+    );
+
+    //RecordMedicationModal
+    const onDeleteMedicationRecord = async () => {
+        if (recordModal) {
+            const id = recordModal.id;
+            if (id) {
+                await deleteRecord(id);
+            }
+        }
+    };
+
+    const onSeeRecordMedication = () => {
+        if (recordModal) {
+            router.push({
+                pathname: ROUTE.MEDICATIONS.BY_ID,
+                params: {
+                    id: recordModal.ownedMedicationRef,
+                },
+            });
+        }
+        hideModalRecordInfo();
+    };
+
+    const onSuccessToggleRecord = () => {
+        hideModalRecordInfo();
+    };
+    const onErrorToggleRecord = () => {
+        hideModalRecordInfo();
+    };
+
+    const { toggleRecordTake } = useToggleRecordTake(
+        memberId,
+        selectedDay,
+        onSuccessToggleRecord,
+        onErrorToggleRecord
+    );
+
+    const onSkipRecordMedication = async () => {
+        if (recordModal) await toggleRecordTake(recordModal);
+    };
+
+    const onTakeOrUntakeRecordMedication = async () => {
+        if (recordModal) await toggleRecordTake(recordModal);
+    };
+
+    //HANDLER to delete group member
+    const onSuccessDeleteGroupMember = () => {
+        hideModalDeleteMember();
+
+        router.push({
+            pathname: ROUTE.GROUPS.BASE_NAME,
+            params: {
+                id: groupId,
+            },
+        });
+    };
+    const onErrorDeleteGroupMember = () => {
+        hideModalDeleteMember();
+    };
+    const { deleteGroupMember } = useDeleteGroupMember(
+        groupId,
+        onSuccessDeleteGroupMember,
+        onErrorDeleteGroupMember
+    );
+
+    const deleteGroupMemberHandler = async () => {
+        if (userDoc && userDoc.id) await deleteGroupMember(userDoc.id);
+    };
+
     return (
         <View style={styles.container}>
             {isLoading && <ProgressIndicator />}
             {isError && <Text>Something went wrong</Text>}
-            {isSuccess && user && (
+            {isSuccess && userDoc && (
                 <>
+                    <Portal>
+                        <Modal
+                            visible={visibleDeleteMemberModal}
+                            onDismiss={hideModalDeleteMember}
+                            onDone={deleteGroupMemberHandler}
+                            title="Delete Member"
+                        >
+                            <Text variant="bodyMedium">
+                                Are you sure you want delete this member:{' '}
+                                {userDoc.firstName}?
+                            </Text>
+                        </Modal>
+                    </Portal>
+
+                    {recordModal && (
+                        <Portal>
+                            <MedicationRecordModal
+                                onDismiss={hideModalRecordInfo}
+                                visible={visibleRecord}
+                                record={recordModal}
+                                onDelete={onDeleteMedicationRecord}
+                                onSeeMedication={onSeeRecordMedication}
+                                onSkip={onSkipRecordMedication}
+                                onTakeOrUnTake={onTakeOrUntakeRecordMedication}
+                            />
+                        </Portal>
+                    )}
                     <View style={styles.buttonsContainer}>
-                        <PrimaryButton onPress={onPressMemberMeds}>
-                            Records History
-                        </PrimaryButton>
                         <PrimaryButton onPress={onPressMemberRecord}>
-                            Meds
+                            See all Medications
                         </PrimaryButton>
                     </View>
                     <WeekDayPicker
@@ -63,6 +201,23 @@ export default function GroupMemberScreen() {
                         selectDay={selectDay}
                         startDay={startDay}
                     />
+                    {!isLoading && isLoadingRecord && <ProgressIndicator />}
+                    {isErrorRecord && (
+                        <Text variant="headlineMedium">Error</Text>
+                    )}
+                    {isSuccessRecord && (
+                        <RecordCards
+                            isRefreshing={isLoading}
+                            onRefresh={refetch}
+                            records={records}
+                            onPressRecord={onPressRecord}
+                        />
+                    )}
+
+                    {!isLoadingRecord &&
+                        isSuccessRecord &&
+                        records &&
+                        records.length === 0 && <EmptyPlannedMedications />}
                 </>
             )}
         </View>

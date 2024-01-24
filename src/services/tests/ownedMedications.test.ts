@@ -92,7 +92,7 @@ test('getOwnedMedication: should get owned medication', async () => {
 
     expect(id).toBeDefined();
 
-    const ownedMedication = await getOwnedMedication(db, uid, id);
+    const ownedMedication = await getOwnedMedication(db, id);
 
     console.log(ownedMedication);
 
