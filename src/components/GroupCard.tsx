@@ -46,7 +46,7 @@ export const GroupCard = ({
                     variant="labelMedium"
                     style={{ color: theme.colors.onSurface }}
                 >
-                    {users.length} members
+                    {users.length} member{users.length != 1 && 's'}
                 </Text>
                 <Text
                     variant="labelLarge"

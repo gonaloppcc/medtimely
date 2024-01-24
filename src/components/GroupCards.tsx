@@ -22,7 +22,7 @@ export const GroupCards = ({
                 <RefreshControl
                     refreshing={isRefreshing}
                     onRefresh={onRefresh}
-                ></RefreshControl>
+                />
             }
             contentContainerStyle={styles.scrollView}
             alwaysBounceVertical={false}

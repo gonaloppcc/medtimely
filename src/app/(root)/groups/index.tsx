@@ -29,7 +29,7 @@ export default function GroupsScreen() {
     });
 
     const { isSuccess, isLoading, isError, groups, refetch } = useGroups(
-        user?.uid ?? ''
+        user!.uid
     );
 
     const onPressGroup = (id: string) => {
