@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Appbar, List, Portal, Text } from 'react-native-paper';
+import { List, Portal, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
@@ -8,7 +8,6 @@ import {
     OutlineButton,
 } from '../../../../components/Button';
 import { ROUTE } from '../../../../model/routes';
-import { useNavOptions } from '../../../../hooks/useNavOptions';
 import { useGroupById } from '../../../../hooks/useGroupById';
 import { ProgressIndicator } from '../../../../components/ProgressIndicator';
 import { Modal } from '../../../../components/Modal';
@@ -22,18 +21,6 @@ export default function GroupScreen() {
     const id = useLocalSearchParams().id as string;
     const MAX_SHOWN_USERS = 5;
 
-    const headerRight = () => (
-        <Appbar.Action
-            icon="pencil"
-            onPress={() =>
-                router.push({
-                    pathname: ROUTE.GROUPS.EDIT,
-                    params: { id },
-                })
-            }
-        />
-    );
-
     const { isSuccess, isLoading, isError, group } = useGroupById(id);
 
     //MODAl
@@ -41,10 +28,6 @@ export default function GroupScreen() {
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
-
-    useNavOptions({
-        headerRight,
-    });
 
     const onPressMembers = () => {
         router.push({ pathname: ROUTE.GROUPS.MEMBERS, params: { id } });

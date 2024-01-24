@@ -57,26 +57,6 @@ export const getUserGroups = async (
     );
 };
 
-//TODO: Change
-export const getMemberGroupById = async (
-    db: Firestore,
-    groupId: string,
-    userId: string
-): Promise<User> => {
-    console.log(
-        `Fetching member group with id=${userId} on groupId=${groupId}`
-    );
-
-    const user = {
-        id: 'testUserId',
-        firstname: 'João',
-        lastname: 'Pedro',
-        groups: [],
-    } as User;
-
-    return Promise.resolve(user);
-};
-
 const getUsersByRef = async (
     userRefs: DocumentReference[]
 ): Promise<User[]> => {

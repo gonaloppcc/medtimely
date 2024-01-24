@@ -148,19 +148,39 @@ export const getUserOwnedMedications = async (
 export const getUserGroupOwnedMedications = async (
     db: Firestore,
     uid: string,
-    groupId: string
+    groupId: string,
+    maxNumber: number = 10
 ): Promise<OwnedMedication[]> => {
     console.log(
         `Fetching stock for user with id=${uid} and groupId=${groupId}`
     );
 
-    // TODO: Implement this
+    const ownedMedicationCollection = collection(
+        db,
+        `${GROUPS_COLLECTION_NAME}/${groupId}/${OWNED_MEDICATIONS_COLLECTION}`
+    );
 
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(Array(10).fill(OWNED_MEDICATION));
-        }, 1000);
-    });
+    const q = query(ownedMedicationCollection, limit(maxNumber));
+
+    try {
+        const querySnapshot = await getDocs(q);
+
+        return Promise.all(
+            querySnapshot.docs.map(async (doc) => {
+                const ownedMedication = doc.data() as OwnedMedication;
+
+                ownedMedication.id = doc.ref.path;
+
+                return ownedMedication;
+            })
+        );
+    } catch (err) {
+        console.error('Error performing firebase query: ', err);
+        throw new ProjectError(
+            'GETTING_OWNED_MEDICATIONS_ERROR',
+            `Error getting document on path=${OWNED_MEDICATIONS_COLLECTION}`
+        );
+    }
 };
 
 export const createOwnedMedicationWithMedicationId = async (
@@ -233,26 +253,6 @@ export const createOwnedMedication = async (
             `Error creating document on path=${OWNED_MEDICATIONS_COLLECTION}`
         );
     }
-};
-
-export const updateOwnedMedication = async (
-    db: Firestore,
-    uid: string,
-    ownedMedication: OwnedMedicationData
-): Promise<OwnedMedication> => {
-    console.log(
-        `Updating owned medication for user with id=${uid} with data=${JSON.stringify(
-            ownedMedication
-        )}`
-    );
-
-    // TODO: Implement this
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(OWNED_MEDICATION);
-        }, 1000);
-    });
 };
 
 export const updateOwnedMedicationStock = async (
