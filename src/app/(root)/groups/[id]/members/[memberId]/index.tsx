@@ -5,7 +5,6 @@ import { useNavOptions } from '../../../../../../hooks/useNavOptions';
 import { WeekDayPicker } from '../../../../../../components/WeekDayPicker';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ROUTE } from '../../../../../../model/routes';
-import { useMemberGroupById } from '../../../../../../hooks/useMemberGroupById';
 import { ProgressIndicator } from '../../../../../../components/ProgressIndicator';
 import { Appbar, Portal, Text } from 'react-native-paper';
 import { useRecords } from '../../../../../../hooks/useRecords';
@@ -17,6 +16,7 @@ import { useDeleteRecord } from '../../../../../../hooks/useDeleteRecord';
 import { Modal } from '../../../../../../components/Modal';
 import { useDeleteGroupMember } from '../../../../../../hooks/useDeleteGroupMember';
 import { useToggleRecordTake } from '../../../../../../hooks/useToggleRecordTaken';
+import { useUser } from '../../../../../../hooks/useUser';
 
 const startDay = new Date();
 
@@ -24,10 +24,7 @@ export default function GroupMemberScreen() {
     const localSearchParams = useLocalSearchParams();
     const groupId = localSearchParams.groupId as string;
     const memberId = localSearchParams.memberId as string;
-    const { isSuccess, isLoading, isError, user } = useMemberGroupById(
-        groupId,
-        memberId
-    );
+    const { isSuccess, isLoading, isError, userDoc } = useUser(memberId);
 
     const day = (localSearchParams.day as string) || new Date().toISOString();
     const initialSelectedDay = new Date(day);
@@ -53,9 +50,9 @@ export default function GroupMemberScreen() {
         headerRight,
     });
 
-    if (isSuccess && user) {
+    if (isSuccess && userDoc) {
         useNavOptions({
-            headerTitle: user.firstName,
+            headerTitle: userDoc.firstName,
         });
     }
 
@@ -134,17 +131,18 @@ export default function GroupMemberScreen() {
         onErrorToggleRecord
     );
 
-    const onSkipRecordMedication = () => {
-        if (recordModal) toggleRecordTake(recordModal);
+    const onSkipRecordMedication = async () => {
+        if (recordModal) await toggleRecordTake(recordModal);
     };
 
-    const onTakeOrUntakeRecordMedication = () => {
-        if (recordModal) toggleRecordTake(recordModal);
+    const onTakeOrUntakeRecordMedication = async () => {
+        if (recordModal) await toggleRecordTake(recordModal);
     };
 
     //HANDLER to delete group member
     const onSuccessDeleteGroupMember = () => {
         hideModalDeleteMember();
+
         router.push({
             pathname: ROUTE.GROUPS.BASE_NAME,
             params: {
@@ -161,15 +159,15 @@ export default function GroupMemberScreen() {
         onErrorDeleteGroupMember
     );
 
-    const deleteGroupMemberHandler = () => {
-        if (user.id) deleteGroupMember(user.id);
+    const deleteGroupMemberHandler = async () => {
+        if (userDoc && userDoc.id) await deleteGroupMember(userDoc.id);
     };
 
     return (
         <View style={styles.container}>
             {isLoading && <ProgressIndicator />}
             {isError && <Text>Something went wrong</Text>}
-            {isSuccess && user && (
+            {isSuccess && userDoc && (
                 <>
                     <Portal>
                         <Modal
@@ -180,7 +178,7 @@ export default function GroupMemberScreen() {
                         >
                             <Text variant="bodyMedium">
                                 Are you sure you want delete this member:{' '}
-                                {user.firstName}?
+                                {userDoc.firstName}?
                             </Text>
                         </Modal>
                     </Portal>
