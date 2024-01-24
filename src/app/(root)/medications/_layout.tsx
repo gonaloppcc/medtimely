@@ -48,7 +48,14 @@ export default function MedicationsLayout() {
             <Stack.Screen
                 name="new"
                 options={{
-                    title: 'New',
+                    title: 'New planned medication',
+                }}
+            />
+            <Stack.Screen
+                name="search"
+                options={{
+                    title: 'Search medication',
+                    presentation: 'modal',
                 }}
             />
         </Stack>
