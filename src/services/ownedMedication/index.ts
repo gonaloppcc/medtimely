@@ -15,6 +15,7 @@ import {
     getDocs,
     limit,
     query,
+    updateDoc,
 } from 'firebase/firestore';
 import { ProjectError } from '../error';
 import { USERS_COLLECTION_NAME } from '../users';
@@ -252,6 +253,31 @@ export const updateOwnedMedication = async (
             resolve(OWNED_MEDICATION);
         }, 1000);
     });
+};
+
+export const updateOwnedMedicationStock = async (
+    db: Firestore,
+    uid: string,
+    ownedMedicationId: string,
+    stock: number
+): Promise<void> => {
+    console.log(
+        `Updating owned medication for user with id=${uid} and ownedMedicationId=${ownedMedicationId} with stock=${stock}`
+    );
+
+    const ownedMedicationRef = doc(db, ownedMedicationId);
+
+    try {
+        await updateDoc(ownedMedicationRef, {
+            stock: stock,
+        });
+    } catch (err) {
+        console.error('Error updating document: ', err);
+        throw new ProjectError(
+            'UPDATING_OWNED_MEDICATION_ERROR',
+            `Error updating document on path=${OWNED_MEDICATIONS_COLLECTION}`
+        );
+    }
 };
 
 // TODO check if id should be full path
