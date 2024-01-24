@@ -15,9 +15,9 @@ import {
     updateDoc,
 } from 'firebase/firestore';
 import { ProjectError } from '../error';
+import { USERS_COLLECTION_NAME } from '../users';
 
-const USERS_COLLECTION_NAME = 'users';
-const GROUPS_COLLECTION_NAME = 'groups';
+export const GROUPS_COLLECTION_NAME = 'groups';
 
 export const getUserGroups = async (
     db: Firestore,

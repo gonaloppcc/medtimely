@@ -1,13 +1,20 @@
-import { Formik } from 'formik';
+import { Formik, useFormikContext } from 'formik';
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
-import { Text, Button, Switch } from 'react-native-paper';
+import { Text, Button, Switch, ProgressBar } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import { PrimaryButton } from '../../../components/Button';
 import { Input } from '../../../components/Input';
 import { ErrorMessage } from '../../../components/ErrorMessage';
 import { DatePickerInput, TimePickerModal } from 'react-native-paper-dates';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useAuthentication } from '../../../hooks/useAuthentication';
+import { useOwnedMedication } from '../../../hooks/useOwnedMedication';
+import { MiniMedicationCard } from '../../../components/MiniMedicationCard';
+import { PlannedMedicationSchedule } from '../../../model/ownedMedication';
+import { createPlannedMedication } from '../../../services/plannedMedication/plannedMedication';
+import { db } from '../../../firebase';
 
 /// Requirements:
 /// Ask for:
@@ -22,8 +29,8 @@ interface Values {
     numberOfDoses?: string;
     startDate?: Date;
     startTime?: { hours: number; minutes: number };
+    timeBetweenDoses?: { hours: number; minutes: number };
     endDate?: Date;
-    timeBetweenDoses?: string;
     runIndefinitely: boolean;
 }
 
@@ -34,32 +41,98 @@ const validationSchema = Yup.object<Values>({
         .required('Number of doses is required'),
     startDate: Yup.date().required('Start date is required'),
     endDate: Yup.date().when('runIndefinitely', (runIndefinitely, schema) => {
-        if (runIndefinitely) return schema.required('End date is required');
+        if (!runIndefinitely) return schema.required('End date is required');
         return schema;
     }),
     startTime: Yup.object()
         .shape({
-            hours: Yup.number().min(0).max(23),
+            hours: Yup.number().min(0),
             minutes: Yup.number().min(0).max(59),
         })
         .required('Start time is required'),
-    timeBetweenDoses: Yup.number()
-        .positive('Time between doses must be positive')
+
+    timeBetweenDoses: Yup.object()
+        .shape({
+            hours: Yup.number().min(0).max(23),
+            minutes: Yup.number().min(0).max(59),
+        })
         .required('Time between doses is required'),
     runIndefinitely: Yup.boolean(),
 });
+
+const MedicationCard = () => {
+    const uid = useAuthentication().user!.uid;
+    const { selectedMedicationId } = useLocalSearchParams<{
+        selectedMedicationId: string;
+    }>();
+    const { isError, isLoading, isSuccess, ownedMedication, error } =
+        useOwnedMedication(uid, selectedMedicationId);
+    const { setFieldValue, errors } = useFormikContext<Values>();
+    React.useEffect(() => {
+        if (isSuccess) setFieldValue('ownedMedicationId', selectedMedicationId);
+        else setFieldValue('ownedMedicationId', undefined);
+    }, [selectedMedicationId, isSuccess]);
+
+    if (isSuccess) {
+        return (
+            <MiniMedicationCard
+                medication={ownedMedication}
+                onPress={() => {
+                    router.setParams({ selectedMedicationId: '' });
+                }}
+            />
+        );
+    } else {
+        if (isLoading) return <ProgressBar />;
+        if (isError) return <ErrorMessage errorMessage={error.message} />;
+    }
+};
 
 export default function NewPlannedMedicationScreen() {
     // todo: get datetime for the default start time, we only want this to run on the function start though
     const initialValues: Values = {
         numberOfDoses: '1',
         runIndefinitely: true,
+        timeBetweenDoses: { hours: 24, minutes: 0 },
     };
 
-    const onSubmit = () => {};
+    const uid = useAuthentication().user!.uid;
+
+    const onSubmit = async (values: Values) => {
+        const ownedMedicationId = values.ownedMedicationId!;
+        const doseToBeTaken = Number.parseInt(values.numberOfDoses!);
+        let date = values.startDate!;
+        date?.setHours(values.startTime!.hours);
+        date?.setMinutes(values.startTime!.minutes);
+
+        const intervalHours =
+            values.timeBetweenDoses!.hours +
+            values.timeBetweenDoses!.minutes / 60;
+
+        const schedule: PlannedMedicationSchedule = {
+            startDate: date,
+            timeBetweenDosesInHours: intervalHours,
+        };
+
+        if (!values.runIndefinitely) {
+            schedule.endDate = values.endDate;
+        }
+
+        console.log(schedule);
+
+        // TODO: this needs to return the medication id
+        await createPlannedMedication(
+            db,
+            uid,
+            { schedule, doseToBeTaken },
+            ownedMedicationId
+        );
+
+        router.replace('/medications');
+    };
+
     const [startTimeVisible, setStartTimeVisible] = React.useState(false);
-    // TODO: Use time picker for interval too
-    // const [intervalVisible, setIntervalVisible] = React.useState(false);
+    const [intervalVisible, setIntervalVisible] = React.useState(false);
 
     return (
         <Formik
@@ -82,6 +155,8 @@ export default function NewPlannedMedicationScreen() {
                         Create a new planned medication
                     </Text>
 
+                    <MedicationCard />
+
                     <View>
                         <Text variant="labelLarge">Number of doses</Text>
                         <Input
@@ -91,7 +166,9 @@ export default function NewPlannedMedicationScreen() {
                             onBlur={handleBlur('numberOfDoses')}
                         />
                         {touched.numberOfDoses && errors.numberOfDoses && (
-                            <ErrorMessage errorMessage={errors.numberOfDoses} />
+                            <ErrorMessage
+                                errorMessage={errors.numberOfDoses.toString()}
+                            />
                         )}
                     </View>
 
@@ -112,7 +189,9 @@ export default function NewPlannedMedicationScreen() {
                         />
 
                         {touched.startDate && errors.startDate && (
-                            <ErrorMessage errorMessage={errors.startDate} />
+                            <ErrorMessage
+                                errorMessage={errors.startDate.toString()}
+                            />
                         )}
                     </View>
 
@@ -150,7 +229,9 @@ export default function NewPlannedMedicationScreen() {
                         />
 
                         {touched.startTime && errors.startTime && (
-                            <ErrorMessage errorMessage={errors.startTime} />
+                            <ErrorMessage
+                                errorMessage={errors.startTime.toString()}
+                            />
                         )}
                     </View>
 
@@ -192,7 +273,9 @@ export default function NewPlannedMedicationScreen() {
                             />
 
                             {touched.endDate && errors.endDate && (
-                                <ErrorMessage errorMessage={errors.endDate} />
+                                <ErrorMessage
+                                    errorMessage={errors.endDate.toString()}
+                                />
                             )}
                         </View>
                     )}
@@ -200,16 +283,43 @@ export default function NewPlannedMedicationScreen() {
                     <View>
                         <Text variant="labelLarge">Time between doses</Text>
 
-                        <Input
-                            label="Time between doses"
-                            keyboardType="numeric"
-                            onChangeText={handleChange('timeBetweenDoses')}
-                            onBlur={handleBlur('timeBetweenDoses')}
+                        {/* TODO: Isto não funciona porque não deixa por tempos > 24h! */}
+                        <Button
+                            onPress={() => setIntervalVisible(true)}
+                            mode="contained-tonal"
+                        >
+                            {values.timeBetweenDoses
+                                ? `${values.timeBetweenDoses.hours
+                                      .toString()
+                                      .padStart(
+                                          2,
+                                          '0'
+                                      )}:${values.timeBetweenDoses.minutes
+                                      .toString()
+                                      .padStart(2, '0')}`
+                                : 'Set time'}
+                        </Button>
+                        <TimePickerModal
+                            visible={intervalVisible}
+                            hours={values.timeBetweenDoses?.hours}
+                            minutes={values.timeBetweenDoses?.minutes}
+                            onDismiss={() => {
+                                setIntervalVisible(false);
+                            }}
+                            onConfirm={({ hours, minutes }) => {
+                                setFieldTouched('timeBetweenDoses', true);
+                                setFieldValue('timeBetweenDoses', {
+                                    hours,
+                                    minutes,
+                                });
+                                setIntervalVisible(false);
+                            }}
                         />
+
                         {touched.timeBetweenDoses &&
                             errors.timeBetweenDoses && (
                                 <ErrorMessage
-                                    errorMessage={errors.timeBetweenDoses}
+                                    errorMessage={errors.timeBetweenDoses.toString()}
                                 />
                             )}
                     </View>

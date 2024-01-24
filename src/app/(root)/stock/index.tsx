@@ -60,6 +60,13 @@ export default function StockScreen() {
     const onPressPersonalStockHandler = (id: string) => {
         //TODO: do something
         console.log(id);
+
+        router.push({
+            pathname: '/medications/new',
+            params: {
+                selectedMedicationId: id,
+            },
+        });
     };
 
     const selectValueHandler = (value: string) => {

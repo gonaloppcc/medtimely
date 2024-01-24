@@ -9,7 +9,7 @@ type PersonalStockItemCardProps = OwnedMedication & {
     // Added any extra props here
 };
 export const StockCard = ({
-    medicationId,
+    id: ownedMedicationId,
     name,
     form,
     stock,
@@ -31,7 +31,7 @@ export const StockCard = ({
 
     const onPress = () => {
         // TODO: What if there isn't?
-        if (medicationId) onPressStock(medicationId);
+        if (ownedMedicationId) onPressStock(ownedMedicationId);
     };
 
     return (
